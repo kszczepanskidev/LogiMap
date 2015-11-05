@@ -1,1 +1,1 @@
-# LogiMap
+# LogiMap - chwilowo robocza nazwa projektu

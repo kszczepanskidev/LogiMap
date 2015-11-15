@@ -7,21 +7,5 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".Id">
 
     <TextView android:text="Hello World!" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Map"
-        android:id="@+id/button"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="91dp"
-        android:layout_marginEnd="91dp"
-        android:layout_marginTop="80dp"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:onClick="onClickMap" />
+        android:layout_height="wrap_content" />
 </RelativeLayout>

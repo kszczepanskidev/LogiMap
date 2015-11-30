@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hkp.logimap" >
+    package="hkp.logimap">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -14,8 +14,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".Id" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".Id">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,10 +36,28 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
+            android:label="@string/title_activity_maps">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hkp.logimap.Id" />
+        </activity>
+        <activity
+            android:name=".Destinations_List"
+            android:label="@string/title_activity_destinations__list"
+            android:parentActivityName=".Id"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hkp.logimap.Id" />
+        </activity>
+        <activity
+            android:name=".Package_List"
+            android:label="@string/title_activity_package__list"
+            android:parentActivityName=".Destinations_List"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hkp.logimap.Destinations_List" />
         </activity>
     </application>
 

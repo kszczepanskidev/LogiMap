@@ -12,10 +12,12 @@ public class Id extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_id);
     }
-        public void onClickMap(View v)
-    {
+    public void onClickMap(View v) {
         Intent i = new Intent(getApplicationContext(), MapsActivity.class);
         startActivity(i);
+    }
+    public void onClickDestinations(View v) {
+        startActivity(new Intent(getApplicationContext(), Destinations_List.class));
     }
 
 }

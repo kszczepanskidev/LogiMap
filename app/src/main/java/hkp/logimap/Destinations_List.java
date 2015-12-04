@@ -8,12 +8,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class Destinations_List extends AppCompatActivity{
-    Delivery delivery = new Delivery();
+    Delivery delivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        delivery = new Delivery();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, delivery.destinations);
 
         super.onCreate(savedInstanceState);
@@ -38,7 +40,16 @@ public class Destinations_List extends AppCompatActivity{
                 startActivity(i);
             }
         });
-
         lv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

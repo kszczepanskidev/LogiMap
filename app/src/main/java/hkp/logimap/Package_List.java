@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Package_List extends AppCompatActivity {
     Delivery delivery;
-    List<String> package_ids;              //listDataHeader
+    List<String> package_ids;                      //listDataHeader
     HashMap<String, List<String>> package_items;   //listDataChild
 
     @Override
@@ -41,25 +41,18 @@ public class Package_List extends AppCompatActivity {
         package_ids = new ArrayList<>();
         package_items = new HashMap<>();
 
-        List<String> pack_items = new ArrayList<>();
+        List<List<String>> packs_items = new ArrayList<>();
+        for (int i = 0; i<5;++i)
+            packs_items.add(new ArrayList<String>());
 
         for(Package p : delivery.load)
-            package_ids.add("Package #" + p.id.toString() + " " + p.items.size() + " items");
-
-
-        package_ids.add("Test packalunga with zwei itemunga");
-        List<String> temp = new ArrayList<>();
-        temp.add("dupa");
-        temp.add("cycki");
-        package_items.put(package_ids.get(5), temp);
+            package_ids.add("Package #" + p.id.toString());
 
         for(int i = 0; i<5;++i) {
             for (Item it : delivery.load.get(i).items) {
-                pack_items.add(it.id.toString());
+                packs_items.get(i).add("Item no. " + it.id.toString());
             }
-            package_items.put(package_ids.get(i), pack_items);
-
-            pack_items.clear();
+            package_items.put(package_ids.get(i), packs_items.get(i));
         }
     }
 

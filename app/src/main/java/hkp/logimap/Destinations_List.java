@@ -10,13 +10,39 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 public class Destinations_List extends AppCompatActivity{
     Delivery delivery;
+    JSONloader json_loader = new JSONloader();
+    JSONObject json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         delivery = new Delivery();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, delivery.destinations);
+
+        // JSON load TEST
+        try {
+            json = new JSONObject(json_loader.loadFromFile(getAssets().open("destinations_test.json")));
+
+            JSONArray destins = json.getJSONArray("destination");
+
+            for (int i=0; i< destins.length();++i) {
+                delivery.destinations.add(destins.getJSONObject(i).getString("name"));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (JSONException ex) {
+            ex.printStackTrace();        }
+
+        // JSON load TEST
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, delivery.destinations);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.destinations__list);

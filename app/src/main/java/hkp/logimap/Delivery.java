@@ -15,11 +15,6 @@ public class Delivery implements Serializable{
 
     Delivery() {
         id = (new Random()).nextInt(100)+1000;
-        destinations.add("Sosnowiec");
-        destinations.add("Moskwa");
-        destinations.add("Hamburg");
-        destinations.add("Stalin");
-        destinations.add("Poznań");
 
         for(int i=0;i<5;++i)
             load.add(new Package());

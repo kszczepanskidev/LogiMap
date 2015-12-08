@@ -24,4 +24,5 @@
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView"
         android:onClick="onClickMap" />
+
 </RelativeLayout>

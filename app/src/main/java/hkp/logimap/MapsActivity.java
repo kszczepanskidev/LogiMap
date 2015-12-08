@@ -151,11 +151,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String url=getDirectionsUrl(new LatLng(52.17,16.92),new LatLng(45.18,5.69));
         DownloadTask DT=new DownloadTask(mMap);
         DT.execute(url);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(52.1347, 21.0042)).title("Wawa"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(52.17,16.92)).title("START"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(45.18,5.69)).title("STOP"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(52.1347, 21.0042)).title("1"));
         mMap.addMarker(new MarkerOptions().position(new LatLng(53, 19)).title("2"));
         mMap.addMarker(new MarkerOptions().position(new LatLng(53, 19.5)).title("3"));
         mMap.addMarker(new MarkerOptions().position(new LatLng(54, 19)).title("4"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.17, 16.92), 6));
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.17, 16.92), 6));
           }
 }

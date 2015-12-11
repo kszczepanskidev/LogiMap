@@ -13,14 +13,13 @@ import java.util.List;
 
 public class Package_List extends AppCompatActivity {
     Delivery delivery;
-    List<String> package_ids;                      //listDataHeader
-    HashMap<String, List<String>> package_items;   //listDataChild
+//    List<String> package_ids;                      //listDataHeader
+//    HashMap<String, List<Package>> package_items;   //listDataChild
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
         delivery = (Delivery)i.getSerializableExtra("delivery");
-        create_package_list();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package__list);
@@ -31,29 +30,9 @@ public class Package_List extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Expandable list of packages and items
+        //Expandable list of packages with details
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.packages_list);
-        ExpandableListAdapter adapter = new ExpandableListAdapter(this, package_ids, package_items);
+        ExpandableListAdapter adapter = new ExpandableListAdapter(this, delivery.load);
         lv.setAdapter(adapter);
     }
-
-    private void create_package_list() {
-        package_ids = new ArrayList<>();
-        package_items = new HashMap<>();
-
-        List<List<String>> packs_items = new ArrayList<>();
-        for (int i = 0; i<5;++i)
-            packs_items.add(new ArrayList<String>());
-
-        for(Package p : delivery.load)
-            package_ids.add("Package #" + p.id.toString());
-
-        for(int i = 0; i<5;++i) {
-            for (Item it : delivery.load.get(i).items) {
-                packs_items.get(i).add("Item no. " + it.id.toString());
-            }
-            package_items.put(package_ids.get(i), packs_items.get(i));
-        }
-    }
-
 }

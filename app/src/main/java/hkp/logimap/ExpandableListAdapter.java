@@ -18,17 +18,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<Package> _listData;
-//    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
-//    private HashMap<String, List<String>> _listDataChild;
-//    private HashMap<String, List<Package>> _listDataChild;
 
-    //    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-//                                 HashMap<String, List<String>> listChildData) {
-//        this._context = context;
-//        this._listDataHeader = listDataHeader;
-//        this._listDataChild = listChildData;
-//    }
     public ExpandableListAdapter(Context context, List<Package> listData) {
         this._context = context;
         this._listData = listData;
@@ -56,13 +46,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.package_list_details, null);
         }
 
-        TextView package_id = (TextView) convertView.findViewById(R.id.PackageId);
         TextView package_state = (TextView) convertView.findViewById(R.id.PackageStatus);
         TextView package_date = (TextView) convertView.findViewById(R.id.PackageTermin);
 
-        package_id.setText(child.id.toString());
-        package_state.setText(child.state);
-        package_date.setText(child.date);
+        package_state.setText("State: " + child.state);
+        package_date.setText("Deadline: " + child.date);
         return convertView;
     }
 
@@ -99,7 +87,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle.id.toString());
+        lblListHeader.setText("Package #" + headerTitle.id.toString());
 
         return convertView;
     }

@@ -11,14 +11,10 @@ import java.util.Random;
 public class Package implements Serializable{
     Integer id;
     String date, state;
-//    ArrayList<Item> items = new ArrayList<>();
 
     Package() {
         id = (new Random()).nextInt(100);
         state = "frysha glynca";
-        date = "1337 12 24";
-
-//        for(int i=0;i<3;++i)
-//            items.add(new Item());
+        date = "1337 12 " + (((new Random()).nextInt(30))+1);
     }
 }

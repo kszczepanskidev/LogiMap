@@ -13,8 +13,6 @@ import java.util.List;
 
 public class Package_List extends AppCompatActivity {
     Delivery delivery;
-//    List<String> package_ids;                      //listDataHeader
-//    HashMap<String, List<Package>> package_items;   //listDataChild
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

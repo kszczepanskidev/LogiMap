@@ -7,10 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class Package_List extends AppCompatActivity {
     Delivery delivery;
 
@@ -30,7 +26,7 @@ public class Package_List extends AppCompatActivity {
 
         //Expandable list of packages with details
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.packages_list);
-        ExpandableListAdapter adapter = new ExpandableListAdapter(this, delivery.load);
+        ExpandablePackageListAdapter adapter = new ExpandablePackageListAdapter(this, delivery.load);
         lv.setAdapter(adapter);
     }
 }

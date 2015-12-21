@@ -3,8 +3,6 @@ package hkp.logimap;
 /**
  * Created by kryształ on 04.12.2015.
  */
-import java.util.HashMap;
-import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -14,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+import java.util.List;
+
+public class ExpandableDeliveryListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<Package> _listData;
 
-    public ExpandableListAdapter(Context context, List<Package> listData) {
+    public ExpandableDeliveryListAdapter(Context context, List<Package> listData) {
         this._context = context;
         this._listData = listData;
     }

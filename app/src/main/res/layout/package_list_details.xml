@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/PackageStatus"
-        android:layout_width="fill_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:textSize="17dip"
         android:paddingTop="5dp"
@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/PackageTermin"
-        android:layout_width="fill_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:textSize="17dip"
         android:paddingTop="5dp"

@@ -14,24 +14,21 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listData;
-    private Delivery _delivery;
+    private List<Destination> _destinations;
 
-    public ExpandableDestinationListAdapter(Context context, List<String> listData, Delivery delivery) {
+    public ExpandableDestinationListAdapter(Context context, List<Destination> listDestinations) {
         this._context = context;
-        this._listData = listData;
-        this._delivery = delivery;
+        this._destinations = listDestinations;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this._listData.get(groupPosition);
-    }
+    public Object getChild(int groupPosition, int childPosititon) { return this._destinations.get(groupPosition).name; }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
@@ -41,25 +38,16 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
-        final String child = _listData.get(groupPosition);
-
+        final Destination child = _destinations.get(groupPosition);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.destination_list_details, null);
         }
+        ((TextView) convertView.findViewById(R.id.DestinationStatus)).setText("State: " + child.state);
+        ((TextView) convertView.findViewById(R.id.DestinationTermin)).setText("Termin: " + child.date);
+        ((TextView) convertView.findViewById(R.id.DestinationLoad)).setText("Packages: " + child.packages.size());
 
-        TextView destination_state = (TextView) convertView.findViewById(R.id.DestinationStatus);
-        TextView destination_date = (TextView) convertView.findViewById(R.id.DestinationTermin);
-        TextView destination_load = (TextView) convertView.findViewById(R.id.DestinationLoad);
-
-//        destination_state.setText("State: " + child.state);
-//        destination_date.setText("Termin: " + child.date);
-//        destination_load.setText(" " + child.load.size());
-        destination_state.setText("State: Rotten");
-        destination_date.setText( "Termin: Last christmas");
-        destination_load.setText( "Packages: One hearth");
         return convertView;
     }
 
@@ -70,13 +58,11 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listData.get(groupPosition);
+        return this._destinations.get(groupPosition).name;
     }
 
     @Override
-    public int getGroupCount() {
-        return this._listData.size();
-    }
+    public int getGroupCount() { return this._destinations.size(); }
 
     @Override
     public long getGroupId(int groupPosition) {
@@ -86,28 +72,24 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, final ViewGroup parent) {
-        String headerTitle = _listData.get(groupPosition);
+        String headerTitle = _destinations.get(groupPosition).name;
+
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.destination_list_group, null);
         }
-        Button show_btn = (Button)convertView.findViewById(R.id.show_packages_btn);
 
+        Button show_btn = (Button)convertView.findViewById(R.id.show_packages_btn);
         show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
          public void onClick(View v) {
                 Intent i = new Intent(parent.getContext(), Package_List.class);
-                i.putExtra("destination", _listData.get(groupPosition));
-                i.putExtra("delivery", _delivery);
+                i.putExtra("destination", _destinations.get(groupPosition));
                 parent.getContext().startActivity(i);
             }
         });
-
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-//        lblListHeader.setText("Delivery #" + headerTitle.id.toString());
         lblListHeader.setText(headerTitle);
 
         return convertView;

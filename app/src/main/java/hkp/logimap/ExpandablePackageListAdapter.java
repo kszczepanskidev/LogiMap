@@ -24,9 +24,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this._listData.get(groupPosition);
-    }
+    public Object getChild(int groupPosition, int childPosititon) { return this._listData.get(groupPosition); }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
@@ -36,20 +34,15 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
         final Package child = _listData.get(groupPosition);
-
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.package_list_details, null);
         }
+        ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + child.state);
+        ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.date);
 
-        TextView package_state = (TextView) convertView.findViewById(R.id.PackageStatus);
-        TextView package_date = (TextView) convertView.findViewById(R.id.PackageTermin);
-
-        package_state.setText("State: " + child.state);
-        package_date.setText("Deadline: " + child.date);
         return convertView;
     }
 
@@ -76,17 +69,17 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        Package headerTitle = _listData.get(groupPosition);
+        String headerTitle = _listData.get(groupPosition).id.toString();
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.package_list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText("Package #" + headerTitle.id.toString());
+        lblListHeader.setText("Package #" + headerTitle);
 
         return convertView;
     }

@@ -8,25 +8,25 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
 
 public class Package_List extends AppCompatActivity {
-    Delivery delivery;
+    Destination destination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent i = getIntent();
-        delivery = (Delivery)i.getSerializableExtra("delivery");
+        destination = (Destination)i.getSerializableExtra("destination");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_list);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(i.getStringExtra("destination") + ": " + delivery.load.size() + " packages");
+        toolbar.setTitle(destination.name + ": " + destination.packages.size() + " packages");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Expandable list of packages with details
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.packages_list);
-        ExpandablePackageListAdapter adapter = new ExpandablePackageListAdapter(this, delivery.load);
+        ExpandablePackageListAdapter adapter = new ExpandablePackageListAdapter(this, destination.packages);
         lv.setAdapter(adapter);
     }
 }

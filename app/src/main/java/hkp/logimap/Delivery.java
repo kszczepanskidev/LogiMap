@@ -9,14 +9,11 @@ import java.util.Random;
  */
 public class Delivery implements Serializable{
     Integer id;
-    String state, date;
-    ArrayList<String> destinations = new ArrayList<>();
-    ArrayList<Package> load = new ArrayList<>();
+
+    ArrayList<Destination> destinations;
 
     Delivery() {
+        destinations = new ArrayList<>();
         id = (new Random()).nextInt(100)+1000;
-
-        for(int i=0;i<5;++i)
-            load.add(new Package());
     }
 }

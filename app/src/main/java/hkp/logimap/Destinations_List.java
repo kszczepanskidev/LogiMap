@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Destinations_List extends AppCompatActivity{
     Delivery delivery;
@@ -28,7 +29,9 @@ public class Destinations_List extends AppCompatActivity{
             JSONArray destins = json.getJSONArray("destination");
 
             for (int i=0; i< destins.length();++i) {
-                delivery.destinations.add(destins.getJSONObject(i).getString("name"));
+                Destination d = new Destination();
+                d.name = destins.getJSONObject(i).getString("name");
+                delivery.destinations.add(d);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -36,9 +39,6 @@ public class Destinations_List extends AppCompatActivity{
             ex.printStackTrace();        }
 
         // JSON load TEST
-
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, delivery.destinations);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.destination_list);
@@ -51,7 +51,7 @@ public class Destinations_List extends AppCompatActivity{
 
         //Destinations list
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.destinations_list);
-        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, delivery.destinations, delivery);
+        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, delivery.destinations);
         lv.setAdapter(adapter);
     }
 
@@ -63,9 +63,5 @@ public class Destinations_List extends AppCompatActivity{
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    public void show_packages(Integer pos) {
-
     }
 }

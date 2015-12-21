@@ -26,6 +26,7 @@
         android:layout_column="1"
         android:layout_gravity="center_vertical|right"
         android:textAllCaps="false"
-        android:textSize="10dp" />
+        android:textSize="13dp"
+        android:focusable="false" />
 
 </GridLayout>

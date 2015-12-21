@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Delivery implements Serializable{
     Integer id;
-    String state;
+    String state, date;
     ArrayList<String> destinations = new ArrayList<>();
     ArrayList<Package> load = new ArrayList<>();
 

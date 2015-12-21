@@ -3,7 +3,6 @@ package hkp.logimap;
 /**
  * Created by kryształ on 04.12.2015.
  */
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -43,7 +42,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.package_list_details2, null);
+            convertView = inflater.inflate(R.layout.package_list_details, null);
         }
 
         TextView package_state = (TextView) convertView.findViewById(R.id.PackageStatus);

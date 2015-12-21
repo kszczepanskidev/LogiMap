@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,10 +38,10 @@ public class Destinations_List extends AppCompatActivity{
         // JSON load TEST
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, delivery.destinations);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, delivery.destinations);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.destinations__list);
+        setContentView(R.layout.destination_list);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -54,18 +50,8 @@ public class Destinations_List extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Destinations list
-        ListView lv = (ListView) findViewById(R.id.listView);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getApplicationContext(), Package_List.class);
-                ListView lv = (ListView) findViewById(R.id.listView);
-                i.putExtra("destination", lv.getItemAtPosition(position).toString());
-                i.putExtra("delivery", delivery);
-
-                startActivity(i);
-            }
-        });
+        ExpandableListView lv = (ExpandableListView) findViewById(R.id.destinations_list);
+        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, delivery.destinations, delivery);
         lv.setAdapter(adapter);
     }
 
@@ -77,5 +63,9 @@ public class Destinations_List extends AppCompatActivity{
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    public void show_packages(Integer pos) {
+
     }
 }

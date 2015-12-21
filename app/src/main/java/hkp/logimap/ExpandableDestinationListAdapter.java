@@ -5,23 +5,27 @@ package hkp.logimap;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class ExpandableDeliveryListAdapter extends BaseExpandableListAdapter {
+public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<Package> _listData;
+    private List<String> _listData;
+    private Delivery _delivery;
 
-    public ExpandableDeliveryListAdapter(Context context, List<Package> listData) {
+    public ExpandableDestinationListAdapter(Context context, List<String> listData, Delivery delivery) {
         this._context = context;
         this._listData = listData;
+        this._delivery = delivery;
     }
 
     @Override
@@ -38,19 +42,24 @@ public class ExpandableDeliveryListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final Package child = _listData.get(groupPosition);
+        final String child = _listData.get(groupPosition);
 
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.package_list_details, null);
+            convertView = inflater.inflate(R.layout.destination_list_details, null);
         }
 
-        TextView package_state = (TextView) convertView.findViewById(R.id.PackageStatus);
-        TextView package_date = (TextView) convertView.findViewById(R.id.PackageTermin);
+        TextView destination_state = (TextView) convertView.findViewById(R.id.DestinationStatus);
+        TextView destination_date = (TextView) convertView.findViewById(R.id.DestinationTermin);
+        TextView destination_load = (TextView) convertView.findViewById(R.id.DestinationLoad);
 
-        package_state.setText("State: " + child.state);
-        package_date.setText("Deadline: " + child.date);
+//        destination_state.setText("State: " + child.state);
+//        destination_date.setText("Termin: " + child.date);
+//        destination_load.setText(" " + child.load.size());
+        destination_state.setText("State: Rotten");
+        destination_date.setText( "Termin: Last christmas");
+        destination_load.setText( "Packages: One hearth");
         return convertView;
     }
 
@@ -75,19 +84,31 @@ public class ExpandableDeliveryListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        Package headerTitle = _listData.get(groupPosition);
+    public View getGroupView(final int groupPosition, boolean isExpanded,
+                             View convertView, final ViewGroup parent) {
+        String headerTitle = _listData.get(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.package_list_group, null);
+            convertView = infalInflater.inflate(R.layout.destination_list_group, null);
         }
+        Button show_btn = (Button)convertView.findViewById(R.id.show_packages_btn);
+
+        show_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+         public void onClick(View v) {
+                Intent i = new Intent(parent.getContext(), Package_List.class);
+                i.putExtra("destination", _listData.get(groupPosition));
+                i.putExtra("delivery", _delivery);
+                parent.getContext().startActivity(i);
+            }
+        });
 
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText("Package #" + headerTitle.id.toString());
+//        lblListHeader.setText("Delivery #" + headerTitle.id.toString());
+        lblListHeader.setText(headerTitle);
 
         return convertView;
     }

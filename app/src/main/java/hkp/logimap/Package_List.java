@@ -16,7 +16,7 @@ public class Package_List extends AppCompatActivity {
         delivery = (Delivery)i.getSerializableExtra("delivery");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.package__list);
+        setContentView(R.layout.package_list);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

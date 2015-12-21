@@ -25,11 +25,6 @@ import java.util.ArrayList;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    public ArrayList<LatLng> markerPoints;
-    public LatLng sydney;
-    public LatLng mark;
-    public LatLng mark1;
-    public LatLng mark2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,50 +34,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        markerPoints = new ArrayList<LatLng>();
-        LatLng sydney = new LatLng(52.1347, 21.0042);
-        LatLng mark = new LatLng(53, 19);
-        LatLng mark1= new LatLng(53, 19.5);
-        LatLng mark2  = new LatLng(54, 19);
-        markerPoints.add(sydney);
-        markerPoints.add(mark);
-        markerPoints.add(mark1);
-        markerPoints.add(mark2);
-        markerPoints.add(new LatLng(49,13));
 
     }
 
-    private String getDirectionsUrl(LatLng origin,LatLng dest){
 
-        // Origin of route
-        String str_origin = "origin="+origin.latitude+","+origin.longitude;
-
-        // Destination of route
-        String str_dest = "destination="+dest.latitude+","+dest.longitude;
-
-        // Sensor enabled
-        String sensor = "sensor=false";
-
-        // Waypoints
-        String waypoints = "";
-        for(int i=0;i<markerPoints.size();i++){
-            LatLng point  =markerPoints.get(i);
-            if(i==0)
-                waypoints = "waypoints=";
-            waypoints += point.latitude + "," + point.longitude + "|";
-        }
-
-        // Building the parameters to the web service
-        String parameters = str_origin+"&"+str_dest+"&"+sensor+"&"+waypoints;
-
-        // Output format
-        String output = "json";
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
-
-        return url;
-    }
 
     /**
      * Manipulates the map once available.
@@ -98,7 +53,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         UiSettings mUiSettings=mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);
-     //   mMap.setMyLocationEnabled(true);
         LocationManager manager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         LocationListener listener = new LocationListener() {
             @Override
@@ -147,16 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // result of the request.
             }
         }
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
-        String url=getDirectionsUrl(new LatLng(52.17,16.92),new LatLng(45.18,5.69));
-        DownloadTask DT=new DownloadTask(mMap);
-        DT.execute(url);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(52.17,16.92)).title("START"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(45.18,5.69)).title("STOP"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(52.1347, 21.0042)).title("1"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(53, 19)).title("2"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(53, 19.5)).title("3"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(54, 19)).title("4"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.17, 16.92), 6));
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 100, listener);
+       MapController mapController=new MapController(mMap);
+        mapController.ShowRoute(12);
           }
 }

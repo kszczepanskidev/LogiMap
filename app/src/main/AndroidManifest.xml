@@ -7,6 +7,7 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -58,6 +59,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hkp.logimap.Destinations_List" />
+        </activity>
+
+        <activity
+            android:name=".RESTtestView"
+            android:label="@string/title_activity_package__list"
+            android:parentActivityName=".Id"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

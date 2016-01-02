@@ -19,5 +19,8 @@ public class Id extends AppCompatActivity {
     public void onClickDestinations(View v) {
         startActivity(new Intent(getApplicationContext(), Destinations_List.class));
     }
+    public void onClickRestTest(View v) {
+        startActivity(new Intent(getApplicationContext(), RESTtestView.class));
+    }
 
 }

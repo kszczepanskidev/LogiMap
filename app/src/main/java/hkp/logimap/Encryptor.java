@@ -19,7 +19,7 @@ public class Encryptor {
     private static final char[] PASSWORD = "poznanuniversityoftechnology2016".toCharArray();
     private static final byte[] SALT = {
         (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12,
-        (byte) 0x12, (byte) 0x10, (byte) 0x33, (byte) 0xde,
+        (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12,
     };
 
     String encrypt(String data) throws GeneralSecurityException, UnsupportedEncodingException {

@@ -11,8 +11,7 @@ import android.view.View;
 public class Id_Activity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
-        //Load user data from settings
-
+        //TODO: Load user data from settings
 
         //If there's no saved user data continue with activity
         super.onCreate(savedInstanceState);
@@ -20,6 +19,13 @@ public class Id_Activity extends AppCompatActivity {
     }
 
     public void clickSignIn(View v) {
+        //TODO: Save user data here
+
+        goToMenu();
+    }
+
+    void goToMenu() {
         startActivity(new Intent(getApplicationContext(), Menu_Activity.class));
+        finish();
     }
 }

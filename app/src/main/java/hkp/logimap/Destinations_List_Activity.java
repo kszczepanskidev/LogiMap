@@ -1,6 +1,5 @@
 package hkp.logimap;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class Destinations_List extends AppCompatActivity{
+public class Destinations_List_Activity extends AppCompatActivity{
     Delivery delivery;
     JSONloader json_loader = new JSONloader();
     JSONObject json;
@@ -41,7 +39,7 @@ public class Destinations_List extends AppCompatActivity{
         // JSON load TEST
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.destination_list);
+        setContentView(R.layout.destination_list_layout);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

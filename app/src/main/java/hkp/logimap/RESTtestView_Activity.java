@@ -9,7 +9,7 @@ import android.widget.TextView;
 /**
  * Created by krysztal on 02.01.16.
  */
-public class RESTtestView extends AppCompatActivity {
+public class RESTtestView_Activity extends AppCompatActivity {
     Encryptor encryptor = new Encryptor();
 
     @Override

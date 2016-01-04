@@ -5,22 +5,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class Id extends AppCompatActivity {
+public class Menu_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_id);
+        setContentView(R.layout.menu_layout);
     }
     public void onClickMap(View v) {
-        Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+        Intent i = new Intent(getApplicationContext(), Maps_Activity.class);
         startActivity(i);
     }
     public void onClickDestinations(View v) {
-        startActivity(new Intent(getApplicationContext(), Destinations_List.class));
+        startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
     }
     public void onClickRestTest(View v) {
-        startActivity(new Intent(getApplicationContext(), RESTtestView.class));
+        startActivity(new Intent(getApplicationContext(), RESTtestView_Activity.class));
     }
 
 }

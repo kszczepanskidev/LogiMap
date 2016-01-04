@@ -7,9 +7,9 @@ import java.io.InputStream;
  * Created by krysztal on 07.12.15.
  */
 public class JSONloader {
+    String json = null;
 
     public String loadFromFile(InputStream is) {
-        String json = null;
         try {
     //        InputStream is = getAssets().open(jsonfile + ".json");
 
@@ -27,9 +27,8 @@ public class JSONloader {
         return json;
     }
 
-    public String loadFromHttp() {
-        String json = null;
-
+    public String loadFromHttp(String url) {
+//        RestGet api = new RestGet();
         return json;
     }
 }

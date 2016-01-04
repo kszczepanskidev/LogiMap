@@ -1,7 +1,6 @@
 package hkp.logimap;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +19,7 @@ public class Encryptor {
     private static final char[] PASSWORD = "poznanuniversityoftechnology2016".toCharArray();
     private static final byte[] SALT = {
         (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12,
-        (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12,
+        (byte) 0x12, (byte) 0x10, (byte) 0x33, (byte) 0xde,
     };
 
     String encrypt(String data) throws GeneralSecurityException, UnsupportedEncodingException {

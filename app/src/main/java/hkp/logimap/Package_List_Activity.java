@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
 
-public class Package_List extends AppCompatActivity {
+public class Package_List_Activity extends AppCompatActivity {
     Destination destination;
 
     @Override
@@ -16,7 +16,7 @@ public class Package_List extends AppCompatActivity {
         destination = (Destination)i.getSerializableExtra("destination");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.package_list);
+        setContentView(R.layout.package_list_layout);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -38,7 +38,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.package_list_details, null);
+            convertView = inflater.inflate(R.layout.package_list_details_layout, null);
         }
         ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + child.state);
         ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.date);
@@ -74,7 +74,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.package_list_group, null);
+            convertView = infalInflater.inflate(R.layout.package_list_group_layout, null);
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);

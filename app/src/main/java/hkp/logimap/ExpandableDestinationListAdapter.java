@@ -14,7 +14,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter {
@@ -42,7 +41,7 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.destination_list_details, null);
+            convertView = inflater.inflate(R.layout.destination_list_details_layout, null);
         }
         ((TextView) convertView.findViewById(R.id.DestinationStatus)).setText("State: " + child.state);
         ((TextView) convertView.findViewById(R.id.DestinationTermin)).setText("Termin: " + child.date);
@@ -76,14 +75,14 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.destination_list_group, null);
+            convertView = infalInflater.inflate(R.layout.destination_list_group_layout, null);
         }
 
         Button show_btn = (Button)convertView.findViewById(R.id.show_packages_btn);
         show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
          public void onClick(View v) {
-                Intent i = new Intent(parent.getContext(), Package_List.class);
+                Intent i = new Intent(parent.getContext(), Package_List_Activity.class);
                 i.putExtra("destination", _destinations.get(groupPosition));
                 parent.getContext().startActivity(i);
             }

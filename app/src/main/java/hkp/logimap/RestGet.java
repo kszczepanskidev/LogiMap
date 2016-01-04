@@ -15,12 +15,12 @@ import java.net.URL;
 /**
  * Created by krysztal on 02.01.16.
  */
-class RESTtest extends AsyncTask<Void, Void, String> {
+class RestGet extends AsyncTask<String, Void, String> {
     private Context mContext;
     private View rootView;
     private TextView theView;
 
-    RESTtest(TextView tv){
+    RestGet(TextView tv){
         this.theView = tv;
     }
 
@@ -31,11 +31,13 @@ class RESTtest extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... urls) {
+    protected String doInBackground(String... params) {
+        Encryptor encryptor = new Encryptor();
         try {
-            final String basicAuth = "Basic " + Base64.encodeToString("admin:P@ssw0rd".getBytes(), Base64.NO_WRAP);
-            URL url = new URL("http://10.0.2.2:8000/vehicles/1");
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            params[2] = encryptor.decrypt(params[2]);
+            final String basicAuth = "Basic " + Base64.encodeToString((params[1] + ":" + params[2]).getBytes(), Base64.NO_WRAP);
+            URL url_address= new URL("http://10.0.2.2:8000/" +  params[0]);
+            HttpURLConnection urlConnection = (HttpURLConnection) url_address.openConnection();
             urlConnection.setRequestProperty("Authorization", basicAuth);
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -63,6 +65,7 @@ class RESTtest extends AsyncTask<Void, Void, String> {
             response = "THERE WAS AN ERROR";
         }
         theView.setText("FINISH\n");
+
         Log.i("INFO", response);
         theView.append(response);
     }

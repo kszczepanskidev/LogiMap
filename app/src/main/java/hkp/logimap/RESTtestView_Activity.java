@@ -20,7 +20,7 @@ public class RESTtestView_Activity extends AppCompatActivity{
 
     public void runREST(View v) {
         final TextView tv = (TextView) findViewById(R.id.responseView);
-        SharedPreferences preferences = getSharedPreferences("sharedPrefs", 0);
+        SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         RestGet api = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
                 new RestGet.AsyncResponse() {
                     @Override

@@ -35,17 +35,11 @@ public class Destinations_List_Activity extends AppCompatActivity{
             ex.printStackTrace();
         } catch (JSONException ex) {
             ex.printStackTrace();        }
-
         // JSON load TEST
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.destination_list_layout);
-
-        // Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Delivery #" + delivery.id);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Delivery #" + delivery.id);
 
         //Destinations list
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.destinations_list);

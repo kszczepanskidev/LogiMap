@@ -50,6 +50,7 @@
 
 
         <activity android:name=".Maps_Activity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_maps">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -58,6 +59,7 @@
 
 
         <activity android:name=".Destinations_List_Activity"
+            android:theme="@style/AppTheme"
             android:label="@string/title_activity_destinations__list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

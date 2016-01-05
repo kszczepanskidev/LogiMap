@@ -6,12 +6,10 @@
     android:padding="8dp"
     android:background="#D9D9D9">
 
-
     <TextView
         android:id="@+id/lblListHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textSize="17dp"/>
-
 </GridLayout>

@@ -24,6 +24,7 @@ public class Id_Activity extends AppCompatActivity {
     }
 
     public void clickSignIn(View v) {
+
         Encryptor encryptor = new Encryptor();
 
         String username = ((EditText) findViewById(R.id.username)).getText().toString();

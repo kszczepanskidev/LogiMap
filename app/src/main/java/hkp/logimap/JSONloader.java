@@ -12,14 +12,12 @@ import java.io.InputStream;
  */
 public class JSONloader {
     Context context;
-    SharedPreferences preferences;
 
     JSONloader(Context context) {
         this.context = context;
-        this.preferences = this.context.getSharedPreferences("sharedPrefs", this.context.MODE_PRIVATE);
     }
 
-    public String loadFromFile(String jsonfile) {
+    public String load(String jsonfile) {
         try {
             InputStream is = context.getAssets().open(jsonfile + ".json");
 
@@ -34,16 +32,5 @@ public class JSONloader {
             Log.e("ERROR", e.getMessage(), e);
             return null;
         }
-    }
-
-    public String loadFromHttp(String url) {
-        RestGet api = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                new RestGet.AsyncResponse() {
-                    @Override
-                    public void processFinish(String result) {
-//                        return result;
-                    }
-                });
-        return null;
     }
 }

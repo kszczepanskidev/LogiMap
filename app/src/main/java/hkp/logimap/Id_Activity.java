@@ -12,6 +12,7 @@ import android.widget.EditText;
  * Created by krysztal on 04.01.16.
  */
 public class Id_Activity extends AppCompatActivity {
+    MyApplication application;
 
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
@@ -45,7 +46,7 @@ public class Id_Activity extends AppCompatActivity {
         goToMenu();
     }
 
-    void goToMenu() {
+    private void goToMenu() {
         startActivity(new Intent(getApplicationContext(), Menu_Activity.class));
         finish();
     }

@@ -33,7 +33,8 @@ class RestGet extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPreExecute() {}
+    protected void onPreExecute() {
+    }
 
     @Override
     protected String doInBackground(String... params) {

@@ -51,4 +51,18 @@
         android:textSize="16dp"
         android:textStyle="bold" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TEST"
+        android:id="@+id/getdelivery_button"
+        android:onClick="onClickGetDelivery"
+        android:layout_marginTop="43dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/history_button"
+        android:layout_centerHorizontal="true"
+        android:enabled="false"
+        android:clickable="true" />
+
 </RelativeLayout>

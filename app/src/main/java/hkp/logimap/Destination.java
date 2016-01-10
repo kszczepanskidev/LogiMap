@@ -15,8 +15,8 @@ public class Destination implements Serializable{
     Destination() {
         packages = new ArrayList<>();
 
-        for(int i=0;i<5;++i)
-            packages.add(new Package());
+        /*for(int i=0;i<5;++i)
+            packages.add(new Package());*/
 
         state = "On da road";
         date = "Yesterday";

@@ -41,7 +41,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.package_list_details_layout, null);
         }
         ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + child.state);
-        ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.date);
+//        ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.date);
 
         return convertView;
     }
@@ -69,7 +69,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = _listData.get(groupPosition).id.toString();
+        String headerTitle = _listData.get(groupPosition).code;
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context

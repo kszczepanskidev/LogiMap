@@ -1,5 +1,9 @@
 package hkp.logimap;
 
+import android.util.Log;
+
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,12 +13,17 @@ import java.util.Random;
  * Created by kryształ on 03.12.2015.
  */
 public class Package implements Serializable{
-    Integer id;
-    String date, state;
+    String code, date, state;
+    Location destination;
 
-    Package() {
-        id = (new Random()).nextInt(100);
-        state = "frysha glynca";
-        date = "1337 12 " + (((new Random()).nextInt(30))+1);
+    Package(JSONObject _package) {
+        try {
+            this.code = _package.getString("code");
+//            this.date = _package.getString("date");
+            this.state = _package.getString("status").toString();
+            this.destination = new Location(_package.getJSONObject("location"));
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Destinations_List_Activity extends AppCompatActivity{
 //    Delivery delivery;
@@ -22,32 +23,34 @@ public class Destinations_List_Activity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         application = (MyApplication) getApplication();
-        application.current_delivery = new Delivery();
-        json_loader = new JSONloader(this);
 
-        // JSON load TEST
-        try {
-            json = new JSONObject(json_loader.loadFromFile("destinations_test"));
+//        application.current_delivery = new Delivery();
+//        json_loader = new JSONloader(this);
 
-            JSONArray destins = json.getJSONArray("destination");
-
-            for (int i=0; i< destins.length();++i) {
-                Destination d = new Destination();
-                d.name = destins.getJSONObject(i).getString("name");
-                application.current_delivery.destinations.add(d);
-            }
-        } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
-        }
-        // JSON load TEST
+//        // JSON load TEST
+//        try {
+//            json = new JSONObject(json_loader.loadFromFile("destinations_test"));
+//
+//            JSONArray destins = json.getJSONArray("destination");
+//
+//            for (int i=0; i< destins.length();++i) {
+//                Destination d = new Destination();
+//                d.name = destins.getJSONObject(i).getString("name");
+//                application.current_delivery.destinations.add(d);
+//            }
+//        } catch (Exception e) {
+//            Log.e("ERROR", e.getMessage(), e);
+//        }
+//        // JSON load TEST
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.destination_list_layout);
-        setTitle("Delivery #" + application.current_delivery.id);
+        setTitle("Delivery");// #" + application.current_delivery.id);
 
         //Destinations list
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.destinations_list);
-        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, application.current_delivery.destinations);
+//        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, application.current_delivery.route.locations);
+        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, new ArrayList<Destination>());
         lv.setAdapter(adapter);
     }
 

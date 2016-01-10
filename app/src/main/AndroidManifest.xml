@@ -82,5 +82,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Id_Activity" />
         </activity>
+
+
+        <activity android:name=".GetDelivery_Activity"
+            android:label="@string/title_activity_package__list">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Id_Activity" />
+        </activity>
     </application>
 </manifest>

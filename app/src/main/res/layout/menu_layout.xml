@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Map"
         android:id="@+id/route_button"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:onClick="onClickMap"
         android:paddingLeft="100dp"
         android:paddingRight="100dp"
@@ -27,7 +27,7 @@
         android:text="Destinations"
         android:id="@+id/destinations_button"
         android:onClick="onClickDestinations"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/route_button"
         android:layout_alignRight="@+id/route_button"
         android:layout_alignEnd="@+id/route_button"
@@ -43,7 +43,7 @@
         android:id="@+id/history_button"
         android:onClick="onClickHistory"
         android:layout_below="@+id/destinations_button"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_alignRight="@+id/route_button"
         android:layout_alignEnd="@+id/route_button"
         android:layout_alignLeft="@+id/route_button"
@@ -57,12 +57,27 @@
         android:text="TEST"
         android:id="@+id/getdelivery_button"
         android:onClick="onClickGetDelivery"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="40dp"
         android:textSize="16dp"
         android:textStyle="bold"
-        android:layout_below="@+id/history_button"
-        android:layout_centerHorizontal="true"
         android:enabled="false"
-        android:clickable="true" />
+        android:clickable="true"
+        android:layout_below="@+id/driverstatistics_button"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Driver Statistics"
+        android:id="@+id/driverstatistics_button"
+        android:layout_below="@+id/history_button"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:layout_alignLeft="@+id/history_button"
+        android:layout_alignStart="@+id/history_button"
+        android:layout_alignRight="@+id/history_button"
+        android:layout_alignEnd="@+id/history_button"
+        android:onClick="onClickDriverStatistics" />
 
 </RelativeLayout>

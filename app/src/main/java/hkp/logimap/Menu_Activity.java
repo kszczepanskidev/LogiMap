@@ -48,6 +48,9 @@ public class Menu_Activity extends AppCompatActivity {
     public void onClickHistory(View v) {
         startActivity(new Intent(getApplicationContext(), RESTtestView_Activity.class));
     }
+    public void onClickDriverStatistics(View v) {
+        startActivity(new Intent(getApplicationContext(), DriverStatistics_Activity.class));
+    }
     public void onClickGetDelivery(View v) {
         startActivity(new Intent(getApplicationContext(), GetDelivery_Activity.class));
     }

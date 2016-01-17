@@ -7,10 +7,9 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 
     <application
         android:name=".MyApplication"
@@ -19,23 +18,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name=".Id_Activity"
+        <activity
+            android:name=".Id_Activity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".Menu_Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Id_Activity" />
         </activity>
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -49,46 +45,50 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-
-        <activity android:name=".Maps_Activity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_maps">
+        <activity
+            android:name=".Maps_Activity"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu_Activity" />
         </activity>
-
-
-        <activity android:name=".Destinations_List_Activity"
-            android:theme="@style/AppTheme"
-            android:label="@string/title_activity_destinations__list">
+        <activity
+            android:name=".Destinations_List_Activity"
+            android:label="@string/title_activity_destinations__list"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hkp.logimap.Id_Activity" />
         </activity>
-
-
-        <activity android:name=".Package_List_Activity"
+        <activity
+            android:name=".Package_List_Activity"
             android:label="@string/title_activity_package__list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Destinations_List_Activity" />
         </activity>
-
-
-        <activity android:name=".RESTtestView_Activity"
+        <activity
+            android:name=".RESTtestView_Activity"
             android:label="@string/title_activity_package__list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Id_Activity" />
         </activity>
-
-
-        <activity android:name=".GetDelivery_Activity"
+        <activity
+            android:name=".GetDelivery_Activity"
             android:label="@string/title_activity_package__list">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Id_Activity" />
+        </activity>
+        <activity
+            android:name=".DriverStatistics_Activity"
+            android:label="@string/title_activity_driver_statistics">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Id_Activity" />
         </activity>
     </application>
+
 </manifest>

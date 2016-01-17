@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Driver {
     Integer id;
     String name, surname;
+
 //    ArrayList<String> categories;
 
     Driver(JSONObject driver) {

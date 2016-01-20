@@ -10,9 +10,11 @@ import org.json.JSONObject;
 public class Location {
     String name, address;
     Double latitude, longtitude;
+    Integer id;
 
     Location(JSONObject location) {
         try {
+            this.id = location.getInt("id");
             this.name = location.getString("name");
             this.address = location.getString("address");
             this.latitude = Double.parseDouble(location.getString("latitude"));

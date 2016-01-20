@@ -19,7 +19,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:enabled="false" />
 
     <Button
         android:layout_width="wrap_content"
@@ -34,7 +35,8 @@
         android:layout_alignLeft="@+id/route_button"
         android:layout_alignStart="@+id/route_button"
         android:textSize="16dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:enabled="false" />
 
     <Button
         android:layout_width="wrap_content"
@@ -49,21 +51,8 @@
         android:layout_alignLeft="@+id/route_button"
         android:layout_alignStart="@+id/route_button"
         android:textSize="16dp"
-        android:textStyle="bold" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TEST"
-        android:id="@+id/getdelivery_button"
-        android:onClick="onClickGetDelivery"
-        android:layout_marginTop="40dp"
-        android:textSize="16dp"
         android:textStyle="bold"
-        android:enabled="false"
-        android:clickable="true"
-        android:layout_below="@+id/driverstatistics_button"
-        android:layout_centerHorizontal="true" />
+        android:enabled="false" />
 
     <Button
         android:layout_width="wrap_content"

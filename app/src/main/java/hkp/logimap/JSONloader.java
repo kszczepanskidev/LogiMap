@@ -4,14 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by krysztal on 07.12.15.
  */
 public class JSONloader {
     Context context;
+    String result;
 
     JSONloader(Context context) {
         this.context = context;
@@ -19,15 +22,22 @@ public class JSONloader {
 
     public String load(String jsonfile) {
         try {
-            InputStream is = context.getAssets().open(jsonfile + ".json");
+            InputStream is = context.openFileInput(jsonfile + ".json");
 
-            int size = is.available();
-            byte[] buffer = new byte[size];
+            if ( is != null ) {
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                String receiveString;
+                StringBuilder stringBuilder = new StringBuilder();
 
-            is.read(buffer);
-            is.close();
+                while ( (receiveString = br.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
 
-            return new String(buffer, "UTF-8");
+                is.close();
+                result = stringBuilder.toString();
+            }
+            return result;
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
             return null;

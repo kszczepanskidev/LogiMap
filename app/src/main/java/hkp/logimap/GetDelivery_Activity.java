@@ -22,16 +22,16 @@ public class GetDelivery_Activity extends AppCompatActivity {
                 application.current_delivery.vehicle.model + " " + application.current_delivery.vehicle.category + "\n";
 
         temp += application.current_delivery.route.length.toString() + "\n";
-        for(int i = 0; i < application.current_delivery.route.locations.size(); ++i) {
-            temp += i+1 + ") " + application.current_delivery.route.locations.get(i).name + " " + application.current_delivery.route.locations.get(i).address + " " +
-                    application.current_delivery.route.locations.get(i).latitude + " " + application.current_delivery.route.locations.get(i).longtitude + "\n";
+        for(int i = 0; i < application.current_delivery.locations.size(); ++i) {
+            temp += i+1 + ") " + application.current_delivery.locations.get(i).name + " " + application.current_delivery.locations.get(i).address + " " +
+                    application.current_delivery.locations.get(i).latitude + " " + application.current_delivery.locations.get(i).longtitude + "\n";
         }
         temp += "\n";
 
         for(int i = 0; i < application.current_delivery.packages.size(); ++i) {
             temp += i+1 + ") " + application.current_delivery.packages.get(i).code + " " + application.current_delivery.packages.get(i).state + "\n";
-            temp += application.current_delivery.packages.get(i).destination.name + " " + application.current_delivery.packages.get(i).destination.address + " " +
-                    application.current_delivery.packages.get(i).destination.latitude + " " + application.current_delivery.packages.get(i).destination.longtitude + "\n";
+            temp += application.current_delivery.locations.get(application.current_delivery.packages.get(i).destination).name + " " + application.current_delivery.locations.get(application.current_delivery.packages.get(i).destination).address + " " +
+                    application.current_delivery.locations.get(application.current_delivery.packages.get(i).destination).latitude + " " + application.current_delivery.locations.get(application.current_delivery.packages.get(i).destination).longtitude + "\n";
             temp += "\n";
         }
 

@@ -69,7 +69,7 @@ class RestGet extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         if(response == null) {
-            response = "THERE WAS AN ERROR";
+            response = "ERROR";
         }
         delegate.processFinish(response);
     }

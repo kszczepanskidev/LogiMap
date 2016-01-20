@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -17,15 +18,17 @@ public class Delivery implements Serializable{
     Vehicle vehicle;
     Route route;
     ArrayList<Package> packages;
+    HashMap<Integer, Location> locations;
 
 
     Delivery(JSONObject delivery) {
-        packages = new ArrayList<>();
+        packages  = new ArrayList<>();
+        locations = new HashMap<>();
 
         try {
             this.driver = new Driver(delivery.getJSONObject("driver"));
             this.vehicle = new Vehicle(delivery.getJSONObject("vehicle"));
-            this.route = new Route(delivery.getJSONObject("route"));
+            this.route = new Route(delivery.getJSONObject("route"), locations);
 
             JSONArray _packages = delivery.getJSONArray("package");
 

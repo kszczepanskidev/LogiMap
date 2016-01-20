@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -14,14 +15,14 @@ import java.util.Random;
  */
 public class Package implements Serializable{
     String code, date, state;
-    Location destination;
+    Integer destination;
 
     Package(JSONObject _package) {
         try {
             this.code = _package.getString("code");
-//            this.date = _package.getString("date");
+            this.date = _package.getString("deliver_before");
             this.state = _package.getString("status").toString();
-            this.destination = new Location(_package.getJSONObject("location"));
+            this.destination = _package.getInt("location");
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }

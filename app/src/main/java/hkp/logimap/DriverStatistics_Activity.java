@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 public class DriverStatistics_Activity extends AppCompatActivity {
+    String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +30,15 @@ public class DriverStatistics_Activity extends AppCompatActivity {
                     public void processFinish(String result) {
                         try {
                             DriverStats driverSt = new DriverStats(new JSONObject(result));
-                            String text = String.format(getResources().getString(R.string.driver_statistics),
+                            text = String.format(getResources().getString(R.string.driver_statistics),
                                     driverSt.km_done, driverSt.orders_done, driverSt.pkg_delivered, driverSt.pkg_delayed);
-                            tv.setText(text);
+
+                            tv.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tv.setText(text);
+                                }
+                            });
                         } catch (Exception e) {
                             Log.e("ERROR", e.getMessage(), e);
                         }

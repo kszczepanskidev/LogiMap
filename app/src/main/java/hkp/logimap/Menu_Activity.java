@@ -1,18 +1,35 @@
 package hkp.logimap;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Objects;
 
 public class Menu_Activity extends AppCompatActivity {
     MyApplication application;
     Context context;
+    Handler mHandler;
+    String hour, minute;
+
+    private final static int INTERVAL = 1000 * 60 * 5;
 
     Thread waitforjson = new Thread(new Runnable() {
         @Override
@@ -23,45 +40,89 @@ public class Menu_Activity extends AppCompatActivity {
             while(application.current_delivery == null);
             try {
                 SystemClock.sleep(1000);
-                Log.i("TEST", "InTRY");
                 mapButton.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i("TEST", "inpost1");
                         mapButton.setEnabled(true);
                     }
                 });
                 locationsButton.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i("TEST", "inpost2");
                         locationsButton.setEnabled(true);
                     }
                 });
-                Log.i("TEST", "InTRY2");
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
             }
         }
     });
 
+    Thread checking_deadlines = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ArrayList<Location> temp = new ArrayList<>(application.current_delivery.locations.values());
+            //TODO GET FIRST UNCOMPLETED LOCATION
+                check_deadline(temp.get(0));
+            mHandler.postDelayed(this, INTERVAL);
+        }
+    });
+
+    private void check_deadline(Location location) {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        Calendar c = Calendar.getInstance();
+        hour = ((Integer)c.get(Calendar.HOUR)).toString();
+        minute = ((Integer)c.get(Calendar.MINUTE)).toString();
+        try {
+            long current_time = new Time(format.parse(hour + ":" + minute).getTime()).getTime();
+            long diff = location.deadline.getTime() - current_time;
+            long diffmin =  diff / (60 * 1000) % 60;
+            long diffh =  diff / (60 * 60 * 1000) % 24;
+
+//            if(diffh <= 0 && diffmin <= 30) {
+                location.shortDeadline = true;
+                notify(location);
+//            }
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+        }
+    }
+
+    private void notify(Location location) {
+        NotificationCompat.Builder mBuilder =
+            new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                    .setContentTitle("DEADLINE")
+                    .setContentText(location.name + ":" + location.deadline)
+                    .setAutoCancel(true);
+
+        Intent resultIntent = new Intent(this, Destinations_List_Activity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+        stackBuilder.addParentStack(Destinations_List_Activity.class);
+
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.notify(0, mBuilder.build());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = this;
         application = (MyApplication) getApplication();
+        mHandler = new Handler();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        Encryptor encryptor = new Encryptor();
-        try {
-            setTitle(encryptor.decrypt(preferences.getString("username", "#")) + ":" + encryptor.decrypt(preferences.getString("password", "#")) + ":" + preferences.getInt("driverID", -1));
-        }catch(Exception e){
-            Log.e("ERROR", e.getMessage(),e);
-        }
+        setTitle("LogiMap");
 
         waitforjson.start();
+        checking_deadlines.start();
     }
 
     public void onClickMap(View v) {

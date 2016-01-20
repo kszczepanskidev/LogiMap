@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -35,6 +37,17 @@ public class Delivery implements Serializable{
             for(int i=0; i < _packages.length(); ++i) {
                 this.packages.add(new Package(_packages.getJSONObject(i)));
             }
+
+            //Minimum deadline for packages in location
+            ArrayList<Time> times = new ArrayList<>();
+            for(Location l : new ArrayList<>(locations.values())) {
+                for (Package p : packages)
+                    if (p.destination == l.id)
+                        times.add(p.deadline);
+                Collections.sort(times);
+                l.deadline = times.get(0);
+            }
+
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }

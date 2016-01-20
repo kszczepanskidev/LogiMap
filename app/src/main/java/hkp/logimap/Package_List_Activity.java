@@ -5,23 +5,36 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ExpandableListView;
 
+import java.util.ArrayList;
+
 public class Package_List_Activity extends AppCompatActivity {
-    Destination destination;
+    Integer destination;
+    MyApplication application;
+    ArrayList<Package> packages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        packages = new ArrayList<>();
+
+        application = (MyApplication) getApplication();
         Intent i = getIntent();
-        destination = (Destination)i.getSerializableExtra("destination");
+        destination = i.getIntExtra("destinationID", -1);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.package_list_layout);
-        setTitle(destination.name + ": " + destination.packages.size() + " packages");
+        setTitle(application.current_delivery.locations.get(destination).name);
+
+        //Prepera packages for this destination
+        for(Package p : application.current_delivery.packages)
+                if(p.destination == destination)
+                    packages.add(p);
 
         //Expandable list of packages with details
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.packages_list);
-        ExpandablePackageListAdapter adapter = new ExpandablePackageListAdapter(this, destination.packages);
+        ExpandablePackageListAdapter adapter = new ExpandablePackageListAdapter(this, application, packages);
         lv.setAdapter(adapter);
     }
 }

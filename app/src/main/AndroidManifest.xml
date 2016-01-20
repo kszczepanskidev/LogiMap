@@ -69,14 +69,14 @@
                 android:value=".Destinations_List_Activity" />
         </activity>
         <activity
-            android:name=".RESTtestView_Activity"
+            android:name=".GetDelivery_Activity"
             android:label="@string/title_activity_package__list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Id_Activity" />
         </activity>
         <activity
-            android:name=".GetDelivery_Activity"
+            android:name=".Change_State_Activity"
             android:label="@string/title_activity_package__list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

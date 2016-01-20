@@ -18,8 +18,7 @@ public class Destinations_List_Activity extends AppCompatActivity{
 
         //Destinations list
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.destinations_list);
-//        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, application.current_delivery.route.locations);
-        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, new ArrayList<Destination>());
+        ExpandableDestinationListAdapter adapter = new ExpandableDestinationListAdapter(this, application);
         lv.setAdapter(adapter);
     }
 

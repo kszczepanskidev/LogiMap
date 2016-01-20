@@ -3,24 +3,31 @@ package hkp.logimap;
 /**
  * Created by kryształ on 04.12.2015.
  */
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<Package> _listData;
+    private MyApplication application;
+    private Integer _destinationID;
 
-    public ExpandablePackageListAdapter(Context context, List<Package> listData) {
+    public ExpandablePackageListAdapter(Context context, MyApplication app, List<Package> packages) {
         this._context = context;
-        this._listData = listData;
+        this.application = app;
+        this._listData = packages;
     }
 
     @Override
@@ -40,8 +47,21 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.package_list_details_layout, null);
         }
+
+        Button show_btn = (Button)convertView.findViewById(R.id.change_state);
+        show_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(_context, Change_State_Activity.class);
+                i.putExtra("packageID", child.id);
+                i.putExtra("packageCode", child.code);
+                _context.startActivity(i);
+            }
+        });
+
+
         ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + child.state);
-//        ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.date);
+        ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.deadline);
 
         return convertView;
     }

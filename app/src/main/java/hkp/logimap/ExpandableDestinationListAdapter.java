@@ -6,6 +6,7 @@ package hkp.logimap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +15,23 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<Destination> _destinations;
+    private List<Location> _destinations;
+    private MyApplication application;
 
-    public ExpandableDestinationListAdapter(Context context, List<Destination> listDestinations) {
+    public ExpandableDestinationListAdapter(Context context, MyApplication app) {
         this._context = context;
-        this._destinations = listDestinations;
+        this.application = app;
+        this._destinations = new ArrayList<>(application.current_delivery.locations.values());
     }
 
     @Override
@@ -37,15 +45,22 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final Destination child = _destinations.get(groupPosition);
+
+        final Location child = _destinations.get(groupPosition);
+        Integer _packageCounter = 0;
+
+        for(Package p : application.current_delivery.packages)
+            if(p.destination == child.id)
+                _packageCounter++;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.destination_list_details_layout, null);
         }
-        ((TextView) convertView.findViewById(R.id.DestinationStatus)).setText("State: " + child.state);
-        ((TextView) convertView.findViewById(R.id.DestinationTermin)).setText("Termin: " + child.date);
-        ((TextView) convertView.findViewById(R.id.DestinationLoad)).setText("Packages: " + child.packages.size());
+
+        ((TextView) convertView.findViewById(R.id.DestinationStatus)).setText("Name: " + child.name);
+        ((TextView) convertView.findViewById(R.id.DestinationTermin)).setText("Termin: " + child.deadline);
+        ((TextView) convertView.findViewById(R.id.DestinationLoad)).setText("Packages: " + _packageCounter);
 
         return convertView;
     }
@@ -71,25 +86,27 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, final ViewGroup parent) {
-        String headerTitle = _destinations.get(groupPosition).name;
+
+        Location header = _destinations.get(groupPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.destination_list_group_layout, null);
         }
-
         Button show_btn = (Button)convertView.findViewById(R.id.show_packages_btn);
         show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
          public void onClick(View v) {
-                Intent i = new Intent(parent.getContext(), Package_List_Activity.class);
-                i.putExtra("destination", _destinations.get(groupPosition));
-                parent.getContext().startActivity(i);
+                Intent i = new Intent(_context, Package_List_Activity.class);
+                i.putExtra("destinationID", _destinations.get(groupPosition).id);
+                _context.startActivity(i);
             }
         });
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
+        lblListHeader.setText(header.name);
+        if(header.shortDeadline)
+            lblListHeader.setTextColor(Color.parseColor("#ff0000"));
 
         return convertView;
     }

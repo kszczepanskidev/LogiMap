@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,7 +35,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        Bundle b=getIntent().getExtras();
+        String text=b.getString("Route_id");
+        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 
@@ -102,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 100, listener);
-       MapController mapController=new MapController(mMap);
+       MapController mapController=new MapController(mMap,getApplicationContext());
         mapController.ShowRoute(12);
           }
 }

@@ -1,5 +1,7 @@
 package hkp.logimap;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -12,9 +14,11 @@ import java.util.ArrayList;
  */
 public class MapController {
     public GoogleMap Map;
+    private Context context;
 
-    public MapController(GoogleMap Mapa){
+    public MapController(GoogleMap Mapa,Context cntext){
         Map=Mapa;
+        context=cntext;
     }
 
     public ArrayList<LatLng> GetWaypoints(){
@@ -29,7 +33,7 @@ public class MapController {
     public void ShowRoute(int routeid){
         String url=getDirectionsUrl(new LatLng(52.17,16.92),new LatLng(45.18,5.69),GetWaypoints());
         Map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.17,16.92), 8));
-        DownloadTask DT=new DownloadTask(Map);
+        DownloadTask DT=new DownloadTask(Map,context);
         DT.execute(url);
 
     }

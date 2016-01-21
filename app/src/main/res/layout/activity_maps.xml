@@ -5,3 +5,4 @@
     tools:context="hkp.logimap.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     tools:layout="@layout/select_dialog_item_material" />
+

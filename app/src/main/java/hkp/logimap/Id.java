@@ -15,6 +15,13 @@ public class Id extends AppCompatActivity {
         public void onClickMap(View v)
     {
         Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+        i.putExtra("Route_id","Now");
+        startActivity(i);
+    }
+
+    public void onClickHistory(View v)
+    {
+        Intent i = new Intent(getApplicationContext(), History.class);
         startActivity(i);
     }
 

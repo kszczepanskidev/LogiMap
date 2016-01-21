@@ -1,11 +1,15 @@
 package hkp.logimap;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,9 +27,11 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = DownloadTask.class.getCanonicalName();
     private GoogleMap tmap;
+    private Context context;
 
-    public DownloadTask(GoogleMap map){
+    public DownloadTask(GoogleMap map,Context cntext){
         tmap=map;
+        context=cntext;
     }
 
     private String downloadUrl(String strUrl) throws IOException {
@@ -88,6 +94,16 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
+        FileOutputStream outputStream;
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM),"test.json");
+        try {
+            outputStream = new FileOutputStream(file);
+            outputStream.write(result.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ParserTask parserTask = new ParserTask(tmap);
 
         // Invokes the thread for parsing the JSON data

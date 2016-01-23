@@ -21,7 +21,7 @@ public class Route {
 
             for(int i = 0; i < _locations.length(); ++i) {
                 JSONObject _loc = (_locations.getJSONObject(i));
-                Location _location = new Location(_loc.getJSONObject("location"));
+                Location _location = new Location(_loc.getJSONObject("location"), _loc.getInt("order"));
                 locations.put(_location.id, _location);
             }
         } catch (Exception e) {

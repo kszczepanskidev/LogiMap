@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -22,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Menu_Activity extends AppCompatActivity {
     MyApplication application;
@@ -50,8 +52,13 @@ public class Menu_Activity extends AppCompatActivity {
                     @Override
                     public void run() {
                         locationsButton.setEnabled(true);
+
                     }
                 });
+
+                //Start other threads working on delivery
+                checking_deadlines.start();
+                makePUTs.start();
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
             }
@@ -63,7 +70,9 @@ public class Menu_Activity extends AppCompatActivity {
         public void run() {
             ArrayList<Location> temp = new ArrayList<>(application.current_delivery.locations.values());
             //TODO GET FIRST UNCOMPLETED LOCATION
-                check_deadline(temp.get(0));
+            for( Location l: temp)
+                if (!l.finished)
+                    check_deadline(l);
             mHandler.postDelayed(this, INTERVAL);
         }
     });
@@ -79,10 +88,10 @@ public class Menu_Activity extends AppCompatActivity {
             long diffmin =  diff / (60 * 1000) % 60;
             long diffh =  diff / (60 * 60 * 1000) % 24;
 
-//            if(diffh <= 0 && diffmin <= 30) {
+            if(diffh <= 0 && diffmin <= 30) {
                 location.shortDeadline = true;
                 notify(location);
-//            }
+            }
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
@@ -110,6 +119,30 @@ public class Menu_Activity extends AppCompatActivity {
         mNotificationManager.notify(0, mBuilder.build());
     }
 
+    Thread makePUTs = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+                RestPut api = new RestPut(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                        new RestPut.AsyncResponse() {
+                            @Override
+                            public void processFinish(String result) {
+                            }
+                        }, application);
+
+                for (PUTRequest put : application.puts) {
+                    api.execute(put.url, put.newjson);
+
+                    application.puts.remove(put);
+                }
+                mHandler.postDelayed(this, INTERVAL);
+            }catch (Exception e) {
+                Log.i("PUT", "PUT request did not completed");
+            }
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = this;
@@ -122,7 +155,6 @@ public class Menu_Activity extends AppCompatActivity {
         setTitle("LogiMap");
 
         waitforjson.start();
-        checking_deadlines.start();
     }
 
     public void onClickMap(View v) {
@@ -132,6 +164,25 @@ public class Menu_Activity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
     }
     public void onClickHistory(View v) {
+        try {
+        SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        String newjson = "{\"km_done\":1337,\"orders_done\":15,\"pkg_delivered\":1,\"pkg_delayed\":666}";
+
+        RestPut api = new RestPut(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                new RestPut.AsyncResponse() {
+                    @Override
+                    public void processFinish(String result) { }
+                }, application);
+
+        api.execute("driverstats/1", newjson);
+
+        String test = "";
+            test = api.get(10, TimeUnit.SECONDS);
+        Log.i("TEST_PUT", test);
+        }catch (Exception e) {
+            Log.i("TEST", "notsuceeded");
+//            Log.e("ERROR", e.getMessage(), e);
+        }
     }
     public void onClickDriverStatistics(View v) {
         startActivity(new Intent(getApplicationContext(), DriverStatistics_Activity.class));

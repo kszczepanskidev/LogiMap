@@ -1,5 +1,7 @@
 package hkp.logimap;
 
+import android.app.Application;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ public class Package implements Serializable{
             this.deadline = new Time(format.parse(_package.getString("deliver_before")).getTime());
             this.state = _package.getString("status").toString();
             this.destination = _package.getInt("location");
+            Log.i("TEST", deadline.toString());
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }

@@ -107,6 +107,8 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
         lblListHeader.setText(header.name);
         if(header.shortDeadline)
             lblListHeader.setTextColor(Color.parseColor("#ff0000"));
+        else
+            lblListHeader.setTextColor(Color.parseColor("#646464"));
 
         return convertView;
     }

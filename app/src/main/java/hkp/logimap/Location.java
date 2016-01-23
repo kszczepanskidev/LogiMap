@@ -12,21 +12,35 @@ import java.sql.Time;
 public class Location {
     String name, address;
     Double latitude, longtitude;
-    Integer id;
+    Integer id, order;
     Time deadline;
-    Boolean shortDeadline;
+    Boolean shortDeadline, finished;
 
-    Location(JSONObject location) {
+    Location(JSONObject location, Integer order) {
         try {
-            shortDeadline = false;
+            this.finished = false;
+            this.shortDeadline = false;
             this.id = location.getInt("id");
             this.name = location.getString("name");
             this.address = location.getString("address");
             this.latitude = Double.parseDouble(location.getString("latitude"));
             this.longtitude = Double.parseDouble(location.getString("longitude"));
+            this.order = order;
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
+    }
 
+    public void checkPackages(MyApplication application) {
+        this.finished = true;
+
+        for(Package p : application.current_delivery.packages)
+            if (p.destination == this.id)
+                if (p.state != "3") { //TODO finished package state
+                    this.finished = false;
+                    break;
+                }
+
+        application.current_delivery.checkLocations(application);
     }
 }

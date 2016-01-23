@@ -14,6 +14,7 @@ public class Package_List_Activity extends AppCompatActivity {
     Integer destination;
     MyApplication application;
     ArrayList<Package> packages;
+    ExpandablePackageListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,13 @@ public class Package_List_Activity extends AppCompatActivity {
 
         //Expandable list of packages with details
         ExpandableListView lv = (ExpandableListView) findViewById(R.id.packages_list);
-        ExpandablePackageListAdapter adapter = new ExpandablePackageListAdapter(this, application, packages);
+        adapter = new ExpandablePackageListAdapter(this, application, packages);
         lv.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }

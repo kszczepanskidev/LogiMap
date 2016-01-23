@@ -54,6 +54,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent i = new Intent(_context, Change_State_Activity.class);
                 i.putExtra("packageID", child.id);
+                i.putExtra("locationID", child.destination);
                 i.putExtra("packageCode", child.code);
                 _context.startActivity(i);
             }

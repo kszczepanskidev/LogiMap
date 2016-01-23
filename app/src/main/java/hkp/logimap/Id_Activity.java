@@ -1,5 +1,6 @@
 package hkp.logimap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Id_Activity extends AppCompatActivity {
     MyApplication application;
+    Context context;
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
 
@@ -25,6 +27,12 @@ public class Id_Activity extends AppCompatActivity {
         preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         edit = preferences.edit();
         application = (MyApplication) getApplication();
+        this.context = this;
+
+        //DEBUG MODE
+//        edit.putBoolean("firstRun", true);
+        edit.putBoolean("deliveryInFile", false);
+        edit.commit();
 
         if (!preferences.getBoolean("firstRun", true))
             goToMenu();
@@ -81,6 +89,11 @@ public class Id_Activity extends AppCompatActivity {
                 });
 
         api.execute("driverid/");
+        try {
+            api.get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+        }
     }
 
     private Integer getCurrentDeliveryID() {
@@ -92,8 +105,13 @@ public class Id_Activity extends AppCompatActivity {
 
         try {
             getID.execute("drivers/" + preferences.getInt("driverID", -1));
+
             String result = getID.get(5, TimeUnit.SECONDS);
-            return (new JSONObject(result).getInt("current_order"));
+            Integer id = new JSONObject(result).getInt("current_order");
+            edit.putInt("deliveryID", id);
+            edit.commit();
+
+            return id;
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
             return -1;
@@ -105,7 +123,6 @@ public class Id_Activity extends AppCompatActivity {
         public void run() {
             try {
                 application.current_delivery = new Delivery(new JSONObject(new JSONloader(application).load("delivery")));
-                Log.i("TEST", "After load from file: " +  application.current_delivery.toString());
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
                 edit.putBoolean("deliveryInFile", false);
@@ -118,7 +135,6 @@ public class Id_Activity extends AppCompatActivity {
         Integer orderID;
 
         if (preferences.getBoolean("deliveryInFile", false)) {
-            Log.i("TEST", "Load from file");
             deliveryFromFile.start();
         } else {
             RestGet getDelivery = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
@@ -128,7 +144,7 @@ public class Id_Activity extends AppCompatActivity {
                             try {
                                 if (result != "ERROR") {
                                     application.current_delivery = new Delivery(new JSONObject(result));
-                                    saveDeliveryToFile(result);
+                                    application.current_delivery.saveDeliveryToFile(result, application);
                                 } else
                                     Log.i("GetOrderERROR", result);
                             } catch (Exception e) {
@@ -141,19 +157,5 @@ public class Id_Activity extends AppCompatActivity {
             if (orderID != -1)
                 getDelivery.execute("orders/" + orderID);
         }
-    }
-
-    private void saveDeliveryToFile(String json) {
-        Log.i("TEST", "Saving to file");
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("delivery.json", MODE_PRIVATE));
-            outputStreamWriter.write(json);
-            outputStreamWriter.close();
-        }
-    catch (Exception e) {
-        Log.e("ERROR", e.getMessage(), e);
-    }
-        edit.putBoolean("deliveryInFile", true);
-        edit.commit();
     }
 }

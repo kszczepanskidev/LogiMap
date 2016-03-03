@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -20,19 +22,25 @@ import java.util.concurrent.TimeUnit;
 public class Id_Activity extends AppCompatActivity {
     MyApplication application;
     Context context;
+    Handler mHandler;
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
+
+    private final static int INTERVAL = 1000 * 15; //try to get delivery every 15s
 
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         edit = preferences.edit();
         application = (MyApplication) getApplication();
         this.context = this;
+        mHandler = new Handler();
 
         //DEBUG MODE
 //        edit.putBoolean("firstRun", true);
         edit.putBoolean("deliveryInFile", false);
         edit.commit();
+        //DEBUG MODE
+
 
         if (!preferences.getBoolean("firstRun", true))
             goToMenu();
@@ -57,17 +65,17 @@ public class Id_Activity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
-        goToMenu();
     }
 
     private void goToMenu() {
-        getCurrentDelivery();
-
-        startActivity(new Intent(getApplicationContext(), Menu_Activity.class));
         try {
-            deliveryFromFile.join();
+            getDeliveryThread.start();
+
+            startActivity(new Intent(getApplicationContext(), Menu_Activity.class));
+
+            getDeliveryThread.join();
             finish();
-        } catch (Exception e) {
+        }catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
     }
@@ -80,10 +88,17 @@ public class Id_Activity extends AppCompatActivity {
                         try {
                             Integer temp = new JSONObject(result).getJSONArray("results").getJSONObject(0).getInt("id");
                             SharedPreferences.Editor edit = preferences.edit();
+                            Log.i("TEST", temp.toString());
                             edit.putInt("driverID", temp);
                             edit.commit();
+                            goToMenu();
                         } catch (Exception e) {
                             Log.e("ERROR", e.getMessage(), e);
+                            edit.putInt("driverID", -1);
+                            edit.commit();
+
+                            TextView error = (TextView) findViewById(R.id.signInError);
+                            error.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -131,7 +146,7 @@ public class Id_Activity extends AppCompatActivity {
         }
     });
 
-    private void getCurrentDelivery() {
+    private void getCurrentDelivery(final Runnable thread) {
         Integer orderID;
 
         if (preferences.getBoolean("deliveryInFile", false)) {
@@ -145,17 +160,30 @@ public class Id_Activity extends AppCompatActivity {
                                 if (result != "ERROR") {
                                     application.current_delivery = new Delivery(new JSONObject(result));
                                     application.current_delivery.saveDeliveryToFile(result, application);
-                                } else
-                                    Log.i("GetOrderERROR", result);
+                                }
+
                             } catch (Exception e) {
                                 Log.e("ERROR", e.getMessage(), e);
                             }
                         }
                     });
-            orderID = getCurrentDeliveryID();
+                try {
+                    orderID = getCurrentDeliveryID();
 
-            if (orderID != -1)
-                getDelivery.execute("orders/" + orderID);
+                    if (orderID != -1)
+                        getDelivery.execute("orders/" + orderID);
+                    else
+                        throw new Exception();
+                } catch (Exception e) {
+                    mHandler.postDelayed(thread, INTERVAL);
+                }
         }
     }
+
+    Thread getDeliveryThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+                getCurrentDelivery(this);
+        }
+    });
 }

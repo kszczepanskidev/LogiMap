@@ -15,6 +15,18 @@
         android:textSize="50dp"
         android:paddingTop="50dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign in error. Check if You provided correct data and You&apos;re connected to internet."
+        android:id="@+id/signInError"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ff0000"
+        android:textStyle="bold" />
+
     <EditText
         android:layout_width="290dp"
         android:layout_height="wrap_content"

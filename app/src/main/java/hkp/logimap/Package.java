@@ -1,7 +1,5 @@
 package hkp.logimap;
 
-import android.app.Application;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONObject;

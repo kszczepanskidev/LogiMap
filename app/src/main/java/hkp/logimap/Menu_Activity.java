@@ -31,7 +31,8 @@ public class Menu_Activity extends AppCompatActivity {
     Handler mHandler;
     String hour, minute;
 
-    private final static int INTERVAL = 1000 * 60 * 5;
+    private final static int INTERVAL = 1000 * 60 * 5; //check deadlines every 5min
+    private final static int delivery_INTERVAL = 1000 * 10; //check if delivery is ready every 10s
 
     Thread waitforjson = new Thread(new Runnable() {
         @Override
@@ -39,29 +40,31 @@ public class Menu_Activity extends AppCompatActivity {
             final Button mapButton = (Button) findViewById(R.id.route_button);
             final Button locationsButton = (Button) findViewById(R.id.destinations_button);
 
-            while(application.current_delivery == null);
-            try {
-                SystemClock.sleep(1000);
-                mapButton.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mapButton.setEnabled(true);
-                    }
-                });
-                locationsButton.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        locationsButton.setEnabled(true);
+            if(application.current_delivery != null) {
+                try {
+                    SystemClock.sleep(1000);
+                    mapButton.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mapButton.setEnabled(true);
+                        }
+                    });
+                    locationsButton.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            locationsButton.setEnabled(true);
 
-                    }
-                });
+                        }
+                    });
 
-                //Start other threads working on delivery
-                checking_deadlines.start();
-                makePUTs.start();
-            } catch (Exception e) {
-                Log.e("ERROR", e.getMessage(), e);
-            }
+                    //Start other threads working on delivery
+                    checking_deadlines.start();
+                    makePUTs.start();
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage(), e);
+                }
+            } else
+                mHandler.postDelayed(this, delivery_INTERVAL);
         }
     });
 

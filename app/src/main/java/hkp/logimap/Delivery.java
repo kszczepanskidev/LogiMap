@@ -20,11 +20,10 @@ public class Delivery implements Serializable{
     Driver driver;
     Vehicle vehicle;
     Route route;
-    Integer state;
+    Integer id, state;
     ArrayList<Package> packages;
     HashMap<Integer, Location> locations;
     Boolean finished;
-    Integer id;
 
 
     Delivery(JSONObject delivery) {
@@ -137,13 +136,14 @@ public class Delivery implements Serializable{
                     packages_json.put(package_json);
                 }
             delivery_json.put("package", packages_json);
+            delivery_json.put("status", state);
 
             return delivery_json.toString();
         }catch (Exception e) {
             Log.e("ERROR", e.getMessage(),e);
             return null;
         }
-    }
+    } //TODO? divide jsonserialize into classes
 
 
     public void saveDeliveryToFile(String json, Context context) {

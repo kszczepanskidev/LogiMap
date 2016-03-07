@@ -28,7 +28,7 @@ public class Package_List_Activity extends AppCompatActivity {
         setContentView(R.layout.package_list_layout);
         setTitle(application.current_delivery.locations.get(destination).name);
 
-        //Prepera packages for this destination
+        //Prepare packages for this destination
         for(Package p : application.current_delivery.packages)
                 if(p.destination == destination)
                     packages.add(p);

@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
@@ -15,15 +14,12 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class Menu_Activity extends AppCompatActivity {
     MyApplication application;
@@ -31,8 +27,9 @@ public class Menu_Activity extends AppCompatActivity {
     Handler mHandler;
     String hour, minute;
 
-    private final static int INTERVAL = 1000 * 60 * 5; //check deadlines every 5min
-    private final static int delivery_INTERVAL = 1000 * 10; //check if delivery is ready every 10s
+    private final static int INTERVAL = 1000 * 60 * 5;     //check deadlines every 5min
+    private final static int put_INTERVAL = 1000 * 60;     //make PUT requests every 1min
+    private final static int delivery_INTERVAL = 1000 * 1; //check if delivery is ready every 1s
 
     Thread waitforjson = new Thread(new Runnable() {
         @Override
@@ -72,10 +69,12 @@ public class Menu_Activity extends AppCompatActivity {
         @Override
         public void run() {
             ArrayList<Location> temp = new ArrayList<>(application.current_delivery.locations.values());
-            //TODO GET FIRST UNCOMPLETED LOCATION
+            //TODO GET FIRST UNCOMPLETED LOCATION (CHECK IF WORK?)
             for( Location l: temp)
-                if (!l.finished)
+                if (!l.finished) {
                     check_deadline(l);
+                    break;
+                }
             mHandler.postDelayed(this, INTERVAL);
         }
     });
@@ -139,9 +138,9 @@ public class Menu_Activity extends AppCompatActivity {
 
                     application.puts.remove(put);
                 }
-                mHandler.postDelayed(this, INTERVAL);
+                mHandler.postDelayed(this, put_INTERVAL);
             }catch (Exception e) {
-                Log.i("PUT", "PUT request did not completed");
+                Log.e("PUT", "PUT request failed");
             }
         }
     });
@@ -167,25 +166,7 @@ public class Menu_Activity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
     }
     public void onClickHistory(View v) {
-        try {
-        SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        String newjson = "{\"km_done\":1337,\"orders_done\":15,\"pkg_delivered\":1,\"pkg_delayed\":666}";
 
-        RestPut api = new RestPut(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                new RestPut.AsyncResponse() {
-                    @Override
-                    public void processFinish(String result) { }
-                }, application);
-
-        api.execute("driverstats/1", newjson);
-
-        String test = "";
-            test = api.get(10, TimeUnit.SECONDS);
-        Log.i("TEST_PUT", test);
-        }catch (Exception e) {
-            Log.i("TEST", "notsuceeded");
-//            Log.e("ERROR", e.getMessage(), e);
-        }
     }
     public void onClickDriverStatistics(View v) {
         startActivity(new Intent(getApplicationContext(), DriverStatistics_Activity.class));

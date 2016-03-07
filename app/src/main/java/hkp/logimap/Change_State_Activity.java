@@ -1,6 +1,5 @@
 package hkp.logimap;
 
-import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import org.json.JSONObject;
@@ -63,9 +61,9 @@ public class Change_State_Activity extends AppCompatActivity {
         JSONObject package_json = new JSONObject();
 
         try {
-            package_json.put("id", p.id);;
-            package_json.put("code", p.code);;
-            package_json.put("status", status);;
+            package_json.put("id", p.id);
+            package_json.put("code", p.code);
+            package_json.put("status", status);
             package_json.put("location", p.destination);
             package_json.put("deliver_before", p.deadline.toString().substring(0,5));
         }catch (Exception e) {

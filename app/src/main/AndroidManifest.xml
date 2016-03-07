@@ -23,10 +23,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Menu_Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -59,7 +59,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="hkp.logimap.Id_Activity" />
+                android:value=".Menu_Activity" />
         </activity>
         <activity
             android:name=".Package_List_Activity"
@@ -73,15 +73,23 @@
             android:label="@string/title_activity_package__list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Id_Activity" />
+                android:value=".Package_List_Activity" />
         </activity>
         <activity
             android:name=".DriverStatistics_Activity"
             android:label="@string/title_activity_driver_statistics">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Menu_Activity" />
+        </activity>
+        <activity
+            android:name=".New_Delivery_Activity"
+            android:label="@string/title_activity_driver_statistics">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Id_Activity" />
         </activity>
+
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

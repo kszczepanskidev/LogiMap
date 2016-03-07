@@ -96,7 +96,7 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
         Button show_btn = (Button)convertView.findViewById(R.id.show_packages_btn);
         show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-         public void onClick(View v) {
+            public void onClick(View v) {
                 Intent i = new Intent(_context, Package_List_Activity.class);
                 i.putExtra("destinationID", _destinations.get(groupPosition).id);
                 _context.startActivity(i);
@@ -107,6 +107,8 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
         lblListHeader.setText(header.name);
         if(header.shortDeadline)
             lblListHeader.setTextColor(Color.parseColor("#ff0000"));
+        else if(header.finished)
+            lblListHeader.setTextColor(Color.parseColor("#00ff00"));
         else
             lblListHeader.setTextColor(Color.parseColor("#646464"));
 

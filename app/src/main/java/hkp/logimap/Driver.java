@@ -14,8 +14,6 @@ public class Driver {
     Integer id;
     String name, surname;
 
-//    ArrayList<String> categories;
-
     Driver(JSONObject driver) {
         try {
             this.name = driver.getString("name");
@@ -23,6 +21,5 @@ public class Driver {
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
-        //TODO: json categories to arraylist
     }
 }

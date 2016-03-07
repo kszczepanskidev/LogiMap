@@ -26,7 +26,7 @@ public class Id_Activity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
 
-    private final static int INTERVAL = 1000 * 15; //try to get delivery every 15s
+    private final static int INTERVAL = 1000 * 30; //try to get delivery every 30s
 
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
@@ -73,7 +73,6 @@ public class Id_Activity extends AppCompatActivity {
 
             startActivity(new Intent(getApplicationContext(), Menu_Activity.class));
 
-            getDeliveryThread.join();
             finish();
         }catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
@@ -95,10 +94,12 @@ public class Id_Activity extends AppCompatActivity {
                         } catch (Exception e) {
                             Log.e("ERROR", e.getMessage(), e);
                             edit.putInt("driverID", -1);
-                            edit.commit();
 
+                            //show error about incorrect data or no internet connection
                             TextView error = (TextView) findViewById(R.id.signInError);
                             error.setVisibility(View.VISIBLE);
+                            edit.putBoolean("firstRun", true);
+                            edit.commit();
                         }
                     }
                 });
@@ -160,8 +161,12 @@ public class Id_Activity extends AppCompatActivity {
                                 if (result != "ERROR") {
                                     application.current_delivery = new Delivery(new JSONObject(result));
                                     application.current_delivery.saveDeliveryToFile(result, application);
-                                }
 
+                                    //If delivery is not yet accepted then popout
+                                    if(application.current_delivery.state == 1) {//TODO notaccepted state number
+                                        startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
+                                    }
+                                }
                             } catch (Exception e) {
                                 Log.e("ERROR", e.getMessage(), e);
                             }
@@ -170,9 +175,9 @@ public class Id_Activity extends AppCompatActivity {
                 try {
                     orderID = getCurrentDeliveryID();
 
-                    if (orderID != -1)
+                    if (orderID > 0)
                         getDelivery.execute("orders/" + orderID);
-                    else
+                    else if (orderID <=0 || application.current_delivery.state == 4)//TODO declined delivery
                         throw new Exception();
                 } catch (Exception e) {
                     mHandler.postDelayed(thread, INTERVAL);
@@ -183,7 +188,7 @@ public class Id_Activity extends AppCompatActivity {
     Thread getDeliveryThread = new Thread(new Runnable() {
         @Override
         public void run() {
-                getCurrentDelivery(this);
+            getCurrentDelivery(this);
         }
     });
 }

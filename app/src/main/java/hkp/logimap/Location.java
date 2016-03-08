@@ -41,6 +41,6 @@ public class Location {
                     break;
                 }
 
-        application.current_delivery.checkLocations(application);
+        application.current_delivery.checkLocations();
     }
 }

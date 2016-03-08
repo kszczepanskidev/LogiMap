@@ -1,5 +1,12 @@
 package hkp.logimap;
 
+//TODO SUMUP
+// -split delivery json into classes
+// -test deadlines check
+// -behaviour after clicking finish delivery button
+// -delivery&packages states numbers
+// -color package names if finished
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;

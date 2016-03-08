@@ -68,7 +68,7 @@ public class Delivery implements Serializable{
         return  null;
     }
 
-    public void checkLocations(MyApplication application) {
+    public void checkLocations() {
         this.finished = true;
 
         for(Location l : this.locations.values())
@@ -76,15 +76,15 @@ public class Delivery implements Serializable{
                 this.finished = false;
                 break;
             }
+    }
 
-        if(this.finished) {
-            this.state = 30; //TODO finished delivery state
+    public void finish(MyApplication application) {
+        this.state = 30; //TODO finished delivery state
 
-            String newjson = getJSON();
-            application.puts.add(0, new PUTRequest("orders/" + this.id, newjson));
+        String newjson = getJSON();
+        application.puts.add(0, new PUTRequest("orders/" + this.id, newjson));
 
-            saveDeliveryToFile("", application);
-        }
+        saveDeliveryToFile("delivery" + this.id, application);
     }
 
     public String getJSON() {

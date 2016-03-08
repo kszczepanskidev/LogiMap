@@ -73,7 +73,7 @@ public class Change_State_Activity extends AppCompatActivity {
 
         p.state = status.toString();
 
-        application.current_delivery.saveDeliveryToFile("", this);
+        application.current_delivery.saveDeliveryToFile("delivery" + application.current_delivery.id, this);
 
         this.finish();
     }

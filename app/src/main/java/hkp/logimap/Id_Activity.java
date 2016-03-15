@@ -26,8 +26,6 @@ public class Id_Activity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
 
-    private final static int INTERVAL = 1000 * 30; //try to get delivery every 30s
-
     protected void onCreate(Bundle savedInstanceState) {
         preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         edit = preferences.edit();
@@ -85,7 +83,6 @@ public class Id_Activity extends AppCompatActivity {
                         try {
                             Integer temp = new JSONObject(result).getJSONArray("results").getJSONObject(0).getInt("id");
                             SharedPreferences.Editor edit = preferences.edit();
-                            Log.i("TEST", temp.toString());
                             edit.putInt("driverID", temp);
                             edit.commit();
                             goToMenu();

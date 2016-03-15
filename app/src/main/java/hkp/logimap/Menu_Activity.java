@@ -5,7 +5,9 @@ package hkp.logimap;
 // -test deadlines check
 // -behaviour after clicking finish delivery button
 // -delivery&packages states numbers
-// -color package names if finished
+// -color package icon if finished
+// -correct login error msg
+
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -38,25 +40,33 @@ public class Menu_Activity extends AppCompatActivity {
     Handler mHandler;
     String hour, minute;
 
-    private final static int INTERVAL = 1000 * 60 * 5;     //check deadlines every 5min
-    private final static int put_INTERVAL = 1000 * 60;     //make PUT requests every 1min
-    private final static int delivery_INTERVAL = 1000 * 1; //check if delivery is ready every 1s
+    private final static int INTERVAL = 1000 * 60 * 5;      //check deadlines every 5min
+    private final static int put_INTERVAL = 1000 * 60;      //make PUT requests every 1min
+    private final static int delivery_INTERVAL = 1000 * 30; //try to get delivery every 30s
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         application = (MyApplication) getApplication();
         preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         edit = preferences.edit();
         mHandler = new Handler();
-        context = this;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle("LogiMap");
-        Log.i("TEST", "4");
 
+        //Try to get delivery
         getDelivery();
+    }
+
+    @Override
+    protected void onResume() {
+        if(application.current_delivery == null && !deliveryFromServer.isAlive())
+            getDelivery();
+
+        super.onResume();
     }
 
     public void onClickMap(View v) {
@@ -73,7 +83,7 @@ public class Menu_Activity extends AppCompatActivity {
     }
 
 
-    //Server connection threads
+    //Main application threads
     private Thread deliveryFromFile = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -86,8 +96,6 @@ public class Menu_Activity extends AppCompatActivity {
 
                 //If reading from file failed try to download from server
                 deliveryFromServer.start();
-            } finally {
-                finish();
             }
         }
     });
@@ -111,7 +119,7 @@ public class Menu_Activity extends AppCompatActivity {
     }
 
     private Thread deliveryFromServer = new Thread(new Runnable() {
-
+        final Runnable thread = this;
         @Override
         public void run() {
             RestGet getDelivery = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
@@ -120,17 +128,22 @@ public class Menu_Activity extends AppCompatActivity {
                         public void processFinish(String result) {
                             try {
                                 if (result != "ERROR") {
-                                    application.current_delivery = new Delivery(new JSONObject(result));
-                                    application.current_delivery.saveDeliveryToFile(result, application);
+                                    JSONObject delivery = new JSONObject(result);
+                                    if(delivery.getInt("id") != preferences.getInt("prevDeliveryID", -1)) {
+                                        application.current_delivery = new Delivery(delivery);
+                                        application.current_delivery.saveDeliveryToFile(result, application);
 
-                                    //If delivery is not yet accepted then popout
-                                    if(application.current_delivery.state == 1) {//TODO notaccepted state number
-                                        startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
-                                    }
-                                    activateMenu();
+                                        //If delivery is not yet accepted then popout
+                                        if (application.current_delivery.state == 1) {//TODO notaccepted state number
+                                            startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
+                                        }
+                                        activateMenu();
+                                    } else
+                                        throw new Exception();
                                 }
                             } catch (Exception e) {
                                 Log.e("ERROR", e.getMessage(), e);
+                                mHandler.postDelayed(thread, INTERVAL);
                             }
                         }
                     });
@@ -149,11 +162,11 @@ public class Menu_Activity extends AppCompatActivity {
                 Log.e("ERROR", e.getMessage(), e);
                 mHandler.postDelayed(this, delivery_INTERVAL);
             }
-
         }
     });
 
     private void getDelivery() {
+        deactivateMenu();
             if (preferences.getBoolean("deliveryInFile", false)) {
                 deliveryFromFile.start();
             } else {
@@ -186,6 +199,24 @@ public class Menu_Activity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage(), e);
                 }
+        }
+
+    private void deactivateMenu() {
+        final Button mapButton = (Button) findViewById(R.id.route_button);
+        final Button locationsButton = (Button) findViewById(R.id.destinations_button);
+
+        mapButton.post(new Runnable() {
+                @Override
+                public void run() {
+                    mapButton.setEnabled(false);
+                }
+            });
+        locationsButton.post(new Runnable() {
+            @Override
+            public void run() {
+                locationsButton.setEnabled(false);
+            }
+            });
         }
 
     Thread checking_deadlines = new Thread(new Runnable() {

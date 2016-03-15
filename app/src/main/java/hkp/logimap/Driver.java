@@ -22,4 +22,16 @@ public class Driver {
             Log.e("ERROR", e.getMessage(), e);
         }
     }
+
+    public JSONObject getJSON() {
+        JSONObject driver_json = new JSONObject();
+        try {
+            driver_json.put("name", this.name);
+            driver_json.put("surname", this.surname);
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+        } finally {
+            return driver_json;
+        }
+    }
 }

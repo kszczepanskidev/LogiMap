@@ -20,4 +20,18 @@ public class Vehicle {
             Log.e("ERROR", e.getMessage(), e);
         }
     }
+
+    public JSONObject getJSON() {
+        JSONObject vehicle_json = new JSONObject();
+        try {
+            vehicle_json.put("reg_number", this.reg_number);
+            vehicle_json.put("brand", this.brand);
+            vehicle_json.put("model", this.model);
+            vehicle_json.put("category", this.category);
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+        } finally {
+            return vehicle_json;
+        }
+    }
 }

@@ -19,7 +19,6 @@ public class Change_State_Activity extends AppCompatActivity {
     SharedPreferences preferences;
 
     ArrayAdapter<String> adapter;
-    ArrayList<String> states;
 
     Integer packageID, locationID;
 
@@ -36,15 +35,12 @@ public class Change_State_Activity extends AppCompatActivity {
         setTitle(i.getStringExtra("packageCode"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        states = new ArrayList<>();
-        states.add("a");states.add("b");states.add("c");
-
         //States list
         ListView lv = (ListView) findViewById(R.id.state_list);
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
-                states);
+                application.package_states);
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -56,7 +52,7 @@ public class Change_State_Activity extends AppCompatActivity {
         });
     }
 
-    public void updateStatus(Integer status) { //TODO finished package state
+    public void updateStatus(Integer status) {
         Package p = application.current_delivery.getPackage(packageID);
         JSONObject package_json = new JSONObject();
 
@@ -71,9 +67,9 @@ public class Change_State_Activity extends AppCompatActivity {
         }
         application.puts.add(0, new PUTRequest("packages/" + packageID, package_json.toString()));
 
-        p.state = status.toString();
+        p.state = status;
 
-        application.current_delivery.saveDeliveryToFile("delivery" + application.current_delivery.id, this);
+        application.current_delivery.saveDeliveryToFile("", "delivery" + application.current_delivery.id, this);
 
         this.finish();
     }

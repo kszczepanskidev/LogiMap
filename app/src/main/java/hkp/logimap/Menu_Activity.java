@@ -3,7 +3,6 @@ package hkp.logimap;
 //TODO SUMUP
 // -split delivery json into classes
 // -test deadlines check
-// -behaviour after clicking finish delivery button
 // -delivery&packages states numbers
 // -color package icon if finished
 // -correct login error msg
@@ -131,7 +130,7 @@ public class Menu_Activity extends AppCompatActivity {
                                     JSONObject delivery = new JSONObject(result);
                                     if(delivery.getInt("id") != preferences.getInt("prevDeliveryID", -1)) {
                                         application.current_delivery = new Delivery(delivery);
-                                        application.current_delivery.saveDeliveryToFile(result, application);
+                                        application.current_delivery.saveDeliveryToFile(result,"", application);
 
                                         //If delivery is not yet accepted then popout
                                         if (application.current_delivery.state == 1) {//TODO notaccepted state number

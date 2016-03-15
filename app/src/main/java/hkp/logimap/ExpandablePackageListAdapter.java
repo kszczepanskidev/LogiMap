@@ -61,7 +61,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
         });
 
 
-        ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + child.state);
+        ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + application.package_states.get(child.state - 1));
         ((TextView) convertView.findViewById(R.id.PackageTermin)).setText("Deadline: " + child.deadline);
 
         return convertView;

@@ -6,6 +6,8 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.sql.Time;
@@ -79,62 +81,25 @@ public class Delivery implements Serializable{
     }
 
     public void finish(MyApplication application) {
-        this.state = 30; //TODO finished delivery state
+        this.state = 3;
 
-        String newjson = getJSON();
-        application.puts.add(0, new PUTRequest("orders/" + this.id, newjson));
+        String new_json = getJSON();
+        application.puts.add(0, new PUTRequest("orders/" + this.id, new_json));
 
-        saveDeliveryToFile("delivery" + this.id, application);
+        saveDeliveryToFile("", "delivery" + this.id, application);
     }
 
     public String getJSON() {
         try {
             JSONObject delivery_json = new JSONObject();
+
             delivery_json.put("id", this.id);
-
-                JSONObject driver_json = new JSONObject();
-                driver_json.put("name", this.driver.name);
-                driver_json.put("surname", this.driver.surname);
-            delivery_json.put("driver", driver_json);
-
-                JSONObject vehicle_json = new JSONObject();
-                vehicle_json.put("reg_number", this.vehicle.reg_number);
-                vehicle_json.put("brand", this.vehicle.brand);
-                vehicle_json.put("model", this.vehicle.model);
-                vehicle_json.put("category", this.vehicle.category);
-            delivery_json.put("vehicle", vehicle_json);
-
-                JSONObject route_json = new JSONObject();
-                route_json.put("length", this.route.length);
-                    JSONArray route_locations_json = new JSONArray();
-                    for(Location l : this.locations.values()) {
-                        JSONObject locations_json = new JSONObject();
-                        locations_json.put("order", l.order);
-
-                        JSONObject location_json = new JSONObject();
-                        location_json.put("id", l.id);
-                        location_json.put("name", l.name);
-                        location_json.put("address", l.address);
-                        location_json.put("latitude", l.latitude);
-                        location_json.put("longitude", l.longtitude);
-                        locations_json.put("location", location_json);
-
-                        route_locations_json.put(locations_json);
-                    }
-            route_json.put("locations", route_locations_json);
-            delivery_json.put("route", route_json);
-
+            delivery_json.put("driver", this.driver.getJSON());
+            delivery_json.put("vehicle", this.vehicle.getJSON());
+            delivery_json.put("route", route.getJSON(this.locations.values()));
                 JSONArray packages_json = new JSONArray();
-                for(Package p : this.packages) {
-                    JSONObject package_json = new JSONObject();
-                    package_json.put("id", p.id);
-                    package_json.put("code", p.code);
-                    package_json.put("status", p.state);
-                    package_json.put("location", p.destination);
-                    package_json.put("deliver_before", p.deadline.toString().substring(0,5));
-
-                    packages_json.put(package_json);
-                }
+                for(Package p : this.packages)
+                    packages_json.put(p.getJSON());
             delivery_json.put("package", packages_json);
             delivery_json.put("status", state);
 
@@ -143,14 +108,16 @@ public class Delivery implements Serializable{
             Log.e("ERROR", e.getMessage(),e);
             return null;
         }
-    } //TODO? divide jsonserialize into classes
+    }
 
+    public void saveDeliveryToFile(String json, String filename, Context context) {
+        if(filename=="")
+            filename = "delivery.json";
 
-    public void saveDeliveryToFile(String json, Context context) {
-        if(json == "")
+        if(json=="")
             json = getJSON();
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("delivery.json", context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, context.MODE_PRIVATE));
             outputStreamWriter.write(json);
             outputStreamWriter.close();
         }

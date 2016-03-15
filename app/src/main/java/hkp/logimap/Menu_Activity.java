@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,14 +21,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONObject;
+
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class Menu_Activity extends AppCompatActivity {
     MyApplication application;
+    SharedPreferences preferences;
+    SharedPreferences.Editor edit;
     Context context;
     Handler mHandler;
     String hour, minute;
@@ -38,15 +42,130 @@ public class Menu_Activity extends AppCompatActivity {
     private final static int put_INTERVAL = 1000 * 60;     //make PUT requests every 1min
     private final static int delivery_INTERVAL = 1000 * 1; //check if delivery is ready every 1s
 
-    Thread waitforjson = new Thread(new Runnable() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        application = (MyApplication) getApplication();
+        preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        edit = preferences.edit();
+        mHandler = new Handler();
+        context = this;
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.menu_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        setTitle("LogiMap");
+        Log.i("TEST", "4");
+
+        getDelivery();
+    }
+
+    public void onClickMap(View v) {
+        startActivity(new Intent(getApplicationContext(), Maps_Activity.class));
+    }
+    public void onClickDestinations(View v) {
+        startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
+    }
+    public void onClickHistory(View v) {
+
+    }
+    public void onClickDriverStatistics(View v) {
+        startActivity(new Intent(getApplicationContext(), DriverStatistics_Activity.class));
+    }
+
+
+    //Server connection threads
+    private Thread deliveryFromFile = new Thread(new Runnable() {
         @Override
         public void run() {
+            try {
+                application.current_delivery = new Delivery(new JSONObject(new JSONloader(application).load("delivery")));
+                activateMenu();
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+                edit.putBoolean("deliveryInFile", false); edit.commit();
+
+                //If reading from file failed try to download from server
+                deliveryFromServer.start();
+            } finally {
+                finish();
+            }
+        }
+    });
+
+    private Integer getCurrentDeliveryID() {
+        RestGet getID = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                new RestGet.AsyncResponse() {
+                    @Override
+                    public void processFinish(String result) {}
+                });
+
+        try {
+            getID.execute("drivers/" + preferences.getInt("driverID", -1));
+            String result = getID.get(1, TimeUnit.MINUTES);
+
+            return new JSONObject(result).getInt("current_order");
+        }catch(Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+            return -1;
+        }
+    }
+
+    private Thread deliveryFromServer = new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+            RestGet getDelivery = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                    new RestGet.AsyncResponse() {
+                        @Override
+                        public void processFinish(String result) {
+                            try {
+                                if (result != "ERROR") {
+                                    application.current_delivery = new Delivery(new JSONObject(result));
+                                    application.current_delivery.saveDeliveryToFile(result, application);
+
+                                    //If delivery is not yet accepted then popout
+                                    if(application.current_delivery.state == 1) {//TODO notaccepted state number
+                                        startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
+                                    }
+                                    activateMenu();
+                                }
+                            } catch (Exception e) {
+                                Log.e("ERROR", e.getMessage(), e);
+                            }
+                        }
+                    });
+            try {
+                Integer orderID = getCurrentDeliveryID();
+
+                if (orderID > 0) {
+                    edit.putInt("deliveryID", orderID);
+                    edit.commit();
+
+                    getDelivery.execute("orders/" + orderID);
+                }
+                else
+                    throw new Exception();
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+                mHandler.postDelayed(this, delivery_INTERVAL);
+            }
+
+        }
+    });
+
+    private void getDelivery() {
+            if (preferences.getBoolean("deliveryInFile", false)) {
+                deliveryFromFile.start();
+            } else {
+                deliveryFromServer.start();
+            }
+    }
+
+    private void activateMenu() {
             final Button mapButton = (Button) findViewById(R.id.route_button);
             final Button locationsButton = (Button) findViewById(R.id.destinations_button);
 
-            if(application.current_delivery != null) {
                 try {
-                    SystemClock.sleep(1000);
                     mapButton.post(new Runnable() {
                         @Override
                         public void run() {
@@ -67,16 +186,13 @@ public class Menu_Activity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage(), e);
                 }
-            } else
-                mHandler.postDelayed(this, delivery_INTERVAL);
         }
-    });
 
     Thread checking_deadlines = new Thread(new Runnable() {
         @Override
         public void run() {
             ArrayList<Location> temp = new ArrayList<>(application.current_delivery.locations.values());
-            //TODO GET FIRST UNCOMPLETED LOCATION (CHECK IF WORK?)
+            //TODO: CHECK IF IT CHECKS ONLY FIRST UNFINISHED
             for( Location l: temp)
                 if (!l.finished) {
                     check_deadline(l);
@@ -108,11 +224,11 @@ public class Menu_Activity extends AppCompatActivity {
 
     private void notify(Location location) {
         NotificationCompat.Builder mBuilder =
-            new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                    .setContentTitle("DEADLINE")
-                    .setContentText(location.name + ":" + location.deadline)
-                    .setAutoCancel(true);
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                        .setContentTitle("DEADLINE")
+                        .setContentText(location.name + ":" + location.deadline)
+                        .setAutoCancel(true);
 
         Intent resultIntent = new Intent(this, Destinations_List_Activity.class);
 
@@ -151,31 +267,4 @@ public class Menu_Activity extends AppCompatActivity {
             }
         }
     });
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        context = this;
-        application = (MyApplication) getApplication();
-        mHandler = new Handler();
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu_layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        setTitle("LogiMap");
-
-        waitforjson.start();
-    }
-
-    public void onClickMap(View v) {
-        startActivity(new Intent(getApplicationContext(), Maps_Activity.class));
-    }
-    public void onClickDestinations(View v) {
-        startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
-    }
-    public void onClickHistory(View v) {
-
-    }
-    public void onClickDriverStatistics(View v) {
-        startActivity(new Intent(getApplicationContext(), DriverStatistics_Activity.class));
-    }
 }

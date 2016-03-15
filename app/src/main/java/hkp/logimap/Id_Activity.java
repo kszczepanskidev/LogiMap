@@ -69,8 +69,6 @@ public class Id_Activity extends AppCompatActivity {
 
     private void goToMenu() {
         try {
-            getDeliveryThread.start();
-
             startActivity(new Intent(getApplicationContext(), Menu_Activity.class));
 
             finish();
@@ -112,83 +110,5 @@ public class Id_Activity extends AppCompatActivity {
         }
     }
 
-    private Integer getCurrentDeliveryID() {
-        RestGet getID = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                new RestGet.AsyncResponse() {
-                    @Override
-                    public void processFinish(String result) {}
-                });
 
-        try {
-            getID.execute("drivers/" + preferences.getInt("driverID", -1));
-
-            String result = getID.get(5, TimeUnit.SECONDS);
-            Integer id = new JSONObject(result).getInt("current_order");
-            edit.putInt("deliveryID", id);
-            edit.commit();
-
-            return id;
-        } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
-            return -1;
-        }
-    }
-
-    Thread deliveryFromFile = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                application.current_delivery = new Delivery(new JSONObject(new JSONloader(application).load("delivery")));
-            } catch (Exception e) {
-                Log.e("ERROR", e.getMessage(), e);
-                edit.putBoolean("deliveryInFile", false);
-                edit.commit();
-            }
-        }
-    });
-
-    private void getCurrentDelivery(final Runnable thread) {
-        Integer orderID;
-
-        if (preferences.getBoolean("deliveryInFile", false)) {
-            deliveryFromFile.start();
-        } else {
-            RestGet getDelivery = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                    new RestGet.AsyncResponse() {
-                        @Override
-                        public void processFinish(String result) {
-                            try {
-                                if (result != "ERROR") {
-                                    application.current_delivery = new Delivery(new JSONObject(result));
-                                    application.current_delivery.saveDeliveryToFile(result, application);
-
-                                    //If delivery is not yet accepted then popout
-                                    if(application.current_delivery.state == 1) {//TODO notaccepted state number
-                                        startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
-                                    }
-                                }
-                            } catch (Exception e) {
-                                Log.e("ERROR", e.getMessage(), e);
-                            }
-                        }
-                    });
-                try {
-                    orderID = getCurrentDeliveryID();
-
-                    if (orderID > 0)
-                        getDelivery.execute("orders/" + orderID);
-                    else if (orderID <=0 || application.current_delivery.state == 4)//TODO declined delivery
-                        throw new Exception();
-                } catch (Exception e) {
-                    mHandler.postDelayed(thread, INTERVAL);
-                }
-        }
-    }
-
-    Thread getDeliveryThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            getCurrentDelivery(this);
-        }
-    });
 }

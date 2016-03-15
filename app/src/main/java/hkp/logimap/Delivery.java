@@ -84,7 +84,7 @@ public class Delivery implements Serializable{
         this.state = 3;
 
         String new_json = getJSON();
-        application.puts.add(0, new PUTRequest("orders/" + this.id, new_json));
+        application.puts.add(new PUTRequest("orders/" + this.id, new_json));
 
         saveDeliveryToFile("", "delivery" + this.id, application);
     }

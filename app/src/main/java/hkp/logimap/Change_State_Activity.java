@@ -65,8 +65,7 @@ public class Change_State_Activity extends AppCompatActivity {
         }catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
-        application.puts.add(0, new PUTRequest("packages/" + packageID, package_json.toString()));
-
+        application.puts.add(new PUTRequest("packages/" + packageID, package_json.toString()));
         p.state = status;
 
         application.current_delivery.saveDeliveryToFile("", "delivery" + application.current_delivery.id, this);

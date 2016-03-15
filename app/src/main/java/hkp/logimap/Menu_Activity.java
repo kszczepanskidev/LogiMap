@@ -49,7 +49,8 @@ public class Menu_Activity extends AppCompatActivity {
         setTitle("LogiMap");
 
         //Try to get delivery
-        getDelivery();
+        if(application.current_delivery == null && !deliveryFromServer.isAlive())
+            getDelivery();
     }
 
     @Override
@@ -283,9 +284,10 @@ public class Menu_Activity extends AppCompatActivity {
 
                     application.puts.remove(put);
                 }
-                mHandler.postDelayed(this, put_INTERVAL);
             }catch (Exception e) {
                 Log.e("PUT", "PUT request failed");
+            } finally {
+                mHandler.postDelayed(this, put_INTERVAL);
             }
         }
     });

@@ -32,11 +32,11 @@ public class New_Delivery_Activity extends AppCompatActivity {
     }
 
     public void clickAccept(View v){
-        application.current_delivery.state = 2; //TODO accepted delivery state no.
+        application.current_delivery.state = 2;
         updateDelivery();
     }
     public void clickDecline(View v){
-        application.current_delivery.state = 4; //TODO declined delivery state no.
+        application.current_delivery.state = 4;
         updateDelivery();
     }
 

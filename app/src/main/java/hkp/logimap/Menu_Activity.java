@@ -1,13 +1,5 @@
 package hkp.logimap;
 
-//TODO SUMUP
-// -split delivery json into classes
-// -test deadlines check
-// -delivery&packages states numbers
-// -color package icon if finished
-// -correct login error msg
-
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -133,7 +125,7 @@ public class Menu_Activity extends AppCompatActivity {
                                         application.current_delivery.saveDeliveryToFile(result,"", application);
 
                                         //If delivery is not yet accepted then popout
-                                        if (application.current_delivery.state == 1) {//TODO notaccepted state number
+                                        if (application.current_delivery.state == 1) {
                                             startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
                                         }
                                         activateMenu();

@@ -36,7 +36,7 @@ public class Location {
 
         for(Package p : application.current_delivery.packages)
             if (p.destination == this.id)
-                if (p.state != 2) { //TODO finished package state
+                if (p.state != 2) {
                     this.finished = false;
                     break;
                 }

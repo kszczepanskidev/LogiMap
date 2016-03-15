@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +23,20 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<Package> _listData;
     private MyApplication application;
-    private Integer _destinationID;
+
+    ArrayList<Integer> colors;
 
     public ExpandablePackageListAdapter(Context context, MyApplication app, List<Package> packages) {
         this._context = context;
         this.application = app;
         this._listData = packages;
+
+        colors = new ArrayList<>();
+        colors.add(Color.parseColor("#00cccc"));
+        colors.add(Color.parseColor("#00ff00"));
+        colors.add(Color.parseColor("#ff0000"));
+        colors.add(Color.parseColor("#ff8000"));
+        colors.add(Color.parseColor("#000000"));
     }
 
     @Override
@@ -99,8 +108,9 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText("Package #" + headerTitle);
+        TextView lblListHeaderIcon = (TextView) convertView.findViewById(R.id.lblListHeaderIcon);
+        lblListHeaderIcon.setTextColor(colors.get(_listData.get(groupPosition).state - 1));
+        lblListHeader.setText(headerTitle);
 
         return convertView;
     }

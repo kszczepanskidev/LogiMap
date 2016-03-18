@@ -40,7 +40,8 @@ class RestGet extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         try {
             final String basicAuth = "Basic " + Base64.encodeToString((username + ":" + password).getBytes(), Base64.NO_WRAP);
-            URL url_address= new URL("http://10.0.2.2:8000/" +  params[0]);
+//            URL url_address= new URL("http://10.0.2.2:8000/" +  params[0]);
+            URL url_address= new URL("https://logimap-server.herokuapp.com/" +  params[0]);
             HttpURLConnection urlConnection = (HttpURLConnection) url_address.openConnection();
             urlConnection.setRequestProperty("Authorization", basicAuth);
 

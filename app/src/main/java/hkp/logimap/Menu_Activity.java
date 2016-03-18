@@ -51,6 +51,9 @@ public class Menu_Activity extends AppCompatActivity {
         //Try to get delivery
         if(application.current_delivery == null && !deliveryFromServer.isAlive())
             getDelivery();
+
+        if(application.current_delivery != null)
+            activateMenu();
     }
 
     @Override

@@ -2,6 +2,7 @@ package hkp.logimap;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -114,7 +115,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
             Toast toast = Toast.makeText(getApplicationContext(), "GPS Started", Toast.LENGTH_SHORT);
             toast.show();
             GPSButton.setText("STOP");
-            GPSButton.setBackgroundColor(Color.argb(255,255,0,0));
+            GPSButton.setBackgroundColor(Color.argb(255, 255, 0, 0));
         }
         else
         {
@@ -126,5 +127,9 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
             GPSButton.setClickable(false);
         }
 
+    }
+
+    public void OnClickLoad(View v) {
+        startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
     }
 }

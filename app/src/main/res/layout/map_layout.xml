@@ -45,6 +45,7 @@
             android:layout_alignBottom="@+id/button4"
             android:layout_toRightOf="@+id/button4"
             android:layout_toEndOf="@+id/button4"
+            android:onClick="OnClickLoad"
             android:background="#0000ff"
             android:clickable="true" />
     </LinearLayout>

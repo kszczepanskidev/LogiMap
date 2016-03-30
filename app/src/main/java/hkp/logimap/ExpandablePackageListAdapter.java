@@ -23,13 +23,15 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<Package> _listData;
     private MyApplication application;
+    Boolean history;
 
     ArrayList<Integer> colors;
 
-    public ExpandablePackageListAdapter(Context context, MyApplication app, List<Package> packages) {
+    public ExpandablePackageListAdapter(Context context, MyApplication app, List<Package> packages, Boolean history) {
         this._context = context;
         this.application = app;
         this._listData = packages;
+        this.history = history;
 
         colors = new ArrayList<>();
         colors.add(Color.parseColor("#00cccc"));
@@ -58,7 +60,11 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
         }
 
         Button show_btn = (Button)convertView.findViewById(R.id.change_state);
-        show_btn.setOnClickListener(new View.OnClickListener() {
+
+        if(history)
+            show_btn.setVisibility(View.GONE);
+        else
+            show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(_context, Change_State_Activity.class);
@@ -67,7 +73,7 @@ public class ExpandablePackageListAdapter extends BaseExpandableListAdapter {
                 i.putExtra("packageCode", child.code);
                 _context.startActivity(i);
             }
-        });
+            });
 
 
         ((TextView) convertView.findViewById(R.id.PackageStatus)).setText("State: " + application.package_states.get(child.state - 1));

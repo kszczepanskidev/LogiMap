@@ -46,6 +46,7 @@ public class History_Activity extends AppCompatActivity {
 
                 try {
                     application.history_delivery = new Delivery(new JSONObject(new JSON_loader(application).load("delivery" + order_id)));
+                    application.history_delivery.history = true;
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage(), e);
                 }
@@ -53,6 +54,12 @@ public class History_Activity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), Map_Activity.class));
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        application.history_delivery = null;
+        super.onStop();
     }
 
     public ArrayList<String> getRoutes() {

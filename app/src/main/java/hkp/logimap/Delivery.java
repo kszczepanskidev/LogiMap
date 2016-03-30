@@ -23,7 +23,7 @@ public class Delivery implements Serializable{
     Integer id, state;
     ArrayList<Package> packages;
     HashMap<Integer, Location> locations;
-    Boolean finished;
+    Boolean finished, history;
 
 
     Delivery(JSONObject delivery) {
@@ -37,6 +37,7 @@ public class Delivery implements Serializable{
             this.route = new Route(delivery.getJSONObject("route"), locations);
             this.state = delivery.getInt("status");
             this.finished = false;
+            this.history = false;
 
             JSONArray _packages = delivery.getJSONArray("package");
 
@@ -82,7 +83,7 @@ public class Delivery implements Serializable{
         this.state = 3;
 
         String new_json = getJSON();
-        application.puts.add(new PUT_Request("orders/" + this.id, new_json));
+        application.addPUT(new PUT_Request("orders/" + this.id, new_json));
 
         saveDeliveryToFile("", "delivery" + this.id, application);
     }
@@ -119,6 +120,8 @@ public class Delivery implements Serializable{
             outputStreamWriter.write(json);
             outputStreamWriter.close();
         }
+
+
         catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }

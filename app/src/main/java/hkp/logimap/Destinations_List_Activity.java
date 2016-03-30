@@ -13,12 +13,18 @@ public class Destinations_List_Activity extends AppCompatActivity{
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
     Button finish_button;
+    Delivery delivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         application = (MyApplication) getApplication();
         preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         edit = preferences.edit();
+
+        if(application.history_delivery != null)
+            delivery = application.history_delivery;
+        else
+            delivery = application.current_delivery;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.destination_list_layout);
@@ -40,18 +46,20 @@ public class Destinations_List_Activity extends AppCompatActivity{
     }
 
     private void showButtonIfFinished() {
-        if(application.current_delivery.finished)
+        if(!delivery.history && delivery.finished)
             finish_button.setVisibility(View.VISIBLE);
         else
             finish_button.setVisibility(View.GONE);
     }
 
     public void clickFinishDelivery(View v) {
-        edit.putInt("prevDeliveryID", application.current_delivery.id);
-        edit.commit();
+        edit.putInt("prevDeliveryID", delivery.id);
 
-        application.current_delivery.finish(application);
+        delivery.finish(application);
+
         application.current_delivery = null;
+        edit.putBoolean("deliveryInFile", false);
+        edit.commit();
 
         finish();
     }

@@ -27,11 +27,18 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
     private Context _context;
     private List<Location> _destinations;
     private MyApplication application;
+    Delivery delivery;
 
     public ExpandableDestinationListAdapter(Context context, MyApplication app) {
         this._context = context;
         this.application = app;
-        this._destinations = new ArrayList<>(application.current_delivery.locations.values());
+
+        if(application.history_delivery != null)
+            delivery = application.history_delivery;
+        else
+            delivery = application.current_delivery;
+
+        this._destinations = new ArrayList<>(delivery.locations.values());
     }
 
     @Override
@@ -49,7 +56,7 @@ public class ExpandableDestinationListAdapter extends BaseExpandableListAdapter 
         final Location child = _destinations.get(groupPosition);
         Integer _packageCounter = 0;
 
-        for(Package p : application.current_delivery.packages)
+        for(Package p : delivery.packages)
             if(p.destination == child.id)
                 _packageCounter++;
 

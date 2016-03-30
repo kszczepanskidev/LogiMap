@@ -12,8 +12,6 @@ import android.widget.ListView;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class Change_State_Activity extends AppCompatActivity {
     MyApplication application;
     SharedPreferences preferences;
@@ -65,7 +63,7 @@ public class Change_State_Activity extends AppCompatActivity {
         }catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
-        application.puts.add(new PUTRequest("packages/" + packageID, package_json.toString()));
+        application.puts.add(new PUT_Request("packages/" + packageID, package_json.toString()));
         p.state = status;
 
         application.current_delivery.saveDeliveryToFile("", "delivery" + application.current_delivery.id, this);

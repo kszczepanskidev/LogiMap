@@ -6,8 +6,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.sql.Time;
@@ -84,7 +82,7 @@ public class Delivery implements Serializable{
         this.state = 3;
 
         String new_json = getJSON();
-        application.puts.add(new PUTRequest("orders/" + this.id, new_json));
+        application.puts.add(new PUT_Request("orders/" + this.id, new_json));
 
         saveDeliveryToFile("", "delivery" + this.id, application);
     }

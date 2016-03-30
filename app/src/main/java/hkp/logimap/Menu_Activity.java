@@ -49,7 +49,7 @@ public class Menu_Activity extends AppCompatActivity {
         setTitle("LogiMap");
 
         //Try to get delivery
-        if(application.current_delivery == null && !deliveryFromServer.isAlive())
+        if(application.current_delivery == null && !application.file_thread_is_running && !application.server_thread_is_running)
             getDelivery();
 
         if(application.current_delivery != null)
@@ -58,23 +58,24 @@ public class Menu_Activity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if(application.current_delivery == null && !deliveryFromServer.isAlive())
+        Log.i("TEST", "F:" + application.file_thread_is_running.toString() + " S:" + application.server_thread_is_running.toString());
+        if(application.current_delivery == null && !application.file_thread_is_running && !application.server_thread_is_running)
             getDelivery();
 
         super.onResume();
     }
 
     public void onClickMap(View v) {
-        startActivity(new Intent(getApplicationContext(), Maps_Activity.class));
+        startActivity(new Intent(getApplicationContext(), Map_Activity.class));
     }
     public void onClickDestinations(View v) {
         startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
     }
     public void onClickHistory(View v) {
-
+        startActivity(new Intent(getApplicationContext(), History_Activity.class));
     }
     public void onClickDriverStatistics(View v) {
-        startActivity(new Intent(getApplicationContext(), DriverStatistics_Activity.class));
+        startActivity(new Intent(getApplicationContext(), Driver_Statistics_Activity.class));
     }
 
 
@@ -83,7 +84,7 @@ public class Menu_Activity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                application.current_delivery = new Delivery(new JSONObject(new JSONloader(application).load("delivery")));
+                application.current_delivery = new Delivery(new JSONObject(new JSON_loader(application).load("delivery")));
                 activateMenu();
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
@@ -92,12 +93,13 @@ public class Menu_Activity extends AppCompatActivity {
                 //If reading from file failed try to download from server
                 deliveryFromServer.start();
             }
+            application.file_thread_is_running = false;
         }
     });
 
     private Integer getCurrentDeliveryID() {
-        RestGet getID = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                new RestGet.AsyncResponse() {
+        Rest_Get getID = new Rest_Get(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                new Rest_Get.AsyncResponse() {
                     @Override
                     public void processFinish(String result) {}
                 });
@@ -117,8 +119,8 @@ public class Menu_Activity extends AppCompatActivity {
         final Runnable thread = this;
         @Override
         public void run() {
-            RestGet getDelivery = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                    new RestGet.AsyncResponse() {
+            Rest_Get getDelivery = new Rest_Get(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                    new Rest_Get.AsyncResponse() {
                         @Override
                         public void processFinish(String result) {
                             try {
@@ -153,6 +155,8 @@ public class Menu_Activity extends AppCompatActivity {
                 }
                 else
                     throw new Exception();
+
+                application.server_thread_is_running = false;
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
                 mHandler.postDelayed(this, delivery_INTERVAL);
@@ -164,8 +168,10 @@ public class Menu_Activity extends AppCompatActivity {
         deactivateMenu();
             if (preferences.getBoolean("deliveryInFile", false)) {
                 deliveryFromFile.start();
+                application.file_thread_is_running = true;
             } else {
                 deliveryFromServer.start();
+                application.server_thread_is_running = true;
             }
     }
 
@@ -275,14 +281,14 @@ public class Menu_Activity extends AppCompatActivity {
         public void run() {
             try {
                 SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-                RestPut api = new RestPut(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                        new RestPut.AsyncResponse() {
+                Rest_Put api = new Rest_Put(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                        new Rest_Put.AsyncResponse() {
                             @Override
                             public void processFinish(String result) {
                             }
                         }, application);
 
-                for (PUTRequest put : application.puts) {
+                for (PUT_Request put : application.puts) {
                     api.execute(put.url, put.newjson);
 
                     application.puts.remove(put);

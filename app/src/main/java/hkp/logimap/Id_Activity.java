@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.io.OutputStreamWriter;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,7 +33,7 @@ public class Id_Activity extends AppCompatActivity {
         mHandler = new Handler();
 
         //DEBUG MODE
-//        edit.putBoolean("firstRun", true);
+        edit.putBoolean("firstRun", false);
         edit.putBoolean("deliveryInFile", false);
         edit.commit();
         //DEBUG MODE
@@ -76,8 +75,8 @@ public class Id_Activity extends AppCompatActivity {
     }
 
     private void getDriverID() {
-        RestGet api = new RestGet(preferences.getString("username", "#"), preferences.getString("password", "#"),
-                new RestGet.AsyncResponse() {
+        Rest_Get api = new Rest_Get(preferences.getString("username", "#"), preferences.getString("password", "#"),
+                new Rest_Get.AsyncResponse() {
                     @Override
                     public void processFinish(String result) {
                         try {

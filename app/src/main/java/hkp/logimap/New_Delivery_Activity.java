@@ -55,7 +55,7 @@ public class New_Delivery_Activity extends AppCompatActivity {
 
     private void updateDelivery() {
         String json = application.current_delivery.getJSON();
-        application.puts.add(0, new PUTRequest("orders/" + application.current_delivery.id, json));
+        application.puts.add(0, new PUT_Request("orders/" + application.current_delivery.id, json));
     }
 
 }

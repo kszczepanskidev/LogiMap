@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"
@@ -46,8 +47,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Maps_Activity"
-            android:label="@string/title_activity_maps"
+            android:name=".Map_Activity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -55,39 +55,40 @@
         </activity>
         <activity
             android:name=".Destinations_List_Activity"
-            android:label="@string/title_activity_destinations__list"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu_Activity" />
         </activity>
         <activity
-            android:name=".Package_List_Activity"
-            android:label="@string/title_activity_package__list">
+            android:name=".Package_List_Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Destinations_List_Activity" />
         </activity>
         <activity
-            android:name=".Change_State_Activity"
-            android:label="@string/title_activity_package__list">
+            android:name=".Change_State_Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Package_List_Activity" />
         </activity>
         <activity
-            android:name=".DriverStatistics_Activity"
-            android:label="@string/title_activity_driver_statistics">
+            android:name=".Driver_Statistics_Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu_Activity" />
         </activity>
         <activity
-            android:name=".New_Delivery_Activity"
-            android:label="@string/title_activity_driver_statistics">
+            android:name=".New_Delivery_Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Id_Activity" />
+                android:value=".Menu_Activity" />
+        </activity>
+        <activity
+            android:name=".History_Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Menu_Activity" />
         </activity>
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for

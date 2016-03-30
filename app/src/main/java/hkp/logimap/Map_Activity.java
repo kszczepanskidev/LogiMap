@@ -52,7 +52,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         mUiSettings.setZoomControlsEnabled(true);
 
         Bundle b=getIntent().getExtras();
-        String route=b.getString("Route_id");
+        String route=((MyApplication)getApplication()).current_delivery.id.toString();
 
         Toast toast = Toast.makeText(getApplicationContext(), "Showing route: "+route, Toast.LENGTH_SHORT);
         toast.show();

@@ -46,12 +46,15 @@ public class MyApplication extends Application {
     }
 
     private void save_PUTs() {
-        JSONArray puts_json = new JSONArray();
-
-        for(PUT_Request p : puts)
-            puts_json.put(p.get_JSON());
-
         try {
+            JSONObject puts_json = new JSONObject();
+            JSONArray put_array = new JSONArray();
+
+            for (PUT_Request p : puts)
+                put_array.put(p.get_JSON());
+
+            puts_json.put("array", put_array);
+
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("PUT_requests.json", MODE_PRIVATE));
             outputStreamWriter.write(puts_json.toString());
             outputStreamWriter.close();
@@ -75,12 +78,14 @@ public class MyApplication extends Application {
                 }
 
                 is.close();
-                JSONArray puts_json = new JSONArray(stringBuilder.toString());
+                JSONObject puts_json = new JSONObject(stringBuilder.toString());
+                JSONArray array = puts_json.getJSONArray("array");
 
-                for (int i = 0; i < puts_json.length(); ++i)
-                    puts.add(new PUT_Request(puts_json.getJSONObject(i)));
+                for (int i = 0; i < array.length(); ++i)
+                    puts.add(new PUT_Request(array.getJSONObject(i)));
             }
         } catch (Exception e) {
+            puts = new ArrayList<>();
             Log.e("ERROR", e.getMessage(), e);
         }
     }

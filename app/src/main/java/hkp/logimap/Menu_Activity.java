@@ -69,7 +69,7 @@ public class Menu_Activity extends AppCompatActivity {
         if(application.current_delivery == null && !application.file_thread_is_running && !application.server_thread_is_running)
             getDelivery();
 
-        if (application.current_delivery.state == 1) {
+        if (application.current_delivery != null && application.current_delivery.state == 1) {
             startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
         }
 

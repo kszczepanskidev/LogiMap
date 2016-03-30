@@ -33,7 +33,7 @@ public class Id_Activity extends AppCompatActivity {
         mHandler = new Handler();
 
         //DEBUG MODE
-        edit.putBoolean("firstRun", false);
+        edit.putBoolean("firstRun", true);
         edit.putBoolean("deliveryInFile", false);
         edit.commit();
         //DEBUG MODE

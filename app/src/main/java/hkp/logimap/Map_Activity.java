@@ -68,9 +68,16 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
         }
         else {
-            mapController.ShowRoute(route+"_groute.json");
-            mapController.AddMarkers(mapController.GetOrigin(), mapController.GetDestination(),mapController.GetWaypoints());
+            Button GPSButton = (Button)findViewById(R.id.button4);
+            mapController.ShowRoute(route + "_groute.json");
+            mapController.AddMarkers(mapController.GetOrigin(), mapController.GetDestination(), mapController.GetWaypoints());
             mapController.ShowGPSHistory(route+"_gps.json",getApplicationContext());
+            if(((MyApplication) getApplication()).history_delivery.history==true){
+                GPSButton.setClickable(false);
+            }
+            else {
+                GPSButton.setClickable(true);
+            }
         }
           }
     public void OnClickGPS(View v){

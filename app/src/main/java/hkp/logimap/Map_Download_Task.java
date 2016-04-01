@@ -25,12 +25,10 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
 
 
     private static final String TAG = Map_Download_Task.class.getCanonicalName();
-    private GoogleMap tmap;
     private String RouteID;
     private Context context;
 
-    public Map_Download_Task(GoogleMap map, Context cntext, String id){
-        tmap=map;
+    public Map_Download_Task(Context cntext, String id){
         RouteID=id;
         context=cntext;
     }
@@ -41,29 +39,17 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
         HttpURLConnection urlConnection = null;
         try{
             URL url = new URL(strUrl);
-
-            // Creating an http connection to communicate with url
             urlConnection = (HttpURLConnection) url.openConnection();
-
-            // Connecting to url
             urlConnection.connect();
-
-            // Reading data from url
             iStream = urlConnection.getInputStream();
-
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
             StringBuffer sb  = new StringBuffer();
-
             String line = "";
             while( ( line = br.readLine())  != null){
                 sb.append(line);
             }
-
             data = sb.toString();
-
             br.close();
-
         }catch(Exception e){
             Log.d(TAG, e.toString());
         }finally{
@@ -75,13 +61,8 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... url) {
-
-        // For storing data from web service
-
         String data = "";
-
         try{
-            // Fetching the data from web service
             data = downloadUrl(url[0]);
         }catch(Exception e){
             Log.d("Background Task", e.toString());
@@ -89,8 +70,6 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
         return data;
     }
 
-    // Executes in UI thread, after the execution of
-    // doInBackground()
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
@@ -104,9 +83,5 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       // ParserTask parserTask = new ParserTask(tmap);
-
-        // Invokes the thread for parsing the JSON data
-       // parserTask.execute(result);
     }
 }

@@ -27,17 +27,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 public class Map_Activity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Marker GPSLocation;
+    Delivery delivery;
+    MyApplication application;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_layout);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -46,40 +49,65 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap){
-
         mMap = googleMap;
+
         UiSettings mUiSettings=mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);
 
-        Bundle b=getIntent().getExtras();
-        String route=((MyApplication)getApplication()).current_delivery.id.toString();
+        String route;
+        application=(MyApplication)getApplication();
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Showing route: "+route, Toast.LENGTH_SHORT);
-        toast.show();
+        if(application.history_delivery!=null) {
+            route=application.history_delivery.id.toString();
+            Toast toast = Toast.makeText(getApplicationContext(), "Showing archive route: " + route, Toast.LENGTH_SHORT);
+            toast.show();
+            Button GPSButton = (Button)findViewById(R.id.button4);
+            GPSButton.setText("History");
+            GPSButton.setBackgroundColor(Color.argb(255, 255, 255, 0));
 
-        Map_Controller mapController=new Map_Controller(mMap,getApplicationContext(),route,(MyApplication)getApplication());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapController.GetOrigin(), 8));
+        }
+        else{
+            route=application.current_delivery.id.toString();
+            Toast toast = Toast.makeText(getApplicationContext(), "Showing route: " + route, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        Map_Controller mapController=new Map_Controller(mMap,getApplicationContext(),route);
+
+        LatLng origin;
+        LatLng destination;
+        ArrayList<LatLng>waypoints=new ArrayList<>();
 
         File file = new File(this.getFilesDir(),route+"_groute.json");
         if(!file.exists()) {
-            mapController.GoogleRouteDownload(mapController.GetOrigin(),mapController.GetDestination(),mapController.GetWaypoints());
-            mapController.ShowRoute(route +"_groute.json");
-            mapController.AddMarkers(mapController.GetOrigin(), mapController.GetDestination(), mapController.GetWaypoints());
-
-        }
-        else {
-            Button GPSButton = (Button)findViewById(R.id.button4);
+            for(hkp.logimap.Location l:application.current_delivery.locations.values()) {
+                LatLng point=new LatLng(l.latitude,l.longtitude);
+                waypoints.add(point);
+            }
+            origin=waypoints.get(0);
+            destination=waypoints.get(waypoints.size()-1);
+            waypoints.remove(0);
+            waypoints.remove(waypoints.size() - 1);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 8));
+            mapController.GoogleRouteDownload(origin, destination, waypoints);
             mapController.ShowRoute(route + "_groute.json");
-            mapController.AddMarkers(mapController.GetOrigin(), mapController.GetDestination(), mapController.GetWaypoints());
-            mapController.ShowGPSHistory(route+"_gps.json",getApplicationContext());
-            if(((MyApplication) getApplication()).history_delivery.history==true){
-                GPSButton.setClickable(false);
-            }
-            else {
-                GPSButton.setClickable(true);
-            }
+            mapController.AddMarkers(origin, destination, waypoints);
         }
-          }
+       else {
+            for (hkp.logimap.Location l : application.current_delivery.locations.values()) {
+                LatLng point = new LatLng(l.latitude, l.longtitude);
+                waypoints.add(point);
+            }
+            origin = waypoints.get(0);
+            destination = waypoints.get(waypoints.size() - 1);
+            waypoints.remove(0);
+            waypoints.remove(waypoints.size() - 1);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 8));
+            mapController.ShowRoute(route + "_groute.json");
+            mapController.AddMarkers(origin, destination, waypoints);
+            mapController.ShowGPSHistory(route + "_gps.json");
+        }
+    }
     public void OnClickGPS(View v){
         Button GPSButton = (Button)findViewById(R.id.button4);
         LocationManager manager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);

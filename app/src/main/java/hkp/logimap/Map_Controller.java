@@ -2,6 +2,7 @@ package hkp.logimap;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,35 +27,11 @@ public class Map_Controller {
     public GoogleMap Map;
     private String RouteID;
     private Context context;
-    MyApplication application;
 
-    public Map_Controller(GoogleMap Mapa, Context cntext, String id,MyApplication app){
+    public Map_Controller(GoogleMap Mapa, Context cntext, String id){
         Map=Mapa;
         RouteID=id;
         context=cntext;
-        application=app;
-    }
-
-    public LatLng GetOrigin() {
-        LatLng start= new LatLng(application.current_delivery.locations.get(0).latitude,
-                application.current_delivery.locations.get(0).longtitude);
-        return start;
-    }
-
-    public LatLng GetDestination() {
-        Integer size=application.current_delivery.locations.size();
-        LatLng stop= new LatLng(application.current_delivery.locations.get(size).latitude,
-             application.current_delivery.locations.get(size).longtitude);
-        return stop;
-    }
-
-    public ArrayList<LatLng> GetWaypoints(){
-        ArrayList<LatLng> waypoints=new ArrayList<>();
-        for(Location l : application.current_delivery.locations.values()) {
-            LatLng point=new LatLng(l.latitude,l.longtitude);
-          waypoints.add(point);
-        }
-        return waypoints;
     }
 
     public void AddMarkers(LatLng start,LatLng stop, ArrayList<LatLng> waypoints) {
@@ -72,7 +49,7 @@ public class Map_Controller {
         }
     }
 
-    public void ShowGPSHistory(String filename,Context context)
+    public void ShowGPSHistory(String filename)
     {
         PolylineOptions lineOptions = new PolylineOptions();
         ArrayList<LatLng>  points = new ArrayList<LatLng>();
@@ -140,39 +117,26 @@ public class Map_Controller {
 
     public void GoogleRouteDownload(LatLng start,LatLng stop, ArrayList<LatLng> waypoints){
         String url=getDirectionsUrl(start,stop,waypoints);
-        Map_Download_Task DT=new Map_Download_Task(Map,context,RouteID);
+        Map_Download_Task DT=new Map_Download_Task(context,RouteID);
+        Toast toast = Toast.makeText(context, "Route "+ RouteID + " directions download ended", Toast.LENGTH_LONG);
+        toast.show();
         DT.execute(url);
     }
 
     private String getDirectionsUrl(LatLng origin,LatLng dest,ArrayList<LatLng> waypointsArr){
-
-        // Origin of route
         String str_origin = "origin="+origin.latitude+","+origin.longitude;
-
-        // Destination of route
         String str_dest = "destination="+dest.latitude+","+dest.longitude;
-
-        // Sensor enabled
         String sensor = "sensor=false";
-
-        // Waypoints
         String waypoints = "";
         for(int i=0;i<waypointsArr.size();i++){
             LatLng point  =waypointsArr.get(i);
             if(i==0)
                 waypoints = "waypoints=";
             waypoints += point.latitude + "," + point.longitude + "|";
-        }
-
-        // Building the parameters to the web service
+            }
         String parameters = str_origin+"&"+str_dest+"&"+sensor+"&"+waypoints;
-
-        // Output format
         String output = "json";
-
-        // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
-
         return url;
     }
 }

@@ -41,9 +41,6 @@ public class History_Activity extends AppCompatActivity {
                 Object child = parent.getItemAtPosition(position);
                 String order_id = child.toString();
 
-                Toast toast = Toast.makeText(context, order_id, Toast.LENGTH_SHORT);
-                toast.show();
-
                 try {
                     application.history_delivery = new Delivery(new JSONObject(new JSON_loader(application).load("delivery" + order_id)));
                     application.history_delivery.history = true;

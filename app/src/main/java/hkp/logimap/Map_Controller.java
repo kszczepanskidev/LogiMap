@@ -26,30 +26,34 @@ public class Map_Controller {
     public GoogleMap Map;
     private String RouteID;
     private Context context;
+    MyApplication application;
 
-    public Map_Controller(GoogleMap Mapa, Context cntext, String id){
+    public Map_Controller(GoogleMap Mapa, Context cntext, String id,MyApplication app){
         Map=Mapa;
         RouteID=id;
         context=cntext;
+        application=app;
     }
 
     public LatLng GetOrigin() {
-        LatLng start= new LatLng(52.17,16.92);
+        LatLng start= new LatLng(application.current_delivery.locations.get(0).latitude,
+                application.current_delivery.locations.get(0).longtitude);
         return start;
     }
 
     public LatLng GetDestination() {
-        LatLng stop = new LatLng(51.21,15.23);
+        Integer size=application.current_delivery.locations.size();
+        LatLng stop= new LatLng(application.current_delivery.locations.get(size).latitude,
+             application.current_delivery.locations.get(size).longtitude);
         return stop;
     }
 
     public ArrayList<LatLng> GetWaypoints(){
-        ArrayList<LatLng> waypoints= new ArrayList<>();
-        waypoints.add(new LatLng(52.021,19.021));
-        waypoints.add(new LatLng(53.22,21));
-        waypoints.add(new LatLng(52.12,19.31));
-        waypoints.add(new LatLng(52.88, 20.21));
-        waypoints.add(new LatLng(51.19, 18.98));
+        ArrayList<LatLng> waypoints=new ArrayList<>();
+        for(Location l : application.current_delivery.locations.values()) {
+            LatLng point=new LatLng(l.latitude,l.longtitude);
+          waypoints.add(point);
+        }
         return waypoints;
     }
 

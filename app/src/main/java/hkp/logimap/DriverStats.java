@@ -8,11 +8,13 @@ import org.json.JSONObject;
  * Created by hfscofield on 17.01.16.
  */
 public class DriverStats {
+    String name;
     Integer orders_done, pkg_delivered, pkg_delayed;
     Float km_done;
 
     DriverStats(JSONObject driverStats) {
         try {
+            this.name = "Stachu";//driverStats.getString("name");
             this.km_done = Float.parseFloat(driverStats.getString("km_done"));
             this.orders_done = driverStats.getInt("orders_done");
             this.pkg_delivered = driverStats.getInt("pkg_delivered");

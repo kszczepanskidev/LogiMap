@@ -57,7 +57,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         Toast toast = Toast.makeText(getApplicationContext(), "Showing route: "+route, Toast.LENGTH_SHORT);
         toast.show();
 
-        Map_Controller mapController=new Map_Controller(mMap,getApplicationContext(),route);
+        Map_Controller mapController=new Map_Controller(mMap,getApplicationContext(),route,(MyApplication)getApplication());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapController.GetOrigin(), 8));
 
         File file = new File(this.getFilesDir(),route+"_groute.json");

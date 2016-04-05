@@ -19,10 +19,153 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" >
+        
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:columnCount="3"
+            android:rowCount="5"
+            android:horizontalSpacing="30dp"
+            android:verticalSpacing="30dp"
+            android:clipToPadding="false" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/statisticsView" />
+            <ImageView
+                android:id="@+id/truck_icon"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_weight="1.00"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:src="@drawable/truck"
+                android:layout_gravity="center_vertical" />
+
+            <ImageView
+                android:id="@+id/kmdone_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.00"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:src="@drawable/kilometers"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/orders_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.00"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:src="@drawable/order"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/packages_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.00"
+                android:layout_row="3"
+                android:layout_column="0"
+                android:src="@drawable/package_icon"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:id="@+id/delayed_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.00"
+                android:layout_row="4"
+                android:layout_column="0"
+                android:src="@drawable/delayed"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_km"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:text="Kilometers done:"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="driver_name"
+                android:id="@+id/driver_name"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_gravity="center"
+                android:layout_columnSpan="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_orders"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:text="Orders done:"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_packages"
+                android:layout_row="3"
+                android:layout_column="1"
+                android:text="Packages delivered:"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_delayed"
+                android:layout_row="4"
+                android:layout_column="1"
+                android:text="Delayed packages:"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/value_kmdone"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/value_orders"
+                android:layout_row="2"
+                android:layout_column="2"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/value_packages"
+                android:layout_row="3"
+                android:layout_column="2"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/value_delayed"
+                android:layout_row="4"
+                android:layout_column="2"
+                android:layout_gravity="center_vertical" />
+
+        </GridLayout>
     </ScrollView>
+
 </RelativeLayout>

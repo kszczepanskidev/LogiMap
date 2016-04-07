@@ -1,19 +1,21 @@
 package hkp.logimap;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -25,12 +27,10 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
 
 
     private static final String TAG = Map_Download_Task.class.getCanonicalName();
-    private String RouteID;
-    private Context context;
+    public AsyncListener listener;
 
-    public Map_Download_Task(Context cntext, String id){
-        RouteID=id;
-        context=cntext;
+    public Map_Download_Task(AsyncListener listener){
+        this.listener=listener;
     }
 
     private String downloadUrl(String strUrl) throws IOException {
@@ -73,15 +73,61 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        Parser_Task parser_task=new Parser_Task();
+        parser_task.execute(result);
+    }
 
-        FileOutputStream outputStream;
-        File file = new File(context.getFilesDir(),RouteID+"_groute.json");
-        try {
-            outputStream = new FileOutputStream(file);
-            outputStream.write(result.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public class Parser_Task extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> > {
+        // Parsing the data in non-ui thread
+        public ArrayList<LatLng> final_result;
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try{
+                jObject = new JSONObject(jsonData[0]);
+                Directions_Parser parser = new Directions_Parser();
+
+                // Starts parsing data
+                routes = parser.parse(jObject);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+
+            ArrayList<LatLng> points = null;
+
+            // Traversing through all the routes
+            for(int i=0;i<result.size();i++){
+                points = new ArrayList<LatLng>();
+
+                // Fetching i-th route
+                List<HashMap<String, String>> path = result.get(i);
+
+                // Fetching all the points in i-th route
+                for(int j=0;j<path.size();j++){
+                    HashMap<String,String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+
+
+                }
+                listener.processFinish(points);
+            }
+
         }
     }
+
 }

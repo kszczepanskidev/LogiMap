@@ -3,6 +3,8 @@ package hkp.logimap;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,12 +24,16 @@ public class Delivery implements Serializable{
     Route route;
     Integer id, state;
     ArrayList<Package> packages;
+    ArrayList<LatLng> directions;
+    ArrayList<LatLng> gps;
     HashMap<Integer, Location> locations;
     Boolean finished, history;
 
 
     Delivery(JSONObject delivery) {
         packages  = new ArrayList<>();
+        directions = new ArrayList<>();
+        gps = new ArrayList<>();
         locations = new HashMap<>();
 
         try {
@@ -100,6 +106,24 @@ public class Delivery implements Serializable{
                 for(Package p : this.packages)
                     packages_json.put(p.getJSON());
             delivery_json.put("package", packages_json);
+            // google directions to json
+            JSONArray directions_json = new JSONArray();
+            for(LatLng p : this.directions) {
+                JSONObject point = new JSONObject();
+                point.put("lat", p.latitude);
+                point.put("lng", p.longitude);
+                directions_json.put(point);
+            }
+            delivery_json.put("directions",delivery_json);
+            // gps points to json
+            JSONArray gps_json = new JSONArray();
+            for(LatLng p : this.gps) {
+                JSONObject point = new JSONObject();
+                point.put("lat", p.latitude);
+                point.put("lng", p.longitude);
+               gps_json.put(point);
+            }
+            delivery_json.put("gps",gps_json);
             delivery_json.put("status", state);
 
             return delivery_json.toString();

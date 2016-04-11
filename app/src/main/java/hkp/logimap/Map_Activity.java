@@ -1,24 +1,25 @@
 package hkp.logimap;
 
-import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,21 +30,38 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.File;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
 import java.util.ArrayList;
 
 
-public class Map_Activity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback,
-        AsyncListener{
+public class Map_Activity extends AppCompatActivity implements
+        OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        AsyncListener {
 
     private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
     private Map_Controller mapController;
-    Delivery delivery;
-    MyApplication application;
+    private Polyline GPSPolyline;
+    private boolean gpsState=false;
+
+    LocationRequest mLocationRequest = new LocationRequest()
+            .setInterval(10000)
+            .setSmallestDisplacement(5)
+            .setFastestInterval(5000)
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    private Marker GPSPositionMarker;
+    private Location CurrentLocation;
+
+
+    MyApplication   application;
     static final int MY_FINE_LOCATION_PERMISSION = 1;
-    private boolean mPermissionDenied = false;
+    static final String KEY_GPS_STATE="GPS";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,147 +70,190 @@ public class Map_Activity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .addApi(AppIndex.API).build();
+        }
+        updateValuesFromBundle(savedInstanceState);
     }
 
 
-
     @Override
-    public void onMapReady(GoogleMap googleMap){
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnMyLocationButtonClickListener(this);
-        enableMyLocation();
-
-        UiSettings mUiSettings=mMap.getUiSettings();
+        UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);
 
         String route;
-        application=(MyApplication)getApplication();
-
-        if(application.history_delivery!=null) {
-            route=application.history_delivery.id.toString();
+        mapController = new Map_Controller(mMap);
+        application= (MyApplication) getApplication();
+        if (application.history_delivery != null) {
+            route = application.history_delivery.id.toString();
             Toast toast = Toast.makeText(getApplicationContext(), "Showing archive route: " + route, Toast.LENGTH_SHORT);
             toast.show();
-            Button GPSButton = (Button)findViewById(R.id.button4);
+            Button GPSButton = (Button) findViewById(R.id.button4);
             GPSButton.setText("History");
             GPSButton.setClickable(false);
             GPSButton.setBackgroundColor(Color.argb(255, 255, 255, 0));
-
-        }
-        else{
-            route=application.current_delivery.id.toString();
+            hkp.logimap.Location firstLoc = application.history_delivery.locations.values().iterator().next();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLoc.latitude,firstLoc.longtitude), 8));
+            mapController.ShowRoute(application.history_delivery.directions, Color.BLUE, 8);
+            mapController.AddMarkers(application.history_delivery.locations.values());
+            mapController.ShowRoute(application.history_delivery.gps, Color.GREEN, 8);
+        } else {
+            if(checkGPSProvider()&&!mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.connect();
+            }
+            route = application.current_delivery.id.toString();
             Toast toast = Toast.makeText(getApplicationContext(), "Showing route: " + route, Toast.LENGTH_SHORT);
             toast.show();
-        }
-
-        mapController=new Map_Controller(mMap);
-
-
-        LatLng origin;
-        LatLng destination;
-        ArrayList<LatLng>waypoints=new ArrayList<>();
-        //if(application.current_delivery.directions==null){
-            for(hkp.logimap.Location l:application.current_delivery.locations.values()) {
-                LatLng point=new LatLng(l.latitude,l.longtitude);
-                waypoints.add(point);
-            }
-            origin=waypoints.get(0);
-            destination=waypoints.get(waypoints.size()-1);
-            waypoints.remove(0);
-            waypoints.remove(waypoints.size() - 1);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 8));
-            Map_Download_Task DT=new Map_Download_Task(this);
-            DT.execute(mapController.getDirectionsUrl(origin,destination,waypoints));
-            mapController.AddMarkers(origin, destination, waypoints);
-           //  }
-           /* else{
+            Map_Download_Task DT = new Map_Download_Task(this, true);
+            LatLng origin, destination;
+            ArrayList<LatLng> waypoints = new ArrayList<>();
             for (hkp.logimap.Location l : application.current_delivery.locations.values()) {
-                LatLng point = new LatLng(l.latitude, l.longtitude);
-                waypoints.add(point);
+                waypoints.add(new LatLng(l.latitude, l.longtitude));
             }
             origin = waypoints.get(0);
             destination = waypoints.get(waypoints.size() - 1);
             waypoints.remove(0);
             waypoints.remove(waypoints.size() - 1);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 8));
-            mapController.ShowRoute(application.current_delivery.directions,Color.BLUE,4);
-            mapController.AddMarkers(origin, destination, waypoints);
-            mapController.ShowRoute(application.current_delivery.gps, Color.GREEN,4);
-        }*/
-    }
+            if(application.current_delivery.directions.isEmpty()) {
+                DT.execute(mapController.getDirectionsUrl(origin, destination, waypoints));
+            }
+            else{
+                mapController.ShowRoute(application.current_delivery.directions, Color.BLUE, 8);
+                if(!application.current_delivery.gps.isEmpty()){
+                    GPSPolyline=mapController.ShowRoute(application.current_delivery.gps,Color.GREEN,8);
+                }
+            }
+            mapController.AddMarkers(application.current_delivery.locations.values());
 
-    public void processFinish(ArrayList<LatLng> output){
-        application.current_delivery.directions.addAll(output);
-        mapController.ShowRoute(output,Color.BLUE,5);
-    }
 
-    private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, MY_FINE_LOCATION_PERMISSION,
-                    Manifest.permission.ACCESS_FINE_LOCATION, true);
-        } else if (mMap != null) {
-            // Access to the location has been granted to the app.
-            mMap.setMyLocationEnabled(true);
         }
     }
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != MY_FINE_LOCATION_PERMISSION) {
-            return;
-        }
-
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
+    public void processFinish(ArrayList<LatLng> output, boolean route) {
+        if (route) {
+            application.current_delivery.directions.addAll(output);
+            mapController.ShowRoute(output, Color.BLUE, 8);
         } else {
-            // Display the missing permission error dialog when the fragments resume.
-            mPermissionDenied = true;
+            mapController.ShowRoute(output, Color.RED, 8);
         }
+    }
+
+    public boolean checkGPSProvider()
+    {
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){return true;}
+        else{
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 10);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+            return false;
+        }
+    }
+
+    protected void onDestroy() {
+        mGoogleApiClient.disconnect();
+        super.onDestroy();
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(KEY_GPS_STATE, gpsState);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.keySet().contains(KEY_GPS_STATE)) {
+                gpsState = savedInstanceState.getBoolean(
+                        KEY_GPS_STATE);
+                if(gpsState){
+                    Button GPSButton = (Button) findViewById(R.id.button4);
+                    startLocationUpdates();
+                    GPSButton.setText("STOP");
+                    GPSButton.setBackgroundColor(Color.argb(255, 255, 0, 0));
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Toast.makeText(this,"Connected to location service",Toast.LENGTH_SHORT).show();
+        hkp.logimap.Location temp=application.current_delivery.locations.values().iterator().next();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(temp.latitude, temp.longtitude), 9));
+        if (getLastKnownLocation() != null) {
+            CurrentLocation = getLastKnownLocation();
+            Toast.makeText(this, "Your last known position: " + CurrentLocation.getLatitude() +
+                    ", " + CurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()), 9));
+            if (GPSPositionMarker == null) {
+                GPSPositionMarker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()))
+                                .title("ME")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.gps))
+                );
+            }
+           Map_Download_Task DT= new Map_Download_Task(this,false);
+            hkp.logimap.Location loc=application.current_delivery.locations.values().iterator().next();
+            DT.execute(mapController.getDirectionsUrl(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()),
+                    new LatLng(loc.latitude, loc.longtitude), null));
+        }
+    }
+
+    protected Location getLastKnownLocation() {
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        return mLastLocation;
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+
     }
 
     @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (mPermissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError();
-            mPermissionDenied = false;
-        }
+    public void onConnectionSuspended(int i) {
+
     }
 
-    /**
-     * Displays a dialog with error message explaining that the location permission is missing.
-     */
-    private void showMissingPermissionError() {
-        PermissionUtils.PermissionDeniedDialog
-                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(this, "Connection to Google Play Service Failed", Toast.LENGTH_SHORT).show();
     }
 
-    public void OnClickGPS(View v){
-        Button GPSButton = (Button)findViewById(R.id.button4);
-
-        if(GPSButton.getText().equals("START GPS")) {
-
-                GPSButton.setText("STOP");
-                GPSButton.setBackgroundColor(Color.argb(255, 255, 0, 0));
-        }
-        else
-        {
-            Toast toast = Toast.makeText(getApplicationContext(), "GPS Stoped", Toast.LENGTH_SHORT);
-            toast.show();
+    public void OnClickGPS(View v) {
+        Button GPSButton = (Button) findViewById(R.id.button4);
+        if (GPSButton.getText().equals("START GPS") && mGoogleApiClient.isConnected()) {
+            startLocationUpdates();
+            Toast.makeText(getApplicationContext(), "GPS Tracking Started", Toast.LENGTH_SHORT).show();
+            GPSButton.setText("STOP");
+            GPSButton.setBackgroundColor(Color.argb(255, 255, 0, 0));
+        } else if (GPSButton.getText().equals("STOP") && mGoogleApiClient.isConnected()) {
+            Toast.makeText(getApplicationContext(), "GPS Tracking Stopped", Toast.LENGTH_SHORT).show();
+            stopLocationUpdates();
             GPSButton.setText("COMPLETED");
             GPSButton.setBackgroundColor(Color.argb(255, 255, 255, 0));
             GPSButton.setClickable(false);
@@ -203,4 +264,76 @@ public class Map_Activity extends AppCompatActivity implements OnMapReadyCallbac
     public void OnClickLoad(View v) {
         startActivity(new Intent(getApplicationContext(), Destinations_List_Activity.class));
     }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            CurrentLocation = location;
+            application.current_delivery.gps.add(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()));
+            if(GPSPolyline!=null){
+                GPSPolyline.remove();
+                PolylineOptions gpsline = new PolylineOptions()
+                        .addAll(application.current_delivery.gps)
+                        .color(Color.GREEN)
+                        .width(8);
+                        mMap.addPolyline(gpsline);
+            }
+            else
+            {
+                PolylineOptions gpsline = new PolylineOptions()
+                        .addAll(application.current_delivery.gps)
+                        .color(Color.GREEN)
+                        .width(8);
+                mMap.addPolyline(gpsline);
+            }
+            if (GPSPositionMarker != null) {
+                GPSPositionMarker.remove();
+                GPSPositionMarker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()))
+                                .title("ME")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.gps))
+                );
+            } else {
+                GPSPositionMarker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()))
+                                .title("ME")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.gps))
+                );
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_FINE_LOCATION_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted,
+                } else {
+
+                    // permission denied,
+                }
+                return;
+            }
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+            final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+            if(requestCode == 10 && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) ){
+                mGoogleApiClient.connect();
+            }
+            else{
+                Toast.makeText(this,"GPS not available",Toast.LENGTH_SHORT).show();
+                Button GPSButton = (Button) findViewById(R.id.button4);
+                GPSButton.setText("Tracking not available");
+                GPSButton.setClickable(false);
+                GPSButton.setBackgroundColor(Color.argb(255, 190, 190, 190));
+            }
+        }
+
 }

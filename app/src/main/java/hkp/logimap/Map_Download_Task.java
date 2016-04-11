@@ -28,9 +28,11 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
 
     private static final String TAG = Map_Download_Task.class.getCanonicalName();
     public AsyncListener listener;
+    public boolean route;
 
-    public Map_Download_Task(AsyncListener listener){
+    public Map_Download_Task(AsyncListener listener,boolean Route){
         this.listener=listener;
+        this.route=Route;
     }
 
     private String downloadUrl(String strUrl) throws IOException {
@@ -124,7 +126,7 @@ public class Map_Download_Task extends AsyncTask<String, Void, String> {
 
 
                 }
-                listener.processFinish(points);
+                listener.processFinish(points,route);
             }
 
         }

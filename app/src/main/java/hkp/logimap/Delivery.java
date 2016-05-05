@@ -123,7 +123,7 @@ public class Delivery implements Serializable{
                 point.put("lng", p.longitude);
                gps_json.put(point);
             }
-            delivery_json.put("gps",gps_json);
+            delivery_json.put("waypoints",gps_json);
             delivery_json.put("status", state);
 
             return delivery_json.toString();

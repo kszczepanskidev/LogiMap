@@ -14,7 +14,7 @@ public class DriverStats {
 
     DriverStats(JSONObject driverStats) {
         try {
-            this.name = "Stachu";//driverStats.getString("name");
+            this.name = driverStats.getString("name") + " " + driverStats.getString("surname");
             this.km_done = Float.parseFloat(driverStats.getString("km_done"));
             this.orders_done = driverStats.getInt("orders_done");
             this.pkg_delivered = driverStats.getInt("pkg_delivered");

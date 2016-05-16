@@ -1,17 +1,22 @@
 package hkp.logimap;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.AppIndex;
@@ -59,8 +64,7 @@ public class Map_Activity extends AppCompatActivity implements
 
 
     MyApplication   application;
-    static final int MY_FINE_LOCATION_PERMISSION = 1;
-    static final String KEY_GPS_STATE="GPS";
+    static final int REQUEST_FINE_LOCATION=10;
 
 
     @Override
@@ -77,7 +81,35 @@ public class Map_Activity extends AppCompatActivity implements
                     .addApi(LocationServices.API)
                     .addApi(AppIndex.API).build();
         }
-        updateValuesFromBundle(savedInstanceState);
+    }
+
+    public void saveGPSstate(){
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("GPSkey", gpsState);
+        editor.commit();
+    }
+
+    public void loadGpsState() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        gpsState = sharedPref.getBoolean("GPSkey", false);
+        Button GPSButton = (Button) findViewById(R.id.button4);
+        if (gpsState==false) {
+            GPSButton.setText("START GPS");
+            GPSButton.setClickable(true);
+            GPSButton.setBackgroundColor(Color.argb(255, 0, 255, 0));
+        } else if (gpsState==true) {
+            if(mGoogleApiClient.isConnected()) {
+            startLocationUpdates();
+            }
+            GPSButton.setText("STOP");
+            GPSButton.setClickable(true);
+            GPSButton.setBackgroundColor(Color.argb(255, 255, 0, 0));
+        } else {
+            GPSButton.setText("GPS ERROR");
+            GPSButton.setClickable(false);
+            GPSButton.setBackgroundColor(Color.argb(255,190, 190, 190));
+        }
     }
 
 
@@ -86,10 +118,11 @@ public class Map_Activity extends AppCompatActivity implements
         mMap = googleMap;
         UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);
-
+        checkAppPermission();
+        checkGPSProvider();
         String route;
         mapController = new Map_Controller(mMap);
-        application= (MyApplication) getApplication();
+        application = (MyApplication) getApplication();
         if (application.history_delivery != null) {
             route = application.history_delivery.id.toString();
             Toast toast = Toast.makeText(getApplicationContext(), "Showing archive route: " + route, Toast.LENGTH_SHORT);
@@ -99,14 +132,15 @@ public class Map_Activity extends AppCompatActivity implements
             GPSButton.setClickable(false);
             GPSButton.setBackgroundColor(Color.argb(255, 255, 255, 0));
             hkp.logimap.Location firstLoc = application.history_delivery.locations.values().iterator().next();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLoc.latitude,firstLoc.longtitude), 8));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLoc.latitude, firstLoc.longtitude), 8));
             mapController.ShowRoute(application.history_delivery.directions, Color.BLUE, 8);
             mapController.AddMarkers(application.history_delivery.locations.values());
             mapController.ShowRoute(application.history_delivery.gps, Color.GREEN, 8);
-        } else {
-            if(checkGPSProvider()&&!mGoogleApiClient.isConnected()) {
+        } else if(application.current_delivery!=null){
+            if (!mGoogleApiClient.isConnected()) {
                 mGoogleApiClient.connect();
             }
+            loadGpsState();
             route = application.current_delivery.id.toString();
             Toast toast = Toast.makeText(getApplicationContext(), "Showing route: " + route, Toast.LENGTH_SHORT);
             toast.show();
@@ -120,28 +154,43 @@ public class Map_Activity extends AppCompatActivity implements
             destination = waypoints.get(waypoints.size() - 1);
             waypoints.remove(0);
             waypoints.remove(waypoints.size() - 1);
-            if(application.current_delivery.directions.isEmpty()) {
+            if (application.current_delivery.directions.isEmpty()) {
                 DT.execute(mapController.getDirectionsUrl(origin, destination, waypoints));
-            }
-            else{
+            } else {
                 mapController.ShowRoute(application.current_delivery.directions, Color.BLUE, 8);
-                if(!application.current_delivery.gps.isEmpty()){
-                    GPSPolyline=mapController.ShowRoute(application.current_delivery.gps,Color.GREEN,8);
+                if (!application.current_delivery.gps.isEmpty()) {
+                    GPSPolyline = mapController.ShowRoute(application.current_delivery.gps, Color.GREEN, 8);
                 }
             }
             mapController.AddMarkers(application.current_delivery.locations.values());
-
-
         }
+        else {
+            finish();
+        }
+
     }
 
     public void processFinish(ArrayList<LatLng> output, boolean route) {
         if (route) {
+            application.current_delivery.directions.clear();
             application.current_delivery.directions.addAll(output);
             mapController.ShowRoute(output, Color.BLUE, 8);
         } else {
             mapController.ShowRoute(output, Color.RED, 8);
         }
+    }
+
+    public void checkAppPermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_FINE_LOCATION);
+            Button GPSButton = (Button) findViewById(R.id.button4);
+            GPSButton.setClickable(false);
+            Toast.makeText(getApplicationContext(), "Fine location permission required", Toast.LENGTH_SHORT).show();
+            }
     }
 
     public boolean checkGPSProvider()
@@ -172,27 +221,6 @@ public class Map_Activity extends AppCompatActivity implements
         mGoogleApiClient.disconnect();
         super.onDestroy();
     }
-
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean(KEY_GPS_STATE, gpsState);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    private void updateValuesFromBundle(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.keySet().contains(KEY_GPS_STATE)) {
-                gpsState = savedInstanceState.getBoolean(
-                        KEY_GPS_STATE);
-                if(gpsState){
-                    Button GPSButton = (Button) findViewById(R.id.button4);
-                    startLocationUpdates();
-                    GPSButton.setText("STOP");
-                    GPSButton.setBackgroundColor(Color.argb(255, 255, 0, 0));
-                }
-            }
-        }
-    }
-
 
     @Override
     public void onConnected(Bundle connectionHint) {
@@ -247,6 +275,8 @@ public class Map_Activity extends AppCompatActivity implements
     public void OnClickGPS(View v) {
         Button GPSButton = (Button) findViewById(R.id.button4);
         if (GPSButton.getText().equals("START GPS") && mGoogleApiClient.isConnected()) {
+            gpsState=true;
+            saveGPSstate();
             startLocationUpdates();
             Toast.makeText(getApplicationContext(), "GPS Tracking Started", Toast.LENGTH_SHORT).show();
             GPSButton.setText("STOP");
@@ -255,8 +285,11 @@ public class Map_Activity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), "GPS Tracking Stopped", Toast.LENGTH_SHORT).show();
             stopLocationUpdates();
             GPSButton.setText("COMPLETED");
+            gpsState=false;
+            saveGPSstate();
             GPSButton.setBackgroundColor(Color.argb(255, 255, 255, 0));
             GPSButton.setClickable(false);
+            application.current_delivery.finished=true;
         }
 
     }
@@ -289,38 +322,50 @@ public class Map_Activity extends AppCompatActivity implements
             }
             if (GPSPositionMarker != null) {
                 GPSPositionMarker.remove();
+                CheckBox box = (CheckBox) findViewById(R.id.checkBox);
+                if(box.isChecked()) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()), 9));
+                }
                 GPSPositionMarker = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()))
                                 .title("ME")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.gps))
                 );
             } else {
+                CheckBox box = (CheckBox) findViewById(R.id.checkBox);
+                if(box.isChecked()) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()), 9));
+                }
                 GPSPositionMarker = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()))
-                                .title("ME")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.gps))
+                                    .position(new LatLng(CurrentLocation.getLatitude(), CurrentLocation.getLongitude()))
+                                    .title("ME")
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.gps))
                 );
+
             }
         }
 
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_FINE_LOCATION_PERMISSION: {
+            case REQUEST_FINE_LOCATION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted,
+                    Button GPSButton = (Button) findViewById(R.id.button4);
+                    GPSButton.setClickable(true);
                 } else {
-
-                    // permission denied,
+                    Button GPSButton = (Button) findViewById(R.id.button4);
+                    GPSButton.setText("Tracking not available");
+                    GPSButton.setClickable(false);
+                    GPSButton.setBackgroundColor(Color.argb(255, 190, 190, 190));
                 }
                 return;
             }
         }
     }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );

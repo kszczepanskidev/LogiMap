@@ -1,50 +1,188 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section id="start">
+          <h1>LogiMap</h1>
+          <p>
+            Hubert Kaźmierczak, Kamil Szczepański, Paweł Plichta
+            <br><br>
+            dr hab. inż. Grzegorz Pawlak
+          </p>
+        </section>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+        <section id="introduction">
+          <section>
+            <h2>Co to jest?</h2>
+            <p>
+              ...
+            </p>
+          </section>
+          <section>
+            <h2>Dlaczego?</h2>
+            <p>
+              ...
+            </p>
+          </section>
+          <section>
+            <h2>Rozłóżmy to na części</h2>
+            <p>
+              ...
+            </p>
+          </section>
+        </section>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+        <section id="technologies">
+          <section>
+            <h2>Wykorzystane technologie</h2>
+          </section>
+          <section>
+            <h2>Android</h2>
+          </section>
+          <section>
+            <h2>Django</h2>
+          </section>
+          <section>
+            <h2>SQLite/PostgreSQL</h2>
+          </section>
+        </section>
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+        <section id="additional_tech">
+          <section>
+            <h2>Dodatkowe narzędzia</h2>
+          </section>
+          <section>
+            <h2>Git</h2>
+          </section>
+          <section>
+            <h2>Heroku</h2>
+          </section>
+          <section>
+            <h2>Trello</h2>
+          </section>
+          <section>
+            <h2>Google API</h2>
+          </section>
+        </section>
+
+        <section id="resources">
+          <section>
+            <h1>Zasoby</h1>
+            <ol><h3>
+              <li class="fragment">Kierowca</li>
+              <li class="fragment">Zlecenie</h3>
+              <h4>
+                <ul class="fragment">
+                  <li>Trasa</li>
+                  <li>Miejsca docelowe</li>
+                  <li>Paczki</li>
+                </ul>
+              </h4>
+              </li>
+            </ol>
+          </section>
+        </section>
+
+        <section id="app_cycle">
+          <section>
+            <h1>Podstawowy cykl biznesowy</h1>
+          </section>
+
+          <section>
+            <h2>Logowanie</h2>
+          </section>
+
+          <section>
+            <h2>Menu główne</h2>
+          </section>
+
+          <section>
+            <h2>Nowe zlecenie</h2>
+          </section>
+
+          <section>
+            <h2>Podgląd mapy</h2>
+          </section>
+
+          <section>
+            <h2>Miejsca docelowe</h2>
+          </section>
+
+          <section>
+            <h2>Lista załadunkowa</h2>
+          </section>
+
+          <section>
+            <h2>Historia</h2>
+          </section>
+
+          <section>
+            <h2>Statystyki kierowcy</h2>
+          </section>
+        </section>
+
+        <section id="features">
+          <section>
+            <h1>Dodatkowe cechy</h1>
+          </section>
+          
+          <section>
+            <h2>Powiadomienia</h2>
+          </section>
+          
+          <section>
+            <h2>Kolorowe oznaczenia lokacji</h2>
+          </section>
+          
+          <section>
+            <h2>Kolorowe oznaczenia paczek</h2>
+          </section>
+        </section>
+
+        <section id="finish">
+          <h1>Koniec</h1>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+          history: true,
+
+          // More info https://github.com/hakimel/reveal.js#dependencies
+          dependencies: [
+            { src: 'plugin/markdown/marked.js' },
+            { src: 'plugin/markdown/markdown.js' },
+            { src: 'plugin/notes/notes.js', async: true },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+          ]
+      });
+    </script>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-#start h1 {
+#start h1, #finish h1 {
     text-shadow:
    -3px -3px 0 #000,
     3px -3px 0 #000,
@@ -6,7 +6,7 @@
     3px 3px 0 #000;
     color: #fff;
 }
-#start p {
+#start p, #finish p {
     text-shadow:
    -2px -2px 0 #000,
     2px -2px 0 #000,
@@ -19,8 +19,8 @@
     margin: 0 0 50px 0;
 }
 
-#features h2, #app_cycle h2 {
-    margin-top: -30px !important;
+h2 {
+    margin-top: -60px !important;
 }
 
 li {

@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/night.css">
+    <link rel="stylesheet" href="css/theme/serif.css">
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -28,79 +28,59 @@
         <section id="start" data-background="images/mapy-google.jpg">
           <h1>LogiMap</h1>
           <p>
-            Hubert Kaźmierczak, Kamil Szczepański, Paweł Plichta
+            Hubert Kaźmierczak Kamil Szczepański Paweł Plichta
             <br><br>
             dr hab. inż. Grzegorz Pawlak
           </p>
+          <aside class="notes">
+            Let this show begin!
+          </aside>
         </section>
 
         <section id="introduction">
           <section>
-            <h2>Co to jest?</h2>
+            <h2>Temat pracy</h2>
             <p>
               System wsparcia optymalizacji obsługi dystrybucji logistycznej dla produktów świeżych
             </p>
+            <aside class="notes">
+              LogiMap
+            </aside>
           </section>
           <section>
-            <h2>Dlaczego?</h2>
+            <h2>Cele</h2>
+            <ul>
+              <li>Projekt i implementacja
+                <ul>
+                  <li>aplikacji mobilnej</li>
+                  <li>serwera</li>
+                  <li>bazy danych</li>
+                </ul>
+              </li>
+              <li>Integracja z Google Maps</li>
+              <li>Dostosowanie apliakcji do urządzeń mobilnych</li>
+              <li>Wykorzystanie narzędzi IO</li>
+            </ul>
+            <aside class="notes">
+              Goals
+            </aside>
+          </section>
+          <section>
+            <h2>Motywacja</h2>
             <ul>
               <li>Stale powiększający się rynek urządzeń mobilnych</li>
               <li>Istniejące rozwiązania nie pozwalają na czynny udział kierowcy w zbieraniu informacji</li>
               <li>Wykorzystanie istniejących systemów wyznaczających trasy i przydzielających zlecenia</li>
             </ul>
+            <aside class="notes">
+              Motivation
+            </aside>
           </section>
-          <section id="objectives">
-            <h2>Rozłóżmy to na części</h2>
-            <p align="justify">Zaprojektowanie i zaimplementowanie aplikacji mobilnej oferującej wsparcie logistyczne dla kierowców.</p>
-            <p align="justify">Współpraca z serwerem przechowującym wszystkie potrzebne informacje.</p>
-            <p align="justify">Realizacja w oparciu o dane pochodzące z zewnętrznego optymalizatora tras.</p>
-          </section>
-        </section>
-
-        <section id="technologies">
-          <section>
-            <h2>Wykorzystane technologie</h2>
-            <img src="images/android_sdk.png" />
-            <img src="images/python_django.jpg" />
-            <img src="images/sqlite.png" />
-            <img src="images/postgresql.png" />
-          </section>
-          <section>
-            <img src="images/android_sdk.png" style="transform: scale(1.5, 1.5)" /><br><br>
-            <h2>Android SDK</h2>
-            <p>
-              Aplikacja mobilna na urządzenia z systemem Android w wersji 4.2 lub wyższej
-            </p>
-          </section>
-          <section>
-            <img src="images/python_django.jpg" style="transform: scale(1.5, 1.5)" />
-            <p>
-              Logika serwera w formie serwisu REST. 
-            </p>
-          </section>
-          <section>
-            <img src="images/sqlite.png" style="margin-right: 50px; transform: scale(1.5, 1.5)" />
-            <img src="images/postgresql.png"  style="margin-left: 50px; transform: scale(1.5, 1.5)" />
-            <p>
-              Baza danych przechowująca dane wykorzystywane przez aplikację mobilną.
-            </p>
-          </section>
-        </section>
-
-        <section id="additional_tech">
-            <h2>Dodatkowe narzędzia</h2>
-            <img src="images/git.png"  class="fragment"/>
-            <img src="images/Heroku.png"  class="fragment"/><br>
-            <img src="images/trello.png"  class="fragment"/>
-            <img src="images/google_api.png"  class="fragment"/>
-        </section>
-
-        <section id="resources">
-          <section>
-            <h1>Zasoby</h1>
+          <section id="resources">
+            <h2>Zasoby</h2><br>
             <ol><h3>
-              <li class="fragment">Kierowca</li>
-              <li class="fragment">Zlecenie</h3>
+              <li class="fragment color">Kierowca</li>
+              <li class="fragment color">Zlecenie</h3>
               <h4>
                 <ul class="fragment">
                   <li>Trasa</li>
@@ -110,78 +90,173 @@
               </h4>
               </li>
             </ol>
+            <aside class="notes">
+              Resources
+            </aside>
           </section>
+        </section>
+
+        <section id="technologies">
+          <section>
+            <h2>Technologie</h2>
+            <img src="images/android_sdk.png" />
+            <img src="images/python_django.jpg" />
+            <img src="images/sqlite.png" />
+            <img src="images/postgresql.png" />
+            <aside class="notes">
+              Tech intro
+            </aside>
+          </section>
+          <section>
+            <img src="images/android_sdk.png" style="transform: scale(1.5, 1.5)" /><br><br>
+            <h2>Android SDK</h2>
+            <p>
+              Aplikacja mobilna na urządzenia z systemem Android w wersji 4.2 lub wyższej
+            </p>
+            <aside class="notes">
+              Android
+            </aside>
+          </section>
+          <section>
+            <img src="images/python_django.jpg" style="transform: scale(1.5, 1.5)" />
+            <p>
+              Logika serwera w formie serwisu REST. 
+            </p>
+            <aside class="notes">
+              Django
+            </aside>
+          </section>
+          <section>
+            <img src="images/sqlite.png" style="margin-right: 50px; transform: scale(1.5, 1.5)" />
+            <img src="images/postgresql.png"  style="margin-left: 50px; transform: scale(1.5, 1.5)" />
+            <p>
+              Baza danych przechowująca dane wykorzystywane przez aplikację mobilną.
+            </p>
+            <aside class="notes">
+              Database
+            </aside>
+          </section>
+        </section>
+
+        <section id="additional_tech">
+            <h2>Dodatkowe narzędzia</h2>
+            <img src="images/git.png"  class="fragment"/>
+            <img src="images/Heroku.png"  class="fragment"/><br>
+            <img src="images/trello.png"  class="fragment"/>
+            <img src="images/google_api.png"  class="fragment"/>
+            <aside class="notes">
+              IO
+            </aside>
         </section>
 
         <section id="app_cycle">
           <section>
             <h1>Cykl biznesowy</h1>
+            <aside class="notes">
+              Cycle intro
+            </aside>
           </section>
 
           <section>
             <h2>Logowanie</h2>
             <img src="images/login.png" />
+            <aside class="notes">
+              Login
+            </aside>
           </section>
 
           <section>
             <h2>Menu główne</h2>
             <img src="images/main_menu.png" />
+            <aside class="notes">
+              Menu
+            </aside>
           </section>
 
           <section>
             <h2>Nowe zlecenie</h2>
             <img src="images/new_delivery.png" />
+            <aside class="notes">
+              New order
+            </aside>
           </section>
 
           <section>
             <h2>Podgląd mapy</h2>
             <img src="images/maps.png" style="margin-left: -100px"/>
+            <aside class="notes">
+              Map
+            </aside>
           </section>
 
           <section>
             <h2>Miejsca docelowe</h2>
             <img src="images/locations.png" />
+            <aside class="notes">
+              Places
+            </aside>
           </section>
 
           <section>
             <h2>Lista załadunkowa</h2>
             <img src="images/packages2.png" />
+            <aside class="notes">
+              Packages
+            </aside>
           </section>
 
           <section>
             <h2>Historia</h2>
             <img src="images/history.png" />
+            <aside class="notes">
+              History
+            </aside>
           </section>
 
           <section>
             <h2>Statystyki kierowcy</h2>
             <img src="images/driver_stats.png" />
+            <aside class="notes">
+              Driver stats
+            </aside>
           </section>
         </section>
 
         <section id="features">
           <section>
             <h1>Dodatkowe cechy</h1>
+            <aside class="notes">
+              Features intro
+            </aside>
           </section>
           
           <section>
             <h2>Powiadomienia</h2>
             <img src="images/notify.png" />
+            <aside class="notes">
+              Notifications
+            </aside>
           </section>
           
           <section>
             <h2>Kolorowe oznaczenia</h2>
             <img src="images/colors.png" style="margin-left: -75px" />
+            <aside class="notes">
+              Colors
+            </aside>
           </section>
         </section>
 
         <section id="finish">
           <h1>LogiMap</h1>
           <p>
-            Hubert Kaźmierczak, Kamil Szczepański, Paweł Plichta
+            Hubert Kaźmierczak Kamil Szczepański Paweł Plichta
             <br><br>
             dr hab. inż. Grzegorz Pawlak
           </p>
+          <aside class="notes">
+            Shots fired!
+          </aside>
         </section>
       </div>
     </div>

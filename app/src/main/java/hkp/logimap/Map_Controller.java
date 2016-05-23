@@ -2,6 +2,7 @@ package hkp.logimap;
 
 import android.graphics.Color;
 import android.location.*;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -34,6 +35,7 @@ public class Map_Controller {
 
     public Polyline ShowRoute(ArrayList<LatLng> directions,int color,int width)
     {
+        Log.i("LATLNG", directions.toString());
         PolylineOptions lineOptions = new PolylineOptions();
         lineOptions.addAll(directions);
         lineOptions.width(width);
@@ -60,6 +62,7 @@ public class Map_Controller {
         if(waypointsArr!=null) {parameters+="&"+waypoints;}
         String output = "json";
         String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+        Log.i("URL", url);
         return url;
     }
 

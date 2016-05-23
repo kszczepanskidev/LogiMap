@@ -19,7 +19,7 @@ public class MyApplication extends Application {
     Delivery current_delivery, history_delivery;
     ArrayList<PUT_Request> puts;
     ArrayList<String> package_states;
-    Boolean file_thread_is_running, server_thread_is_running,gps_state;
+    Boolean file_thread_is_running, server_thread_is_running,gps_state, declined_delivery;
 
     @Override
     public void onCreate() {
@@ -28,6 +28,7 @@ public class MyApplication extends Application {
         history_delivery = null;
         file_thread_is_running = false;
         server_thread_is_running = false;
+        declined_delivery = false;
         gps_state=false;
         load_PUTs();
 

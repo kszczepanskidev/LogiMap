@@ -54,6 +54,7 @@ public class Change_State_Activity extends AppCompatActivity {
         Package p = application.current_delivery.getPackage(packageID);
         JSONObject package_json = new JSONObject();
 
+        Log.i("TEST", "BeforeJSONS");
         try {
             package_json.put("id", p.id);
             package_json.put("code", p.code);
@@ -63,11 +64,14 @@ public class Change_State_Activity extends AppCompatActivity {
         }catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
         }
+        Log.i("TEST", "AfterJSONS");
         application.addPUT(new PUT_Request("packages/" + packageID, package_json.toString()));
         p.state = status;
+        Log.i("TEST", "AfterPUT&Status");
 
-        application.current_delivery.saveDeliveryToFile("", "delivery" + application.current_delivery.id, this);
-
+//        application.current_delivery.saveDeliveryToFile("", "delivery" + application.current_delivery.id, this);
+//
+//        Log.i("TEST", "AfterFile");
         this.finish();
     }
 }

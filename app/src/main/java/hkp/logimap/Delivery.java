@@ -106,24 +106,24 @@ public class Delivery implements Serializable{
                 for(Package p : this.packages)
                     packages_json.put(p.getJSON());
             delivery_json.put("package", packages_json);
-            // google directions to json
-            JSONArray directions_json = new JSONArray();
-            for(LatLng p : this.directions) {
-                JSONObject point = new JSONObject();
-                point.put("lat", p.latitude);
-                point.put("lng", p.longitude);
-                directions_json.put(point);
-            }
-            delivery_json.put("directions",delivery_json);
-            // gps points to json
-            JSONArray gps_json = new JSONArray();
-            for(LatLng p : this.gps) {
-                JSONObject point = new JSONObject();
-                point.put("lat", p.latitude);
-                point.put("lng", p.longitude);
-               gps_json.put(point);
-            }
-            delivery_json.put("waypoints",gps_json);
+//            // google directions to json
+//            JSONArray directions_json = new JSONArray();
+//            for(LatLng p : this.directions) {
+//                JSONObject point = new JSONObject();
+//                point.put("lat", p.latitude);
+//                point.put("lng", p.longitude);
+//                directions_json.put(point);
+//            }
+//            delivery_json.put("directions",delivery_json);
+//            // gps points to json
+//            JSONArray gps_json = new JSONArray();
+//            for(LatLng p : this.gps) {
+//                JSONObject point = new JSONObject();
+//                point.put("lat", p.latitude);
+//                point.put("lng", p.longitude);
+//               gps_json.put(point);
+//            }
+//            delivery_json.put("waypoints",gps_json);
             delivery_json.put("status", state);
 
             return delivery_json.toString();

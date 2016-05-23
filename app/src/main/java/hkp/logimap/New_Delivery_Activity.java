@@ -3,6 +3,7 @@ package hkp.logimap;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class New_Delivery_Activity extends AppCompatActivity {
 
     public void clickAccept(View v){
         application.current_delivery.state = 2;
+        application.declined_delivery = false;
         updateDelivery();
         this.finish();
     }
@@ -49,13 +51,14 @@ public class New_Delivery_Activity extends AppCompatActivity {
         edit.putInt("prevDeliveryID", application.current_delivery.id);
         edit.commit();
         application.current_delivery = null;
+        application.declined_delivery = true;
 
         this.finish();
     }
 
     private void updateDelivery() {
         String json = application.current_delivery.getJSON();
-        application.puts.add(0, new PUT_Request("orders/" + application.current_delivery.id, json));
+        application.addPUT(new PUT_Request("orders/" + application.current_delivery.id, json));
     }
 
 }

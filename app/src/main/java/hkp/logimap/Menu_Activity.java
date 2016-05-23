@@ -49,6 +49,8 @@ public class Menu_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle("LogiMap");
 
+        deactivateMenu();
+
         String json = "{\"id\":2,\"driver\":{\"name\":\"Grzegorz\",\"surname\":\"MaÅ‚y\"},\"vehicle\":{\"reg_number\":\"PO1652A\",\"brand\":\"Opel\",\"model\":\"Vivaro\",\"category\":\"C\"},\"route\":{\"length\":\"25.0\",\"locations\":[{\"order\":1,\"location\":{\"id\":4,\"name\":\"Domek\",\"address\":\"Å\u0081ubieÅ„skich 4A, 96-317 GuzÃ³w\",\"latitude\":\"52.116354\",\"longitude\":\"20.337085\"}},{\"order\":2,\"location\":{\"id\":1,\"name\":\"NASA\",\"address\":\"Trakt Partyzancki 22A, 05-152 JanÃ³wek\",\"latitude\":\"52.343659\",\"longitude\":\"20.711088\"}},{\"order\":3,\"location\":{\"id\":3,\"name\":\"Petrochemia PÅ‚ock\",\"address\":\"Wyszogrodzka 145, 96-503 Sochaczew\",\"latitude\":\"52.270261\",\"longitude\":\"20.284913\"}}]},\"package\":[{\"id\":3,\"code\":\"AF5514\",\"status\":1,\"location\":4,\"deliver_before\":\"23:01\"},{\"id\":1,\"code\":\"AF5516\",\"status\":3,\"location\":1,\"deliver_before\":\"09:00\"},{\"id\":2,\"code\":\"AF5571\",\"status\":3,\"location\":3,\"deliver_before\":\"13:00\"}],\"status\":2}";
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("delivery1.json", context.MODE_PRIVATE));
@@ -62,11 +64,18 @@ public class Menu_Activity extends AppCompatActivity {
 
         if(application.current_delivery != null)
             activateMenu();
+        else
+            deactivateMenu();
     }
 
     @Override
     protected void onResume() {
-        if(application.current_delivery == null && !application.file_thread_is_running && !application.server_thread_is_running)
+        if(application.current_delivery != null)
+            activateMenu();
+        else
+            deactivateMenu();
+
+        if(application.current_delivery == null && !application.declined_delivery && !application.file_thread_is_running && !application.server_thread_is_running)
             getDelivery();
 
         if (application.current_delivery != null && application.current_delivery.state == 1) {
@@ -139,12 +148,13 @@ public class Menu_Activity extends AppCompatActivity {
                                     JSONObject delivery = new JSONObject(result);
                                     application.current_delivery = new Delivery(delivery);
                                     application.current_delivery.saveDeliveryToFile(result,"", application);
+                                    activateMenu();
 
                                     //If delivery is not yet accepted then popout
                                     if (application.current_delivery.state == 1) {
                                         startActivity(new Intent(getApplicationContext(), New_Delivery_Activity.class));
+                                        deactivateMenu();
                                     }
-                                    activateMenu();
                                 }
                             } catch (Exception e) {
                                 Log.e("ERROR", e.getMessage(), e);
@@ -296,6 +306,7 @@ public class Menu_Activity extends AppCompatActivity {
                         }, application);
 
                 for (PUT_Request put : application.puts) {
+                    Log.i("PUT", put.newjson);
                     api.execute(put.url, put.newjson);
 
                     application.puts.remove(put);

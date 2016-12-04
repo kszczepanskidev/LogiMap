@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://www.verypdf.com/ -->
+<html>
+<head>
+<title>pg_0048</title>
+
+<style>
+<!-- 
+select {font-size:12px;}
+A:link {text-decoration: none; color: blue}
+A:visited {text-decoration: none; color: purple}
+A:active {text-decoration: red}
+A:hover {text-decoration: underline; color:red}
+-->
+</style>
+<script TYPE="text/javascript"> 
+<!-- hide 
+function killerrors()
+{ 
+return true; 
+} 
+window.onerror = killerrors; 
+// --> 
+</script>
+<style type="text/css">
+<!--
+.ft0{font-style:normal;font-weight:normal;font-size:13px;font-family:Times New Roman;color:#000000;}
+.ft1{font-style:normal;font-weight:normal;font-size:16px;font-family:Times New Roman;color:#000000;}
+.ft2{font-style:normal;font-weight:normal;font-size:13px;font-family:Arial;color:#000000;}
+.ft3{font-style:normal;font-weight:normal;font-size:12px;font-family:Consolas;color:#5c5c5c;}
+.ft4{font-style:normal;font-weight:normal;font-size:12px;font-family:Arial;color:#5c5c5c;}
+.ft5{font-style:normal;font-weight:bold;font-size:12px;font-family:Consolas;color:#006699;}
+.ft6{font-style:normal;font-weight:normal;font-size:12px;font-family:Consolas;color:#000000;}
+.ft7{font-style:normal;font-weight:normal;font-size:12px;font-family:Consolas;color:#c00000;}
+.ft8{font-style:normal;font-weight:normal;font-size:12px;font-family:Consolas;color:#008200;}
+.ft9{font-style:normal;font-weight:normal;font-size:16px;font-family:Verdana;color:#000000;}
+.ft10{font-style:normal;font-weight:normal;font-size:12px;font-family:Consolas;color:#646464;}
+-->
+</style>
+</head>
+<body vlink="#FFFFFF" link="#FFFFFF" bgcolor="#ffffff">
+
+<script TYPE="text/javascript">
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10);
+} 
+function sc(){
+clearInterval(timer); 
+}
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc();
+} 
+document.onmousedown=sc
+document.ondblclick=initialize
+</script>
+<div style="position:absolute;top:0;left:0"><img width="827" height="1170" src="pg_0048.jpg" ALT=""></div>
+<div style="position:absolute;top:51;left:108"><span class="ft0">Implementacja aplikacji mobilnej </span></div>
+<div style="position:absolute;top:69;left:108"><span class="ft0"> ____________________________________________________________________________________ </span></div>
+<div style="position:absolute;top:66;left:703"><span class="ft1"> </span></div>
+<div style="position:absolute;top:110;left:118"><span class="ft1"> </span></div>
+<div style="position:absolute;top:1106;left:118"><span class="ft0"> </span></div>
+<div style="position:absolute;top:1106;left:399"><span class="ft0"> strona 48/51</span></div>
+<div style="position:absolute;top:1103;left:468"><span class="ft1"> </span></div>
+<div style="position:absolute;top:130;left:160"><span class="ft0">Listing 9 Klasa sluzaca do asynchronicznego pobrania trasy z uslugi Google Maps</span></div>
+<div style="position:absolute;top:130;left:666"><span class="ft2">  </span></div>
+<div style="position:absolute;top:162;left:118"><span class="ft1">Drugim  wykorzystywanym  mechanizmem  jest  zawarta  w  Javie  klasa  Thread.  W </span></div>
+<div style="position:absolute;top:184;left:118"><span class="ft1">polaczeniu z dostarczonym przez system Android ThreadHandlerem wykorzystany zostal </span></div>
+<div style="position:absolute;top:207;left:118"><span class="ft1">do  wykonywania operacji  okresowo.  W  odpowiednich  watkach  umieszczone  zostaly </span></div>
+<div style="position:absolute;top:228;left:118"><span class="ft1">wszystkie obliczenia, które nie maja bezposredniego wplywu na interfejs uzytkownika i </span></div>
+<div style="position:absolute;top:250;left:118"><span class="ft1">wymagane  jest  ich  wywolywanie  w  okreslonych  odstepach  czasu.  Przykladem  jest </span></div>
+<div style="position:absolute;top:272;left:118"><span class="ft1">sprawdzanie, czy dla którejs z paczek nie zbliza sie czas dostawy, co spowodowaloby </span></div>
+<div style="position:absolute;top:294;left:118"><span class="ft1">wyslanie powiadomienia. </span></div>
+<div style="position:absolute;top:325;left:143"><span class="ft3">1.</span></div>
+<div style="position:absolute;top:325;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:325;left:168"><span class="ft5"> private</span></div>
+<div style="position:absolute;top:325;left:216"><span class="ft6"> </span></div>
+<div style="position:absolute;top:325;left:223"><span class="ft5">final</span></div>
+<div style="position:absolute;top:325;left:258"><span class="ft6"> </span></div>
+<div style="position:absolute;top:325;left:265"><span class="ft5">static</span></div>
+<div style="position:absolute;top:325;left:306"><span class="ft6"> </span></div>
+<div style="position:absolute;top:325;left:313"><span class="ft5">int</span></div>
+<div style="position:absolute;top:325;left:333"><span class="ft6"> </span></div>
+<div style="position:absolute;top:325;left:340"><span class="ft6">INTERVAL = </span></div>
+<div style="position:absolute;top:325;left:416"><span class="ft7">1000</span></div>
+<div style="position:absolute;top:325;left:443"><span class="ft6"> </span></div>
+<div style="position:absolute;top:325;left:450"><span class="ft6">* </span></div>
+<div style="position:absolute;top:325;left:464"><span class="ft7">60</span></div>
+<div style="position:absolute;top:325;left:478"><span class="ft6"> </span></div>
+<div style="position:absolute;top:325;left:485"><span class="ft6">* </span></div>
+<div style="position:absolute;top:325;left:499"><span class="ft7">5</span></div>
+<div style="position:absolute;top:325;left:505"><span class="ft6">; </span></div>
+<div style="position:absolute;top:325;left:519"><span class="ft8">//check deadlines every 5min</span></div>
+<div style="position:absolute;top:325;left:712"><span class="ft6">  </span></div>
+<div style="position:absolute;top:321;left:726"><span class="ft9"> </span></div>
+<div style="position:absolute;top:342;left:168"><span class="ft6">...  </span></div>
+<div style="position:absolute;top:338;left:203"><span class="ft9"> </span></div>
+<div style="position:absolute;top:359;left:143"><span class="ft3">2.</span></div>
+<div style="position:absolute;top:359;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:359;left:168"><span class="ft6"> checking_deadlines.start();  </span></div>
+<div style="position:absolute;top:355;left:368"><span class="ft9"> </span></div>
+<div style="position:absolute;top:376;left:168"><span class="ft6">...  </span></div>
+<div style="position:absolute;top:372;left:203"><span class="ft9"> </span></div>
+<div style="position:absolute;top:393;left:143"><span class="ft3">3.</span></div>
+<div style="position:absolute;top:393;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:393;left:168"><span class="ft6"> Thread checking_deadlines = </span></div>
+<div style="position:absolute;top:393;left:361"><span class="ft5">new</span></div>
+<div style="position:absolute;top:393;left:381"><span class="ft6"> </span></div>
+<div style="position:absolute;top:393;left:388"><span class="ft6">Thread(</span></div>
+<div style="position:absolute;top:393;left:437"><span class="ft5">new</span></div>
+<div style="position:absolute;top:393;left:457"><span class="ft6"> </span></div>
+<div style="position:absolute;top:393;left:464"><span class="ft6">Runnable() {  </span></div>
+<div style="position:absolute;top:389;left:560"><span class="ft9"> </span></div>
+<div style="position:absolute;top:410;left:143"><span class="ft3">4.</span></div>
+<div style="position:absolute;top:410;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:410;left:168"><span class="ft6">         </span></div>
+<div style="position:absolute;top:410;left:223"><span class="ft10">@Override</span></div>
+<div style="position:absolute;top:410;left:285"><span class="ft6">  </span></div>
+<div style="position:absolute;top:406;left:299"><span class="ft9"> </span></div>
+<div style="position:absolute;top:427;left:143"><span class="ft3">5.</span></div>
+<div style="position:absolute;top:427;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:427;left:168"><span class="ft6">         </span></div>
+<div style="position:absolute;top:427;left:223"><span class="ft5">public</span></div>
+<div style="position:absolute;top:427;left:265"><span class="ft6"> </span></div>
+<div style="position:absolute;top:427;left:271"><span class="ft5">void</span></div>
+<div style="position:absolute;top:427;left:299"><span class="ft6"> </span></div>
+<div style="position:absolute;top:427;left:306"><span class="ft6">run() {  </span></div>
+<div style="position:absolute;top:423;left:368"><span class="ft9"> </span></div>
+<div style="position:absolute;top:444;left:143"><span class="ft3">6.</span></div>
+<div style="position:absolute;top:444;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:444;left:168"><span class="ft6">             </span></div>
+<div style="position:absolute;top:444;left:251"><span class="ft5">for</span></div>
+<div style="position:absolute;top:444;left:271"><span class="ft6">(Location l: application.current_delivery.locations.values())  </span></div>
+<div style="position:absolute;top:440;left:705"><span class="ft9"> </span></div>
+<div style="position:absolute;top:461;left:143"><span class="ft3">7.</span></div>
+<div style="position:absolute;top:461;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:461;left:168"><span class="ft6">                 </span></div>
+<div style="position:absolute;top:461;left:278"><span class="ft5">if</span></div>
+<div style="position:absolute;top:461;left:292"><span class="ft6"> </span></div>
+<div style="position:absolute;top:461;left:299"><span class="ft6">(!l.finished) {  </span></div>
+<div style="position:absolute;top:457;left:416"><span class="ft9"> </span></div>
+<div style="position:absolute;top:478;left:143"><span class="ft3">8.</span></div>
+<div style="position:absolute;top:478;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:478;left:168"><span class="ft6">                     </span></div>
+<div style="position:absolute;top:478;left:306"><span class="ft6">check_deadline(l);  </span></div>
+<div style="position:absolute;top:474;left:444"><span class="ft9">  </span></div>
+<div style="position:absolute;top:495;left:143"><span class="ft3">9.</span></div>
+<div style="position:absolute;top:495;left:157"><span class="ft4"> </span></div>
+<div style="position:absolute;top:495;left:168"><span class="ft6">                     </span></div>
+<div style="position:absolute;top:495;left:306"><span class="ft5">break</span></div>
+<div style="position:absolute;top:495;left:340"><span class="ft6">;  </span></div>
+<div style="position:absolute;top:491;left:361"><span class="ft9"> </span></div>
+<div style="position:absolute;top:512;left:143"><span class="ft3">10.</span></div>
+<div style="position:absolute;top:512;left:164"><span class="ft4"> </span></div>
+<div style="position:absolute;top:512;left:168"><span class="ft6">                </span></div>
+<div style="position:absolute;top:512;left:278"><span class="ft6">}  </span></div>
+<div style="position:absolute;top:508;left:299"><span class="ft9"> </span></div>
+<div style="position:absolute;top:529;left:143"><span class="ft3">11.</span></div>
+<div style="position:absolute;top:529;left:164"><span class="ft4"> </span></div>
+<div style="position:absolute;top:529;left:168"><span class="ft6">            </span></div>
+<div style="position:absolute;top:529;left:251"><span class="ft6">mHandler.postDelayed(</span></div>
+<div style="position:absolute;top:529;left:395"><span class="ft5">this</span></div>
+<div style="position:absolute;top:529;left:423"><span class="ft6">, INTERVAL);  </span></div>
+<div style="position:absolute;top:525;left:519"><span class="ft9"> </span></div>
+<div style="position:absolute;top:546;left:143"><span class="ft3">12.</span></div>
+<div style="position:absolute;top:546;left:164"><span class="ft4"> </span></div>
+<div style="position:absolute;top:546;left:168"><span class="ft6">        </span></div>
+<div style="position:absolute;top:546;left:223"><span class="ft6">}  </span></div>
+<div style="position:absolute;top:542;left:244"><span class="ft9"> </span></div>
+<div style="position:absolute;top:563;left:118"><span class="ft6">    </span></div>
+<div style="position:absolute;top:563;left:146"><span class="ft6">});</span></div>
+<div style="position:absolute;top:559;left:166"><span class="ft9"> </span></div>
+<div style="position:absolute;top:582;left:118"><span class="ft1"> </span></div>
+<div style="position:absolute;top:611;left:201"><span class="ft0"> Listing 10 Kod watku uruchamianego w pieciominutowyc h odstepach</span></div>
+<div style="position:absolute;top:612;left:625"><span class="ft2">  </span></div>
+<div style="position:absolute;top:644;left:118"><span class="ft1"> </span></div>
+<div style="position:absolute;top:663;left:118"><span class="ft1"> </span></div>
+<div style="position:absolute;top:682;left:118"><span class="ft1"> </span></div>
+<script TYPE="text/javascript">
+			var currentZoom = parent.ltop.currentZoom;
+			if(currentZoom != undefined)
+				document.body.style.zoom=currentZoom/100;
+			</script>
+</body>
+</html>

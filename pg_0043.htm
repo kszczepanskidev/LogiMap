@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://www.verypdf.com/ -->
+<html>
+<head>
+<title>pg_0043</title>
+
+<style>
+<!-- 
+select {font-size:12px;}
+A:link {text-decoration: none; color: blue}
+A:visited {text-decoration: none; color: purple}
+A:active {text-decoration: red}
+A:hover {text-decoration: underline; color:red}
+-->
+</style>
+<script TYPE="text/javascript"> 
+<!-- hide 
+function killerrors()
+{ 
+return true; 
+} 
+window.onerror = killerrors; 
+// --> 
+</script>
+<style type="text/css">
+<!--
+.ft0{font-style:normal;font-weight:normal;font-size:13px;font-family:Times New Roman;color:#000000;}
+.ft1{font-style:normal;font-weight:normal;font-size:16px;font-family:Times New Roman;color:#000000;}
+.ft2{font-style:normal;font-weight:bold;font-size:16px;font-family:Arial;color:#000000;}
+.ft3{font-style:normal;font-weight:normal;font-size:12px;font-family:Times New Roman;color:#000000;}
+.ft4{font-style:normal;font-weight:normal;font-size:12px;font-family:Arial;color:#000000;}
+.ft5{font-style:normal;font-weight:bold;font-size:12px;font-family:Times New Roman;color:#000080;}
+.ft6{font-style:normal;font-weight:bold;font-size:12px;font-family:Times New Roman;color:#008000;}
+.ft7{font-style:normal;font-weight:bold;font-size:12px;font-family:Times New Roman;color:#660e7a;}
+.ft8{font-style:italic;font-weight:normal;font-size:12px;font-family:Times New Roman;color:#808080;}
+.ft9{font-style:normal;font-weight:normal;font-size:12px;font-family:Times New Roman;color:#0000ff;}
+.ft10{font-style:normal;font-weight:bold;font-size:12px;font-family:Times New Roman;color:#1155cc;}
+.ft11{font-style:normal;font-weight:normal;font-size:13px;font-family:Arial;color:#000000;}
+-->
+</style>
+</head>
+<body vlink="#FFFFFF" link="#FFFFFF" bgcolor="#ffffff">
+
+<script TYPE="text/javascript">
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10);
+} 
+function sc(){
+clearInterval(timer); 
+}
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc();
+} 
+document.onmousedown=sc
+document.ondblclick=initialize
+</script>
+<div style="position:absolute;top:0;left:0"><img width="827" height="1170" src="pg_0043.jpg" ALT=""></div>
+<div style="position:absolute;top:84;left:516"><span class="ft0">Implementacja aplikacji mobilnej</span></div>
+<div style="position:absolute;top:81;left:703"><span class="ft1"> </span></div>
+<div style="position:absolute;top:102;left:108"><span class="ft0"> ____________________________________________________________________________________ </span></div>
+<div style="position:absolute;top:99;left:703"><span class="ft1"> </span></div>
+<div style="position:absolute;top:1106;left:118"><span class="ft0"> </span></div>
+<div style="position:absolute;top:1106;left:399"><span class="ft0"> strona 43/51</span></div>
+<div style="position:absolute;top:1103;left:468"><span class="ft1"> </span></div>
+<div style="position:absolute;top:143;left:118"><span class="ft2">8.5  Integracja z Google API </span></div>
+<div style="position:absolute;top:170;left:118"><span class="ft1">Glówna  funkcjonalnosc  aplikacji,  czyli  prezentacja  trasy  przejazdu,  odbywa  sie  za </span></div>
+<div style="position:absolute;top:192;left:118"><span class="ft1">posrednictwem  mapy  Google.  Potrzebne  aktualnie  fragmenty  planu  pobierane  sa </span></div>
+<div style="position:absolute;top:214;left:118"><span class="ft1">automatycznie  przez  sam  modul.  W  momencie  przesuniecia  lub  zmiany  poziomu </span></div>
+<div style="position:absolute;top:236;left:118"><span class="ft1">zblizenia  konieczne  jest  pobranie  kolejnej  czesci  mapy. </span></div>
+<div style="position:absolute;top:258;left:118"><span class="ft1">Sama trasa wyznaczana jest przy pomocy uslugi pokrewnej, Google Maps Directions, </span></div>
+<div style="position:absolute;top:281;left:118"><span class="ft1">poprzez zadanie  HTTP  na odpowiedni  adres URL, który budowany jest w  oparciu o </span></div>
+<div style="position:absolute;top:303;left:118"><span class="ft1">nastepujacy schemat :  </span></div>
+<div style="position:absolute;top:325;left:118"><span class="ft0">https://maps.googleapis.com/maps/api/directions/output.parameters</span></div>
+<div style="position:absolute;top:322;left:660"><span class="ft1"> </span></div>
+<div style="position:absolute;top:352;left:118"><span class="ft1">Szczególnie istotny jest tu ostatni fragment adresu, gdzie output oznacza format, w </span></div>
+<div style="position:absolute;top:375;left:118"><span class="ft1">jakim otrzymamy odpowiedz  od  uslugi,  a  parameters parametry zapytania. W ich </span></div>
+<div style="position:absolute;top:398;left:118"><span class="ft1">sklad wchodza m.in. punkt startu, konca oraz punkty posrednie podrózy. Ze wzgledu na </span></div>
+<div style="position:absolute;top:420;left:118"><span class="ft1">wygode na format zwrotny zostal wybrany plik JSON. Ponizej przedstawiona jest funkcja </span></div>
+<div style="position:absolute;top:442;left:118"><span class="ft1">budujaca adres URL w oparciu o wymagany schemat. </span></div>
+<div style="position:absolute;top:472;left:193"><span class="ft3">1.</span></div>
+<div style="position:absolute;top:472;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:472;left:218"><span class="ft5"> private </span></div>
+<div style="position:absolute;top:472;left:278"><span class="ft3">String getDirectionsUrl(LatLng origin,</span></div>
+<div style="position:absolute;top:472;left:564"><span class="ft3"> </span></div>
+<div style="position:absolute;top:488;left:268"><span class="ft3">LatLng dest,ArrayList&lt;LatLng&gt; waypointsArr){</span></div>
+<div style="position:absolute;top:484;left:599"><span class="ft1"> </span></div>
+<div style="position:absolute;top:504;left:193"><span class="ft3">2.</span></div>
+<div style="position:absolute;top:504;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:504;left:218"><span class="ft3"> String str_origin = </span></div>
+<div style="position:absolute;top:504;left:368"><span class="ft6">&quot;origin=&quot;</span></div>
+<div style="position:absolute;top:504;left:436"><span class="ft3">+origin.</span></div>
+<div style="position:absolute;top:504;left:496"><span class="ft7">latitude</span></div>
+<div style="position:absolute;top:504;left:556"><span class="ft3">+</span></div>
+<div style="position:absolute;top:504;left:564"><span class="ft6">&quot;,&quot;</span></div>
+<div style="position:absolute;top:504;left:586"><span class="ft3">+origin.</span></div>
+<div style="position:absolute;top:504;left:646"><span class="ft7">longitude</span></div>
+<div style="position:absolute;top:504;left:714"><span class="ft3">;</span></div>
+<div style="position:absolute;top:504;left:721"><span class="ft3"> </span></div>
+<div style="position:absolute;top:521;left:193"><span class="ft3">3.</span></div>
+<div style="position:absolute;top:521;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:521;left:218"><span class="ft8">    </span></div>
+<div style="position:absolute;top:521;left:241"><span class="ft3">String str_dest = </span></div>
+<div style="position:absolute;top:521;left:376"><span class="ft6">&quot;destination=&quot;</span></div>
+<div style="position:absolute;top:521;left:481"><span class="ft3">+dest.</span></div>
+<div style="position:absolute;top:521;left:526"><span class="ft7">latitude</span></div>
+<div style="position:absolute;top:521;left:586"><span class="ft3">+</span></div>
+<div style="position:absolute;top:521;left:594"><span class="ft6">&quot;,&quot;</span></div>
+<div style="position:absolute;top:521;left:616"><span class="ft3">+dest.</span></div>
+<div style="position:absolute;top:521;left:661"><span class="ft7">longitude</span></div>
+<div style="position:absolute;top:521;left:729"><span class="ft3">;</span></div>
+<div style="position:absolute;top:521;left:736"><span class="ft3"> </span></div>
+<div style="position:absolute;top:537;left:193"><span class="ft3">4.</span></div>
+<div style="position:absolute;top:537;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:537;left:218"><span class="ft8">    </span></div>
+<div style="position:absolute;top:537;left:241"><span class="ft3">String sensor = </span></div>
+<div style="position:absolute;top:537;left:361"><span class="ft6">&quot;sensor=false&quot;</span></div>
+<div style="position:absolute;top:537;left:466"><span class="ft3">;</span></div>
+<div style="position:absolute;top:537;left:474"><span class="ft3"> </span></div>
+<div style="position:absolute;top:553;left:193"><span class="ft3">5.</span></div>
+<div style="position:absolute;top:553;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:553;left:218"><span class="ft8">    </span></div>
+<div style="position:absolute;top:553;left:241"><span class="ft3">String waypoints = </span></div>
+<div style="position:absolute;top:553;left:383"><span class="ft6">&quot;&quot;</span></div>
+<div style="position:absolute;top:553;left:398"><span class="ft3">;</span></div>
+<div style="position:absolute;top:553;left:406"><span class="ft3"> </span></div>
+<div style="position:absolute;top:570;left:193"><span class="ft3">6.</span></div>
+<div style="position:absolute;top:570;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:570;left:218"><span class="ft3">    </span></div>
+<div style="position:absolute;top:570;left:241"><span class="ft5">for</span></div>
+<div style="position:absolute;top:570;left:263"><span class="ft3">(</span></div>
+<div style="position:absolute;top:570;left:271"><span class="ft5">int </span></div>
+<div style="position:absolute;top:570;left:301"><span class="ft3">i = </span></div>
+<div style="position:absolute;top:570;left:331"><span class="ft9">0</span></div>
+<div style="position:absolute;top:570;left:338"><span class="ft3">; i &lt; waypointsArr.size(); i++){</span></div>
+<div style="position:absolute;top:570;left:579"><span class="ft3"> </span></div>
+<div style="position:absolute;top:586;left:193"><span class="ft3">7.</span></div>
+<div style="position:absolute;top:586;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:586;left:218"><span class="ft3">        </span></div>
+<div style="position:absolute;top:586;left:271"><span class="ft3">LatLng point = waypointsArr.get(i);</span></div>
+<div style="position:absolute;top:586;left:534"><span class="ft3"> </span></div>
+<div style="position:absolute;top:602;left:193"><span class="ft3">8.</span></div>
+<div style="position:absolute;top:602;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:602;left:218"><span class="ft3">        </span></div>
+<div style="position:absolute;top:602;left:271"><span class="ft5">if</span></div>
+<div style="position:absolute;top:602;left:286"><span class="ft3">(i == </span></div>
+<div style="position:absolute;top:602;left:331"><span class="ft9">0</span></div>
+<div style="position:absolute;top:602;left:338"><span class="ft3">)</span></div>
+<div style="position:absolute;top:602;left:346"><span class="ft3"> </span></div>
+<div style="position:absolute;top:618;left:193"><span class="ft3">9.</span></div>
+<div style="position:absolute;top:618;left:208"><span class="ft4"> </span></div>
+<div style="position:absolute;top:618;left:218"><span class="ft3">            </span></div>
+<div style="position:absolute;top:618;left:301"><span class="ft3">waypoints = </span></div>
+<div style="position:absolute;top:618;left:391"><span class="ft6">&quot;waypoints=&quot;</span></div>
+<div style="position:absolute;top:618;left:481"><span class="ft3">;</span></div>
+<div style="position:absolute;top:618;left:489"><span class="ft3"> </span></div>
+<div style="position:absolute;top:635;left:193"><span class="ft3">10.</span></div>
+<div style="position:absolute;top:635;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:635;left:218"><span class="ft3">       </span></div>
+<div style="position:absolute;top:635;left:271"><span class="ft3">waypoints += point.</span></div>
+<div style="position:absolute;top:635;left:413"><span class="ft7">latitude </span></div>
+<div style="position:absolute;top:635;left:481"><span class="ft3">+ </span></div>
+<div style="position:absolute;top:635;left:496"><span class="ft6">&quot;,&quot; </span></div>
+<div style="position:absolute;top:635;left:526"><span class="ft3">+ point.</span></div>
+<div style="position:absolute;top:635;left:586"><span class="ft7">longitude </span></div>
+<div style="position:absolute;top:635;left:661"><span class="ft3">+ </span></div>
+<div style="position:absolute;top:635;left:676"><span class="ft6">&quot;|&quot;</span></div>
+<div style="position:absolute;top:635;left:699"><span class="ft3">;</span></div>
+<div style="position:absolute;top:635;left:706"><span class="ft3"> </span></div>
+<div style="position:absolute;top:651;left:193"><span class="ft3">11.</span></div>
+<div style="position:absolute;top:651;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:651;left:218"><span class="ft3">   </span></div>
+<div style="position:absolute;top:651;left:241"><span class="ft3">}</span></div>
+<div style="position:absolute;top:651;left:248"><span class="ft3"> </span></div>
+<div style="position:absolute;top:667;left:193"><span class="ft3">12.</span></div>
+<div style="position:absolute;top:667;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:667;left:218"><span class="ft8">   </span></div>
+<div style="position:absolute;top:667;left:241"><span class="ft3">String parameters = str_origin + </span></div>
+<div style="position:absolute;top:667;left:489"><span class="ft6">&quot;&amp;&quot; </span></div>
+<div style="position:absolute;top:667;left:519"><span class="ft3">+ str_dest + </span></div>
+<div style="position:absolute;top:667;left:616"><span class="ft6">&quot;&amp;&quot; </span></div>
+<div style="position:absolute;top:667;left:646"><span class="ft3">+ sensor + </span></div>
+<div style="position:absolute;top:684;left:218"><span class="ft6">&quot;&amp;&quot; </span></div>
+<div style="position:absolute;top:684;left:248"><span class="ft3">+ waypoints;</span></div>
+<div style="position:absolute;top:684;left:338"><span class="ft3"> </span></div>
+<div style="position:absolute;top:700;left:193"><span class="ft3">13.</span></div>
+<div style="position:absolute;top:700;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:700;left:218"><span class="ft3">  </span></div>
+<div style="position:absolute;top:700;left:233"><span class="ft3">String output = </span></div>
+<div style="position:absolute;top:700;left:353"><span class="ft6">&quot;json&quot;</span></div>
+<div style="position:absolute;top:700;left:398"><span class="ft3">;</span></div>
+<div style="position:absolute;top:700;left:406"><span class="ft3"> </span></div>
+<div style="position:absolute;top:716;left:193"><span class="ft3">14.</span></div>
+<div style="position:absolute;top:716;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:716;left:218"><span class="ft8">   </span></div>
+<div style="position:absolute;top:716;left:241"><span class="ft3">String url = </span></div>
+<div style="position:absolute;top:716;left:338"><span class="ft6">&quot;</span></div>
+<div style="position:absolute;top:716;left:346"><span class="ft10">https://maps.googleapis.com/maps/api/directions/</span></div>
+<div style="position:absolute;top:716;left:706"><span class="ft6">&quot; </span></div>
+<div style="position:absolute;top:716;left:721"><span class="ft3">+ </span></div>
+<div style="position:absolute;top:732;left:218"><span class="ft3">output + </span></div>
+<div style="position:absolute;top:732;left:286"><span class="ft6">&quot;.&quot; </span></div>
+<div style="position:absolute;top:732;left:316"><span class="ft3">+ parameters</span></div>
+<div style="position:absolute;top:732;left:406"><span class="ft3"> </span></div>
+<div style="position:absolute;top:749;left:193"><span class="ft3">15.</span></div>
+<div style="position:absolute;top:749;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:749;left:218"><span class="ft5">return </span></div>
+<div style="position:absolute;top:749;left:271"><span class="ft3">url;</span></div>
+<div style="position:absolute;top:749;left:301"><span class="ft3"> </span></div>
+<div style="position:absolute;top:765;left:193"><span class="ft3">16.</span></div>
+<div style="position:absolute;top:765;left:216"><span class="ft4"> </span></div>
+<div style="position:absolute;top:765;left:218"><span class="ft3">}</span></div>
+<div style="position:absolute;top:765;left:226"><span class="ft3"> </span></div>
+<div style="position:absolute;top:785;left:118"><span class="ft1"> </span></div>
+<div style="position:absolute;top:814;left:157"><span class="ft0"> Listing 7 Funkcja budujaca potrzebny adres URL do uslugi Google Maps Directions</span></div>
+<div style="position:absolute;top:815;left:669"><span class="ft11">  </span></div>
+<div style="position:absolute;top:846;left:118"><span class="ft1">Aplikacja nawiazuje nastepnie polaczenie HTTP z wyznaczonym adresem URL, gdzie </span></div>
+<div style="position:absolute;top:868;left:118"><span class="ft1">usluga  Google  Directions  API  automatycznie  przelicza  trase  z  uwzglednieniem </span></div>
+<div style="position:absolute;top:890;left:118"><span class="ft1">przekazanych parametrów i udostepnia rezultat  w postaci pliku w formacie JSON. Za </span></div>
+<div style="position:absolute;top:912;left:118"><span class="ft1">realizacje tego zdania opowiada przedstawiona ponizej funkcja. Klasa, której ponizsza </span></div>
+<div style="position:absolute;top:934;left:118"><span class="ft1">funkcja jest czescia, zostala zbudowana w oparciu o asynchroniczne przetwarzanie, wiec </span></div>
+<div style="position:absolute;top:956;left:118"><span class="ft1">nawet,  gdy  pobieranie  jest  opóznione  np.  przez  wolne  lacze  reszta  aplikacji  nie  jest </span></div>
+<div style="position:absolute;top:979;left:118"><span class="ft1">wstrzymywana. </span></div>
+<script TYPE="text/javascript">
+			var currentZoom = parent.ltop.currentZoom;
+			if(currentZoom != undefined)
+				document.body.style.zoom=currentZoom/100;
+			</script>
+</body>
+</html>

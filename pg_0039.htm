@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://www.verypdf.com/ -->
+<html>
+<head>
+<title>pg_0039</title>
+
+<style>
+<!-- 
+select {font-size:12px;}
+A:link {text-decoration: none; color: blue}
+A:visited {text-decoration: none; color: purple}
+A:active {text-decoration: red}
+A:hover {text-decoration: underline; color:red}
+-->
+</style>
+<script TYPE="text/javascript"> 
+<!-- hide 
+function killerrors()
+{ 
+return true; 
+} 
+window.onerror = killerrors; 
+// --> 
+</script>
+<style type="text/css">
+<!--
+.ft0{font-style:normal;font-weight:normal;font-size:13px;font-family:Times New Roman;color:#000000;}
+.ft1{font-style:normal;font-weight:normal;font-size:16px;font-family:Times New Roman;color:#000000;}
+.ft2{font-style:normal;font-weight:bold;font-size:16px;font-family:Arial;color:#000000;}
+.ft3{font-style:normal;font-weight:bold;font-size:16px;font-family:Times New Roman;color:#000000;}
+.ft4{font-style:normal;font-weight:normal;font-size:16px;font-family:Arial;color:#000000;}
+.ft5{font-style:normal;font-weight:normal;font-size:11px;font-family:Consolas;color:#5c5c5c;}
+.ft6{font-style:normal;font-weight:normal;font-size:11px;font-family:Arial;color:#5c5c5c;}
+.ft7{font-style:normal;font-weight:normal;font-size:11px;font-family:Times New Roman;color:#000000;}
+.ft8{font-style:normal;font-weight:normal;font-size:11px;font-family:Times New Roman;color:#0000ff;}
+.ft9{font-style:normal;font-weight:normal;font-size:15px;font-family:Times New Roman;color:#000000;}
+.ft10{font-style:normal;font-weight:bold;font-size:11px;font-family:Times New Roman;color:#006699;}
+.ft11{font-style:normal;font-weight:normal;font-size:15px;font-family:Verdana;color:#000000;}
+.ft12{font-style:normal;font-weight:normal;font-size:13px;font-family:Arial;color:#000000;}
+-->
+</style>
+</head>
+<body vlink="#FFFFFF" link="#FFFFFF" bgcolor="#ffffff">
+
+<script TYPE="text/javascript">
+var currentpos,timer; 
+function initialize() 
+{ 
+timer=setInterval("scrollwindow()",10);
+} 
+function sc(){
+clearInterval(timer); 
+}
+function scrollwindow() 
+{ 
+currentpos=document.body.scrollTop; 
+window.scroll(0,++currentpos); 
+if (currentpos != document.body.scrollTop) 
+sc();
+} 
+document.onmousedown=sc
+document.ondblclick=initialize
+</script>
+<div style="position:absolute;top:0;left:0"><img width="827" height="1170" src="pg_0039.jpg" ALT=""></div>
+<div style="position:absolute;top:84;left:516"><span class="ft0">Implementacja aplikacji mobilnej</span></div>
+<div style="position:absolute;top:81;left:703"><span class="ft1"> </span></div>
+<div style="position:absolute;top:102;left:108"><span class="ft0"> ____________________________________________________________________________________ </span></div>
+<div style="position:absolute;top:99;left:703"><span class="ft1"> </span></div>
+<div style="position:absolute;top:1106;left:118"><span class="ft0"> </span></div>
+<div style="position:absolute;top:1106;left:399"><span class="ft0"> strona 39/51</span></div>
+<div style="position:absolute;top:1103;left:468"><span class="ft1"> </span></div>
+<div style="position:absolute;top:143;left:118"><span class="ft1"> </span></div>
+<div style="position:absolute;top:179;left:118"><span class="ft2">8.2  Komponent SharedPreferences </span></div>
+<div style="position:absolute;top:207;left:118"><span class="ft1">SharedPreferences jest to wbudowany w system Android mechanizm do przechowywania </span></div>
+<div style="position:absolute;top:228;left:118"><span class="ft1">informacji o niewielkim rozmiarze. Umozliwia on zapisywanie prostych typów danych </span></div>
+<div style="position:absolute;top:251;left:118"><span class="ft1">w postaci par klucz - wartosc.   </span></div>
+<div style="position:absolute;top:272;left:118"><span class="ft1">W opisywanej aplikacji  modul  ten  wykorzystywany  jest  do  przechowywania  danych, </span></div>
+<div style="position:absolute;top:294;left:118"><span class="ft1">które sa niezmienne lub wymagaja jednokrotnego wprowadzenia/pobrania z bazy danych </span></div>
+<div style="position:absolute;top:317;left:118"><span class="ft1">oraz informacji na temat stanu aplikacji. </span></div>
+<div style="position:absolute;top:347;left:118"><span class="ft1">Wykorzystywane w aplikacji klucze to: </span></div>
+<div style="position:absolute;top:379;left:143"><span class="ft1">.</span></div>
+<div style="position:absolute;top:380;left:151"><span class="ft4"> </span></div>
+<div style="position:absolute;top:380;left:168"><span class="ft1"> firstRun - wartosc logiczna; okreslajace czy aplikacja byla juz uruchamiana i </span></div>
+<div style="position:absolute;top:402;left:168"><span class="ft1">zostaly podane poprawne dane uzytkownika. </span></div>
+<div style="position:absolute;top:434;left:143"><span class="ft1">.</span></div>
+<div style="position:absolute;top:435;left:151"><span class="ft4"> </span></div>
+<div style="position:absolute;top:435;left:168"><span class="ft1"> username - zaszyfrowany login uzytkownika. </span></div>
+<div style="position:absolute;top:467;left:143"><span class="ft1">.</span></div>
+<div style="position:absolute;top:468;left:151"><span class="ft4"> </span></div>
+<div style="position:absolute;top:468;left:168"><span class="ft1"> password - zaszyfrowane haslo uzytkownika. </span></div>
+<div style="position:absolute;top:500;left:143"><span class="ft1">.</span></div>
+<div style="position:absolute;top:501;left:151"><span class="ft4"> </span></div>
+<div style="position:absolute;top:501;left:168"><span class="ft1"> driverID  -  wartosc  identyfikatora  kierowcy  w  bazie  danych;  wartosc </span></div>
+<div style="position:absolute;top:523;left:168"><span class="ft1">otrzymywana  na  podstawie danych  uzytkownika;  wymagana do wykonywania </span></div>
+<div style="position:absolute;top:545;left:168"><span class="ft1">zapytan  do  serwera,  w  celu  uzyskania  szczególowych  danych  kierowcy  oraz </span></div>
+<div style="position:absolute;top:567;left:168"><span class="ft1">przypisanego mu zamówienia. </span></div>
+<div style="position:absolute;top:599;left:143"><span class="ft1">.</span></div>
+<div style="position:absolute;top:600;left:151"><span class="ft4"> </span></div>
+<div style="position:absolute;top:600;left:168"><span class="ft1"> deliveryInFile  -  wartosc  logiczna  informujaca  o  zapisaniu  danych </span></div>
+<div style="position:absolute;top:622;left:168"><span class="ft1">obecnego zamówienia do pliku, dzieki czemu nie ma potrzeby za kazdym laczyc </span></div>
+<div style="position:absolute;top:644;left:168"><span class="ft1">sie z serwerem </span></div>
+<div style="position:absolute;top:676;left:143"><span class="ft1">.</span></div>
+<div style="position:absolute;top:677;left:151"><span class="ft4"> </span></div>
+<div style="position:absolute;top:677;left:168"><span class="ft1"> prevDeliveryID  -  identyfikator  ostatnio  zakonczonego  zamówienia;  w </span></div>
+<div style="position:absolute;top:699;left:168"><span class="ft1">momencie,  gdy  kierowca  zakonczy  swoje  zamówienie  istnieje  szansa,  ze </span></div>
+<div style="position:absolute;top:721;left:168"><span class="ft1">aplikacja pobierze nowe zamówienie zanim zostanie zaktualizowana baza danych </span></div>
+<div style="position:absolute;top:743;left:168"><span class="ft1">i dzieki tej wartosci unikamy ponownego pobierania zakonczonego juz lokalnie </span></div>
+<div style="position:absolute;top:765;left:168"><span class="ft1">zamówienia. </span></div>
+<div style="position:absolute;top:797;left:167"><span class="ft5">1.</span></div>
+<div style="position:absolute;top:797;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:797;left:190"><span class="ft7"> SharedPreferences preferences = getSharedPreferences(</span></div>
+<div style="position:absolute;top:797;left:563"><span class="ft8">&quot;sharedPrefs&quot;</span></div>
+<div style="position:absolute;top:797;left:654"><span class="ft7">, </span></div>
+<div style="position:absolute;top:812;left:190"><span class="ft7">MODE_PRIVATE);  </span></div>
+<div style="position:absolute;top:808;left:303"><span class="ft9"> </span></div>
+<div style="position:absolute;top:828;left:167"><span class="ft5">2.</span></div>
+<div style="position:absolute;top:828;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:828;left:190"><span class="ft7"> SharedPreferences.Editor edit = preferences.edit();  </span></div>
+<div style="position:absolute;top:824;left:563"><span class="ft9"> </span></div>
+<div style="position:absolute;top:847;left:167"><span class="ft5">3.</span></div>
+<div style="position:absolute;top:847;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:847;left:190"><span class="ft7">   </span></div>
+<div style="position:absolute;top:843;left:204"><span class="ft9"> </span></div>
+<div style="position:absolute;top:865;left:167"><span class="ft5">4.</span></div>
+<div style="position:absolute;top:865;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:865;left:190"><span class="ft7"> Encryptor encryptor = </span></div>
+<div style="position:absolute;top:865;left:345"><span class="ft10">new</span></div>
+<div style="position:absolute;top:865;left:366"><span class="ft7"> </span></div>
+<div style="position:absolute;top:865;left:373"><span class="ft7">Encryptor();  </span></div>
+<div style="position:absolute;top:861;left:472"><span class="ft9"> </span></div>
+<div style="position:absolute;top:884;left:167"><span class="ft5">5.</span></div>
+<div style="position:absolute;top:884;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:884;left:190"><span class="ft7">   </span></div>
+<div style="position:absolute;top:880;left:204"><span class="ft9"> </span></div>
+<div style="position:absolute;top:902;left:167"><span class="ft5">6.</span></div>
+<div style="position:absolute;top:902;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:902;left:190"><span class="ft7"> edit.putBoolean(</span></div>
+<div style="position:absolute;top:902;left:303"><span class="ft8">&quot;firstRun&quot;</span></div>
+<div style="position:absolute;top:902;left:373"><span class="ft7">, </span></div>
+<div style="position:absolute;top:902;left:387"><span class="ft10">false</span></div>
+<div style="position:absolute;top:902;left:422"><span class="ft7">);  </span></div>
+<div style="position:absolute;top:898;left:450"><span class="ft9"> </span></div>
+<div style="position:absolute;top:918;left:167"><span class="ft5">7.</span></div>
+<div style="position:absolute;top:918;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:918;left:190"><span class="ft7"> edit.putString(</span></div>
+<div style="position:absolute;top:918;left:296"><span class="ft8">&quot;username&quot;</span></div>
+<div style="position:absolute;top:918;left:366"><span class="ft7">, encryptor.encrypt(username));  </span></div>
+<div style="position:absolute;top:914;left:598"><span class="ft9"> </span></div>
+<div style="position:absolute;top:935;left:167"><span class="ft5">8.</span></div>
+<div style="position:absolute;top:935;left:180"><span class="ft6"> </span></div>
+<div style="position:absolute;top:935;left:190"><span class="ft7"> edit.putString(</span></div>
+<div style="position:absolute;top:935;left:296"><span class="ft8">&quot;password&quot;</span></div>
+<div style="position:absolute;top:935;left:366"><span class="ft7">, encryptor.encrypt(password));  </span></div>
+<div style="position:absolute;top:931;left:598"><span class="ft9"> </span></div>
+<div style="position:absolute;top:950;left:143"><span class="ft7">edit.commit();</span></div>
+<div style="position:absolute;top:946;left:242"><span class="ft11"> </span></div>
+<div style="position:absolute;top:968;left:143"><span class="ft1"> </span></div>
+<div style="position:absolute;top:991;left:193"><span class="ft0"> Listing 4 Przyklad zapisu danych z uzyciem modulu SharedPreferences</span></div>
+<div style="position:absolute;top:991;left:634"><span class="ft12">  </span></div>
+<div style="position:absolute;top:1023;left:118"><span class="ft1"> </span></div>
+<script TYPE="text/javascript">
+			var currentZoom = parent.ltop.currentZoom;
+			if(currentZoom != undefined)
+				document.body.style.zoom=currentZoom/100;
+			</script>
+</body>
+</html>

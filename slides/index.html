@@ -33,7 +33,7 @@
             dr hab. inż. Grzegorz Pawlak
           </p>
           <aside class="notes">
-            Let this show begin!
+            It's the final countdown!
           </aside>
         </section>
 
@@ -44,7 +44,7 @@
               System wsparcia optymalizacji obsługi dystrybucji logistycznej dla produktów świeżych
             </p>
             <aside class="notes">
-              LogiMap
+              Tematem naszej pracy był
             </aside>
           </section>
           <section>
@@ -53,7 +53,7 @@
               <li>Projekt i implementacja
                 <ul>
                   <li>aplikacji mobilnej</li>
-                  <li>serwera</li>
+                  <li>serwera REST</li>
                   <li>bazy danych</li>
                 </ul>
               </li>
@@ -62,38 +62,46 @@
               <li>Wykorzystanie narzędzi IO</li>
             </ul>
             <aside class="notes">
-              Goals
+              Podczas planowania prac ...<br>
+              Aplkacja wykonuje prace nie obiekt zewn.<br>
+              Inżyniera Oprogramowania pomagać a nie być.
             </aside>
           </section>
           <section>
             <h2>Motywacja</h2>
             <ul>
               <li>Stale powiększający się rynek urządzeń mobilnych</li>
-              <li>Istniejące rozwiązania nie pozwalają na czynny udział kierowcy w zbieraniu informacji</li>
+              <li>Istniejące rozwiązania:<ul>
+                <li>Są drogie</li>
+                <li>Pomijają kierowcę jako czynnego użytkownika</li>
+                <li>Wygląd > prostota użytkowania</li>
+              </ul></li>
               <li>Wykorzystanie istniejących systemów wyznaczających trasy i przydzielających zlecenia</li>
             </ul>
             <aside class="notes">
-              Motivation
+              Czynniki, które wpłynęły na podjęcie ...<br>
+              Założenie - istniejący optymalizator.
             </aside>
           </section>
-          <section id="resources">
-            <h2>Zasoby</h2><br>
-            <ol><h3>
-              <li class="fragment color">Kierowca</li>
-              <li class="fragment color">Zlecenie</h3>
-              <h4>
-                <ul class="fragment">
-                  <li>Trasa</li>
-                  <li>Miejsca docelowe</li>
-                  <li>Paczki</li>
-                </ul>
-              </h4>
-              </li>
-            </ol>
-            <aside class="notes">
-              Resources
-            </aside>
-          </section>
+        </section>
+
+        <section id="resources">
+          <h2>Zasoby</h2><br>
+          <ol><h3>
+            <li class="fragment color">Kierowca</li>
+            <li class="fragment color">Zlecenie</h3>
+            <h4>
+              <ul class="fragment">
+                <li>Trasa</li>
+                <li>Miejsca docelowe</li>
+                <li>Paczki</li>
+              </ul>
+            </h4>
+            </li>
+          </ol>
+          <aside class="notes">
+            Przechodząc do omówienia realizacji ww. celów - główne zasoby operacyjne
+          </aside>
         </section>
 
         <section id="technologies">
@@ -104,7 +112,9 @@
             <img src="images/sqlite.png" />
             <img src="images/postgresql.png" />
             <aside class="notes">
-              Tech intro
+              Dostępność wielu technologii do wytwarzania oprogramowania mobilnego.
+			  Narzędzia przyjazne w użytkowaniu oraz funkcjonalne.
+			  Trzy podstawowe elementy projektu: aplikacja kliencka, baza danych oraz aplikacja serwerowa.
             </aside>
           </section>
           <section>
@@ -114,7 +124,9 @@
               Aplikacja mobilna na urządzenia z systemem Android w wersji 4.2 lub wyższej
             </p>
             <aside class="notes">
-              Android
+              Trzy najpopularniejsze systemy: Android, iOS oraz Windows Phone.
+			  Android najpowszechniej używany.
+			  My używamy Android 4.2, ze względu na dużą ilość obsługujących go urządzeń.
             </aside>
           </section>
           <section>
@@ -123,7 +135,9 @@
               Logika serwera w formie serwisu REST. 
             </p>
             <aside class="notes">
-              Django
+              Odbieranie i przetwarzanie żądań od aplikacji klienckiej; zapisywanie danych do bazy.
+			  Django + Django REST.
+			  Możliwe storzenie samego API bez konieczności tworzenia widoków.
             </aside>
           </section>
           <section>
@@ -133,7 +147,9 @@
               Baza danych przechowująca dane wykorzystywane przez aplikację mobilną.
             </p>
             <aside class="notes">
-              Database
+              Wykorzystanie dwóch różnych systemów zarządzania bazami danych: SQLite i PostgreSQL.
+			  SQLite domyślnie w Django i dobry przy niedużym ruchu.
+			  PostgreSQL wymagany przy korzystaniu z Heroku.
             </aside>
           </section>
         </section>
@@ -145,7 +161,12 @@
             <img src="images/trello.png"  class="fragment"/>
             <img src="images/google_api.png"  class="fragment"/>
             <aside class="notes">
-              IO
+              Narzędzia ułatwiające pracę w zespole:
+			   - Git - rozproszony system kontroli wersji; możliwość jednoczesnej pracy nad projektem,
+			   - Heroku - serwis chmurowy aby serwer był dostępny przez Internet,
+			   - Trello - zarządzanie zadaniami,
+			   - Google Maps - serwis internetowy z dużą ilością map i posiadający różne funkcje (nawigacja, trasy, miejsca); 
+			     udostępnia interfej do korzystania z serwisu bezpośrednio w aplikacji.
             </aside>
         </section>
 
@@ -153,7 +174,7 @@
           <section>
             <h1>Cykl biznesowy</h1>
             <aside class="notes">
-              Cycle intro
+              Przedstawie teraz pokrótce poszczególne ekrany aplikacji
             </aside>
           </section>
 
@@ -161,7 +182,7 @@
             <h2>Logowanie</h2>
             <img src="images/login.png" />
             <aside class="notes">
-              Login
+              Ekran logowania. Chroni przed nieautoryzowanym dostępem oraz pozwala identyfikować kierowców.
             </aside>
           </section>
 
@@ -169,7 +190,7 @@
             <h2>Menu główne</h2>
             <img src="images/main_menu.png" />
             <aside class="notes">
-              Menu
+              Proste, minimalistczne menu zapewniającę szybki dostęp do poszczególnych modułów.
             </aside>
           </section>
 
@@ -177,7 +198,8 @@
             <h2>Nowe zlecenie</h2>
             <img src="images/new_delivery.png" />
             <aside class="notes">
-              New order
+              Ekran pojawiający sie w otrzymania informacji o nowym zleceniu. Zawiera podstawe informacje o dostawie.
+              Jak widać pozwala odrzucić zlecenie, jeśli z jakichś przyczyn nie możemy się podjąć realizacji
             </aside>
           </section>
 
@@ -185,7 +207,7 @@
             <h2>Podgląd mapy</h2>
             <img src="images/maps.png" style="margin-left: -100px"/>
             <aside class="notes">
-              Map
+              Ekran mapy. Umożliwia podgląd wyznaczonej trasy, rozpoczęcie śledzenia za pomocą GPS.
             </aside>
           </section>
 
@@ -193,15 +215,16 @@
             <h2>Miejsca docelowe</h2>
             <img src="images/locations.png" />
             <aside class="notes">
-              Places
+              Lista przystanków. Możemy tu znaleść informacje o terminach dostaw oraz 
+              przejść bezpośrednio do listy paczek które mamy rozłądować w danym miejscu.
             </aside>
           </section>
 
           <section>
             <h2>Lista załadunkowa</h2>
-            <img src="images/packages2.png" />
+            <img src="images/packages.png" />
             <aside class="notes">
-              Packages
+             Lista paczek. Łatwa w obsłudze lista rozwijana lista umożliwia szybko zmiane statusu paczki.
             </aside>
           </section>
 
@@ -209,7 +232,8 @@
             <h2>Historia</h2>
             <img src="images/history.png" />
             <aside class="notes">
-              History
+             Historia. Lista przebytych tras. Wybranie jednej z pozcji umożliwia podgląd wynaczonej trasy,
+             śladu gps czy paczek jakie były wtedy przeworzone.
             </aside>
           </section>
 
@@ -217,7 +241,10 @@
             <h2>Statystyki kierowcy</h2>
             <img src="images/driver_stats.png" />
             <aside class="notes">
-              Driver stats
+              Statystyki kierowcy. Podstawowe informacje zbierane podczas korzystania z aplikacji.
+              - ilości zleceń i dostarczonych paczek
+              - przejechane km 
+              - ilość spóźnień
             </aside>
           </section>
         </section>
@@ -226,7 +253,7 @@
           <section>
             <h1>Dodatkowe cechy</h1>
             <aside class="notes">
-              Features intro
+              Dodatkowe funkcjonalności oferowne przez aplikacje.
             </aside>
           </section>
           
@@ -234,7 +261,7 @@
             <h2>Powiadomienia</h2>
             <img src="images/notify.png" />
             <aside class="notes">
-              Notifications
+              Przypomnienia w postaci powiadomień o zbliżającym się terminie dostawy.
             </aside>
           </section>
           
@@ -242,7 +269,15 @@
             <h2>Kolorowe oznaczenia</h2>
             <img src="images/colors.png" style="margin-left: -75px" />
             <aside class="notes">
-              Colors
+              Kolorowe oznaczenia pozwalają szybciej rozróżnić np. statusy paczek bez konieczności rozwijania listy
+            </aside>
+          </section>
+          
+          <section>
+            <h2>Nawigacja Google</h2>
+            <img src="images/google_gps.png" style="margin-left: -100px" />
+            <aside class="notes">
+              Szybki dostęp do nawigacji googla , gdyby kierowca potrzebował dodatkowych wskazówek jeśli chodzi o dojazd
             </aside>
           </section>
         </section>
@@ -255,7 +290,11 @@
             dr hab. inż. Grzegorz Pawlak
           </p>
           <aside class="notes">
-            Shots fired!
+            Everybody Hurts<br>
+            BaranT   - nothing special<br>
+            MalyG    - little order<br>
+            WaskiW   - notification<br>
+            ZaradnyA - new delivery
           </aside>
         </section>
       </div>

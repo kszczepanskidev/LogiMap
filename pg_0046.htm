@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ï»¿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <!-- saved from url=(0052)http://www.verypdf.com/ -->
 <html>
 <head>
@@ -63,40 +63,40 @@ document.ondblclick=initialize
 <div style="position:absolute;top:130;left:118"><span class="ft1"> </span></div>
 <div style="position:absolute;top:166;left:118"><span class="ft2">8.6  Przetwarzanie wielowatkowe </span></div>
 <div style="position:absolute;top:193;left:118"><span class="ft1">Aplikacje  natywne  dla  systemu  Android  pisane  sa  w  Javie,  daje  to  mozliwosc </span></div>
-<div style="position:absolute;top:215;left:118"><span class="ft1">wykorzystania  jednego  z  jej  najwiekszych  atutów,  bardzo  prostego  w  implementacji </span></div>
+<div style="position:absolute;top:215;left:118"><span class="ft1">wykorzystania  jednego  z  jej  najwiekszych  atutÃ³w,  bardzo  prostego  w  implementacji </span></div>
 <div style="position:absolute;top:237;left:118"><span class="ft1">przetwarzania wielowatkowego.   </span></div>
-<div style="position:absolute;top:259;left:118"><span class="ft1">Architektura  systemu  Android  sprawia,  ze  glówny  watek,  zwany  równiez  watkiem </span></div>
+<div style="position:absolute;top:259;left:118"><span class="ft1">Architektura  systemu  Android  sprawia,  ze  glÃ³wny  watek,  zwany  rÃ³wniez  watkiem </span></div>
 <div style="position:absolute;top:281;left:118"><span class="ft1">interfejsu  uzytkownika,  dziala  na  tylko  jednym  rdzeniu.  Powoduje  to,  ze  kazda </span></div>
 <div style="position:absolute;top:303;left:118"><span class="ft1">wymagajaca wiecej czasu operacja zatrzymuje obsluge zdarzen do czasu jej zakonczenia. </span></div>
-<div style="position:absolute;top:325;left:118"><span class="ft1">Uzytkownikowi pomysli, ze nasza aplikacja sie zawiesila i prawdopodobnie spróbuje ja </span></div>
+<div style="position:absolute;top:325;left:118"><span class="ft1">Uzytkownikowi pomysli, ze nasza aplikacja sie zawiesila i prawdopodobnie sprÃ³buje ja </span></div>
 <div style="position:absolute;top:347;left:118"><span class="ft1">zrestartowac.   </span></div>
 <div style="position:absolute;top:369;left:118"><span class="ft1">Rozwiazaniem  tego  problemu  jest  wykorzystanie  wielowatkowosci.  W  projekcie </span></div>
 <div style="position:absolute;top:391;left:118"><span class="ft1">wykorzystywane  sa  dwa  mechanizmy,  jeden  dostarczony  przez  jezyk  Java,  drugi </span></div>
 <div style="position:absolute;top:414;left:118"><span class="ft1">natomiast zawarty w bibliotekach systemu Android.   </span></div>
 <div style="position:absolute;top:435;left:118"><span class="ft1">Androidowym rozwiazaniem jest klasa AsyncTask pozwalajaca na wykonywanie w tle </span></div>
-<div style="position:absolute;top:457;left:118"><span class="ft1">operacji i zwrócenie wyniku do watku glównego. Obliczenia wykonywane sa w czterech </span></div>
+<div style="position:absolute;top:457;left:118"><span class="ft1">operacji i zwrÃ³cenie wyniku do watku glÃ³wnego. Obliczenia wykonywane sa w czterech </span></div>
 <div style="position:absolute;top:479;left:118"><span class="ft1">krokach: </span></div>
 <div style="position:absolute;top:510;left:143"><span class="ft1">1.</span></div>
 <div style="position:absolute;top:510;left:156"><span class="ft3"> </span></div>
-<div style="position:absolute;top:510;left:168"><span class="ft1"> onPreExecute  -  wywolywana  przed  rozpoczeciem  obliczen,  glównie </span></div>
+<div style="position:absolute;top:510;left:168"><span class="ft1"> onPreExecute  -  wywolywana  przed  rozpoczeciem  obliczen,  glÃ³wnie </span></div>
 <div style="position:absolute;top:532;left:168"><span class="ft1">wykorzystywana do inicjalizacji. </span></div>
 <div style="position:absolute;top:562;left:143"><span class="ft1">2.</span></div>
 <div style="position:absolute;top:562;left:156"><span class="ft3"> </span></div>
-<div style="position:absolute;top:562;left:168"><span class="ft1"> doInBackground - glówna funkcja, w której wykonywane sa operacje. Parametry </span></div>
+<div style="position:absolute;top:562;left:168"><span class="ft1"> doInBackground - glÃ³wna funkcja, w ktÃ³rej wykonywane sa operacje. Parametry </span></div>
 <div style="position:absolute;top:584;left:168"><span class="ft1">podane przy uruchamianiu sa przekazywane do tej funkcji, a wynik koncowy jest </span></div>
 <div style="position:absolute;top:606;left:168"><span class="ft1">przekazywany dalej. Za pomoca publishProgress(Progress...) moze wywolac krok </span></div>
 <div style="position:absolute;top:628;left:168"><span class="ft1">onPogressUpdate. </span></div>
 <div style="position:absolute;top:659;left:143"><span class="ft1">3.</span></div>
 <div style="position:absolute;top:659;left:156"><span class="ft3"> </span></div>
-<div style="position:absolute;top:659;left:168"><span class="ft1"> onProgressUpdate  -  zwraca  postep  obliczen  do  glównego  watku,  glównie </span></div>
-<div style="position:absolute;top:680;left:168"><span class="ft1">wykorzystywany do aktualizacja paska postepu lub wyswietlenia logów. </span></div>
+<div style="position:absolute;top:659;left:168"><span class="ft1"> onProgressUpdate  -  zwraca  postep  obliczen  do  glÃ³wnego  watku,  glÃ³wnie </span></div>
+<div style="position:absolute;top:680;left:168"><span class="ft1">wykorzystywany do aktualizacja paska postepu lub wyswietlenia logÃ³w. </span></div>
 <div style="position:absolute;top:711;left:143"><span class="ft1">4.</span></div>
 <div style="position:absolute;top:711;left:156"><span class="ft3"> </span></div>
-<div style="position:absolute;top:711;left:168"><span class="ft1"> onPostExecute - ostatni krok, wykonywany na glównym watku, rezultat obliczen </span></div>
+<div style="position:absolute;top:711;left:168"><span class="ft1"> onPostExecute - ostatni krok, wykonywany na glÃ³wnym watku, rezultat obliczen </span></div>
 <div style="position:absolute;top:733;left:168"><span class="ft1">przesylany jest jako parametr. </span></div>
 <div style="position:absolute;top:763;left:118"><span class="ft1">Klasa  ta  wykorzystana  zostala  do  obslugi  polaczenia  z  zewnetrznym  serwerem,  np. </span></div>
 <div style="position:absolute;top:786;left:118"><span class="ft1">zapytanie GET do  serwisu Google  Maps w  celu pobrania wyznaczonej  dla zadanych </span></div>
-<div style="position:absolute;top:807;left:118"><span class="ft1">punktów trasy. </span></div>
+<div style="position:absolute;top:807;left:118"><span class="ft1">punktÃ³w trasy. </span></div>
 <script TYPE="text/javascript">
 			var currentZoom = parent.ltop.currentZoom;
 			if(currentZoom != undefined)

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ï»¿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <!-- saved from url=(0052)http://www.verypdf.com/ -->
 <html>
 <head>
@@ -69,18 +69,18 @@ document.ondblclick=initialize
 <div style="position:absolute;top:1106;left:399"><span class="ft0"> strona 43/51</span></div>
 <div style="position:absolute;top:1103;left:468"><span class="ft1"> </span></div>
 <div style="position:absolute;top:143;left:118"><span class="ft2">8.5  Integracja z Google API </span></div>
-<div style="position:absolute;top:170;left:118"><span class="ft1">Glówna  funkcjonalnosc  aplikacji,  czyli  prezentacja  trasy  przejazdu,  odbywa  sie  za </span></div>
+<div style="position:absolute;top:170;left:118"><span class="ft1">GlÃ³wna  funkcjonalnosc  aplikacji,  czyli  prezentacja  trasy  przejazdu,  odbywa  sie  za </span></div>
 <div style="position:absolute;top:192;left:118"><span class="ft1">posrednictwem  mapy  Google.  Potrzebne  aktualnie  fragmenty  planu  pobierane  sa </span></div>
 <div style="position:absolute;top:214;left:118"><span class="ft1">automatycznie  przez  sam  modul.  W  momencie  przesuniecia  lub  zmiany  poziomu </span></div>
 <div style="position:absolute;top:236;left:118"><span class="ft1">zblizenia  konieczne  jest  pobranie  kolejnej  czesci  mapy. </span></div>
 <div style="position:absolute;top:258;left:118"><span class="ft1">Sama trasa wyznaczana jest przy pomocy uslugi pokrewnej, Google Maps Directions, </span></div>
-<div style="position:absolute;top:281;left:118"><span class="ft1">poprzez zadanie  HTTP  na odpowiedni  adres URL, który budowany jest w  oparciu o </span></div>
+<div style="position:absolute;top:281;left:118"><span class="ft1">poprzez zadanie  HTTP  na odpowiedni  adres URL, ktÃ³ry budowany jest w  oparciu o </span></div>
 <div style="position:absolute;top:303;left:118"><span class="ft1">nastepujacy schemat :  </span></div>
 <div style="position:absolute;top:325;left:118"><span class="ft0">https://maps.googleapis.com/maps/api/directions/output.parameters</span></div>
 <div style="position:absolute;top:322;left:660"><span class="ft1"> </span></div>
-<div style="position:absolute;top:352;left:118"><span class="ft1">Szczególnie istotny jest tu ostatni fragment adresu, gdzie output oznacza format, w </span></div>
+<div style="position:absolute;top:352;left:118"><span class="ft1">SzczegÃ³lnie istotny jest tu ostatni fragment adresu, gdzie output oznacza format, w </span></div>
 <div style="position:absolute;top:375;left:118"><span class="ft1">jakim otrzymamy odpowiedz  od  uslugi,  a  parameters parametry zapytania. W ich </span></div>
-<div style="position:absolute;top:398;left:118"><span class="ft1">sklad wchodza m.in. punkt startu, konca oraz punkty posrednie podrózy. Ze wzgledu na </span></div>
+<div style="position:absolute;top:398;left:118"><span class="ft1">sklad wchodza m.in. punkt startu, konca oraz punkty posrednie podrÃ³zy. Ze wzgledu na </span></div>
 <div style="position:absolute;top:420;left:118"><span class="ft1">wygode na format zwrotny zostal wybrany plik JSON. Ponizej przedstawiona jest funkcja </span></div>
 <div style="position:absolute;top:442;left:118"><span class="ft1">budujaca adres URL w oparciu o wymagany schemat. </span></div>
 <div style="position:absolute;top:472;left:193"><span class="ft3">1.</span></div>
@@ -221,10 +221,10 @@ document.ondblclick=initialize
 <div style="position:absolute;top:815;left:669"><span class="ft11">  </span></div>
 <div style="position:absolute;top:846;left:118"><span class="ft1">Aplikacja nawiazuje nastepnie polaczenie HTTP z wyznaczonym adresem URL, gdzie </span></div>
 <div style="position:absolute;top:868;left:118"><span class="ft1">usluga  Google  Directions  API  automatycznie  przelicza  trase  z  uwzglednieniem </span></div>
-<div style="position:absolute;top:890;left:118"><span class="ft1">przekazanych parametrów i udostepnia rezultat  w postaci pliku w formacie JSON. Za </span></div>
-<div style="position:absolute;top:912;left:118"><span class="ft1">realizacje tego zdania opowiada przedstawiona ponizej funkcja. Klasa, której ponizsza </span></div>
+<div style="position:absolute;top:890;left:118"><span class="ft1">przekazanych parametrÃ³w i udostepnia rezultat  w postaci pliku w formacie JSON. Za </span></div>
+<div style="position:absolute;top:912;left:118"><span class="ft1">realizacje tego zdania opowiada przedstawiona ponizej funkcja. Klasa, ktÃ³rej ponizsza </span></div>
 <div style="position:absolute;top:934;left:118"><span class="ft1">funkcja jest czescia, zostala zbudowana w oparciu o asynchroniczne przetwarzanie, wiec </span></div>
-<div style="position:absolute;top:956;left:118"><span class="ft1">nawet,  gdy  pobieranie  jest  opóznione  np.  przez  wolne  lacze  reszta  aplikacji  nie  jest </span></div>
+<div style="position:absolute;top:956;left:118"><span class="ft1">nawet,  gdy  pobieranie  jest  opÃ³znione  np.  przez  wolne  lacze  reszta  aplikacji  nie  jest </span></div>
 <div style="position:absolute;top:979;left:118"><span class="ft1">wstrzymywana. </span></div>
 <script TYPE="text/javascript">
 			var currentZoom = parent.ltop.currentZoom;
